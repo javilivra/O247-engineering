@@ -1,26 +1,67 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+/* Configuración Base */
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #f7f7f5;
+  color: #222f30;
 }
+
+/* --- COMPONENTES O247 --- */
+
+/* 1. Botón Vanguard */
+.vanguard-btn {
+  position: relative;
+  background-color: #1a1a1a;
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  padding: 8px 20px 8px 16px; gap: 12px;
+  border: 1px solid transparent;
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  min-width: 150px; z-index: 10;
+}
+.vanguard-btn::before {
+  content: ""; position: absolute; inset: -2px; z-index: -1;
+  background: linear-gradient(90deg, #A7E26E, #3498DB, #A7E26E);
+  background-size: 200% 200%; border-radius: 14px; opacity: 0;
+  transition: opacity 0.4s ease; animation: liquid-aura 3s linear infinite;
+}
+.vanguard-btn:hover::before { opacity: 1; }
+.vanguard-btn::after {
+  content: ""; position: absolute; inset: 1px;
+  background-color: #1a1a1a; border-radius: 11px; z-index: -1;
+}
+
+/* 2. Textos del Botón */
+.v-text-container { position: relative; height: 14px; width: 86px; overflow: hidden; display: flex; align-items: center; }
+.v-txt {
+  position: absolute; left: 0; top: 50%; transform: translateY(-50%);
+  font-family: sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.15em;
+  color: #e5e5e5; transition: all 0.4s ease; white-space: nowrap; line-height: 1;
+}
+.txt-1 { opacity: 1; }
+.txt-2 { opacity: 0; transform: translateY(150%); color: #A7E26E; display: flex; }
+.vanguard-btn:hover .txt-1 { opacity: 0; transform: translateY(-150%); filter: blur(4px); }
+.vanguard-btn:hover .txt-2 { opacity: 1; transform: translateY(-50%); }
+
+/* 3. Animaciones */
+@keyframes liquid-aura {
+  0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; }
+}
+@keyframes sheen-pass {
+  0%, 70% { left: -100%; } 100% { left: 200%; }
+}
+
+/* 4. Light Bridge */
+.light-bridge {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  height: 1px; width: 0;
+  background: linear-gradient(90deg, transparent, #A7E26E, #ffffff, #3498DB, transparent);
+  box-shadow: 0 0 15px rgba(167, 226, 110, 0.4);
+  pointer-events: none; z-index: 10; opacity: 0; border-radius: 999px;
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+header.header-scrolled .light-bridge { width: 95%; opacity: 0.8; }
