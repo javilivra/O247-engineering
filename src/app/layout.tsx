@@ -19,7 +19,11 @@ export default function RootLayout({
          Aplicamos 'bg-background-light' y 'text-charcoal' a nivel raíz.
          Esto conecta el config de Tailwind con el DOM real.
       */}
-      <body className="bg-background-light text-charcoal antialiased min-h-screen">
+      <body 
+        className="bg-background-light text-charcoal antialiased min-h-screen"
+        data-gramm="false" 
+        suppressHydrationWarning={true}
+      >
         <Navbar />
         {children}
       </body>

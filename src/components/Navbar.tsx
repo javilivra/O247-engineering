@@ -1,79 +1,89 @@
-'use client';
-import { useState, useEffect } from 'react';
-import Link from 'next/link';
 
-export default function Navbar() {
+"use client";
+
+import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { HamburgerMenu, CloseCircle } from '@solar-icons/react';
+
+const Navbar = () => {
+  const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  // Detectar scroll para efecto de "sombra"
+  useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 80);
+      setIsScrolled(window.scrollY > 20);
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (
-    <header className={`fixed top-0 left-0 w-full z-50 pointer-events-none flex justify-center pt-5 transition-all duration-500 ${isScrolled ? 'header-scrolled' : ''}`}>
-      
-      {/* CÁPSULA PRINCIPAL */}
-      <div 
-        id="navbar-pill"
-        className={`pointer-events-auto relative flex items-center justify-between p-1.5 
-        bg-white/85 backdrop-blur-md rounded-[16px] shadow-[0_8px_30px_rgba(0,0,0,0.04)] border border-white/40 
-        transition-all duration-[600ms] ease-[cubic-bezier(0.4,0,0.2,1)]
-        ${isScrolled ? 'bg-transparent backdrop-blur-none shadow-none border-transparent w-[96%]' : 'w-[92%] max-w-[1400px]'}`}
-      >
+    <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
+      isScrolled ? 'bg-[#f7f7f5]/90 backdrop-blur-md border-b border-gray-200 py-3' : 'bg-transparent py-5'
+    }`}>
+      <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
+        
+        {/* LOGO */}
+        <div className="text-2xl font-bold tracking-tighter text-[#1a1a1a]">
+          O247
+        </div>
 
-        {/* 1. CONTENEDOR LOGO */}
-        <div className={`relative z-20 flex items-center justify-center rounded-[12px] px-6 transition-all duration-[600ms] 
-          ${isScrolled ? 'bg-white/90 backdrop-blur-md shadow-lg border border-white/40 h-14 py-2' : ''}`}>
-          <Link href="/" className="font-sans font-black text-2xl tracking-tighter text-[#222f30] hover:scale-105 transition-transform">
-            O247
+        {/* MENÚ DE ESCRITORIO (Desktop) */}
+        <div className="hidden md:flex space-x-8 items-center">
+          <Link href="/planning" className="text-xs font-bold tracking-widest text-[#4a4a4a] hover:text-[#a7e26e] uppercase transition-colors">
+            Planning
+          </Link>
+          <Link href="/disney" className="text-xs font-bold tracking-widest text-[#4a4a4a] hover:text-[#a7e26e] uppercase transition-colors">
+            Disney World
+          </Link>
+          <Link href="/universal" className="text-xs font-bold tracking-widest text-[#4a4a4a] hover:text-[#a7e26e] uppercase transition-colors">
+            Universal
+          </Link>
+          <Link href="/vanguard" className="bg-[#1a1a1a] text-white px-5 py-2 rounded-full text-xs font-bold tracking-widest hover:bg-[#a7e26e] hover:text-[#1a1a1a] transition-all uppercase flex items-center gap-2">
+            ✦ Vanguard
           </Link>
         </div>
 
-        {/* 2. BARRA DE BÚSQUEDA (MECANISMO ORIGINAL STITCH) */}
-        <div className={`absolute left-[108px] top-1/2 -translate-y-1/2 z-10 w-full max-w-[340px] origin-left transition-all duration-[600ms] ease-[cubic-bezier(0.4,0,0.2,1)]
-          ${isScrolled ? 'opacity-100 scale-100 pointer-events-auto delay-200' : 'opacity-0 scale-90 pointer-events-none delay-0'}`}>
-          <div className="flex items-center w-full h-12 bg-white/95 backdrop-blur-md rounded-[16px] border border-gray-100 shadow-lg px-4">
-            <span className="material-symbols-outlined text-gray-400 mr-3 text-lg">🔍</span>
-            <input className="w-full bg-transparent border-none focus:outline-none text-[#222f30] placeholder-gray-400 text-sm font-medium" placeholder="Busca hoteles, parques..." type="text"/>
-          </div>
-        </div>
-
-        {/* 3. PUENTE DE LUZ */}
-        <div className="light-bridge"></div>
-
-        {/* 4. CONTENEDOR DERECHO (NAV + VANGUARD) */}
-        <div className={`relative z-20 flex items-center gap-2 pr-1 rounded-[12px] transition-all duration-[600ms] 
-          ${isScrolled ? 'bg-white/90 backdrop-blur-md shadow-lg border border-white/40 h-14 pl-6 pr-2 py-2' : ''}`}>
-          
-          <nav className="hidden lg:flex items-center mr-4 gap-1">
-            {['PLANNING', 'DISNEY WORLD', 'UNIVERSAL'].map((item) => (
-              <Link key={item} href="#" className="relative px-4 py-2 text-xs font-bold font-sans text-[#222f30] hover:text-black transition-colors uppercase tracking-wide group">
-                {item}
-                <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-0 h-[2px] bg-[#a7e26e] rounded-full transition-all duration-300 group-hover:w-4/5"></span>
-              </Link>
+        {/* BOTÓN MENÚ MÓVIL (Mobile) */}
+        <div className="md:hidden">
+          <button 
+            onClick={() => setIsOpen(!isOpen)} 
+            className="text-[#1a1a1a] focus:outline-none transition-transform active:scale-95"
+          >
+            {isMounted && (isOpen ? (
+              <CloseCircle size={32} color="#1a1a1a" />
+            ) : (
+              <HamburgerMenu size={32} color="#1a1a1a" />
             ))}
-          </nav>
-
-          {/* Botón Vanguard Original */}
-          <button className="vanguard-btn group">
-            <div className="v-particles"></div>
-            <div className="flex items-center justify-center w-4 h-4">
-              <svg className="w-4 h-4 fill-[#e5e5e5] group-hover:fill-[#A7E26E] transition-colors" viewBox="0 0 24 24"><path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z"/></svg>
-            </div>
-            <div className="v-text-container">
-              <div className="v-txt txt-1">VANGUARD</div>
-              <div className="v-txt txt-2">
-                <span>I</span><span>N</span><span>I</span><span>T</span>
-              </div>
-            </div>
           </button>
         </div>
-
       </div>
-    </header>
+
+      {/* MENÚ DESPLEGABLE MÓVIL */}
+      {isOpen && (
+        <div className="md:hidden absolute top-full left-0 w-full bg-[#f7f7f5] border-b border-gray-200 shadow-xl flex flex-col items-center py-8 space-y-6">
+          <Link href="/planning" className="text-sm font-bold tracking-widest text-[#1a1a1a] uppercase" onClick={() => setIsOpen(false)}>
+            Planning
+          </Link>
+          <Link href="/disney" className="text-sm font-bold tracking-widest text-[#1a1a1a] uppercase" onClick={() => setIsOpen(false)}>
+            Disney World
+          </Link>
+          <Link href="/universal" className="text-sm font-bold tracking-widest text-[#1a1a1a] uppercase" onClick={() => setIsOpen(false)}>
+            Universal
+          </Link>
+          <Link href="/vanguard" className="text-sm font-bold tracking-widest text-[#a7e26e] uppercase" onClick={() => setIsOpen(false)}>
+            ✦ Vanguard Mode
+          </Link>
+        </div>
+      )}
+    </nav>
   );
-}
+};
+
+export default Navbar;
