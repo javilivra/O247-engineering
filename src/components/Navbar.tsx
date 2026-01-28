@@ -1,88 +1,416 @@
-
+// @STATUS: GOLDEN MASTER V4 - FULL SCREEN FROST & REACTIVE SPOTLIGHT
 "use client";
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { HamburgerMenu, CloseCircle } from '@solar-icons/react';
+import { usePathname } from 'next/navigation';
+import { motion, AnimatePresence } from 'framer-motion';
 
+// --- ICONOS ---
+const Minus = ({ size = 24 }) => (<svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 12h12" strokeLinecap="round" strokeLinejoin="round"/></svg>);
+const Add = ({ size = 24 }) => (<svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 6v12m-6-6h12" strokeLinecap="round" strokeLinejoin="round"/></svg>);
+const HamburgerMenu = ({ size = 24 }) => (<svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 6h16M4 12h16M4 18h16" strokeLinecap="round" strokeLinejoin="round"/></svg>);
+const CloseCircle = ({ size = 24 }) => (<svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="9" /><path d="M9 9l6 6M15 9l-6 6" strokeLinecap="round" strokeLinejoin="round"/></svg>);
+const StarsMinimalistic = ({ size = 24, className }: { size?: number, className?: string }) => (<svg width={size} height={size} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}><path d="M12 2L14.3175 9.68253L22 12L14.3175 14.3175L12 22L9.68253 14.3175L2 12L9.68253 9.68253L12 2Z" fill="currentColor" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>);
+const ChevronRight = ({ size = 16 }) => (<svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6"/></svg>);
+
+// --- COMPONENTES AUXILIARES ---
+const MenuHeader = ({ children }: { children: React.ReactNode }) => (
+  <div className="mb-6 text-[11px] font-bold tracking-[0.2em] text-white/40 uppercase leading-relaxed antialiased font-sans">
+    {children}
+  </div>
+);
+
+// Enlace
+const MenuLink = ({ href, title, highlight = false, badge }: { href: string, title: string, highlight?: boolean, badge?: string }) => (
+  <Link href={href} className="group flex items-center justify-between w-full py-2 pr-4">
+    <div className="flex items-center gap-2">
+      <span className={`text-[14px] font-medium tracking-tight transition-colors duration-200 antialiased font-sans ${highlight ? 'text-lime-glow' : 'text-white/90 group-hover:text-[#a7e26e]'}`}>
+        {title}
+      </span>
+      {badge && (
+        <span className="px-1.5 py-0.5 bg-[#a7e26e] text-[#1a1a1a] text-[9px] font-bold rounded-sm tracking-wide shadow-none">
+          {badge}
+        </span>
+      )}
+    </div>
+    <motion.div 
+      initial={{ opacity: 0, x: -5 }} 
+      whileHover={{ opacity: 1, x: 0 }} 
+      className="text-[#a7e26e] opacity-0 group-hover:opacity-100 transition-all duration-200 transform translate-x-[-10px] group-hover:translate-x-0"
+    >
+      <ChevronRight size={14} />
+    </motion.div>
+  </Link>
+);
+
+// --- DATA ---
+const NAV_LABELS = [
+  { id: 'planning', label: 'Planning' }, 
+  { id: 'disney', label: 'Disney World' }, 
+  { id: 'universal', label: 'Universal Studios' }, 
+  { id: 'shoppinear', label: 'Shoppinear' }, 
+  { id: 'news', label: 'News247', type: 'link', href: '/news' }, 
+  { id: 'faq', label: 'FAQ', type: 'link', href: '/faq' }
+];
+
+const SPOTLIGHTS: Record<string, any> = { 
+  planning: { 
+    tag: 'SPOTLIGHT', 
+    title: 'El Algoritmo O247', 
+    desc: 'Ingeniería aplicada para maximizar la diversión.',
+    imageText: 'ALGORITMO',
+    guideTitle: 'Guía de Planificación',
+    guideText: 'Define la arquitectura de tu viaje. Desde la optimización logística hasta la sincronización de itinerarios.'
+  }, 
+  disney: { 
+    tag: 'DESTACADO', 
+    title: 'Guía Lightning Lane', 
+    desc: 'Domina el sistema de filas rápidas y evita esperas.',
+    imageText: 'LIGHTNING LANE',
+    guideTitle: 'Explora Disney World',
+    guideText: 'Navega por los 4 parques temáticos, hoteles resort y sistemas de transporte con precisión.'
+  }, 
+  universal: { 
+    tag: 'NUEVO', 
+    title: 'Epic Universe 2025', 
+    desc: 'Todo sobre el nuevo parque temático más grande.',
+    imageText: 'EPIC UNIVERSE',
+    guideTitle: 'Universo de Acción',
+    guideText: 'Dos parques legendarios, un parque acuático y el nuevo gigante. Estrategias de recorrido.'
+  }, 
+  shoppinear: { 
+    tag: 'AHORRO', 
+    title: 'Cuponeras Premium', 
+    desc: 'Accede a descuentos secretos de Outlets.',
+    imageText: 'OUTLETS VIP',
+    guideTitle: 'Compras Inteligentes',
+    guideText: 'Mapas de outlets, cupones digitales y rutas de ahorro estratégico para maximizar tu presupuesto.'
+  } 
+};
+
+// --- COMPONENTE PRINCIPAL ---
 const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [activeMenu, setActiveMenu] = useState<string | null>(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isMounted, setIsMounted] = useState(false);
+  const pathname = usePathname();
 
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
+  useEffect(() => { setActiveMenu(null); setMobileMenuOpen(false); }, [pathname]);
 
-  // Detectar scroll para efecto de "sombra"
+  // Lógica Scroll
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
+    const handleScroll = () => { setIsScrolled(window.scrollY > 20); };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Bloqueo de Scroll
+  useEffect(() => {
+    if (activeMenu || mobileMenuOpen) { document.body.style.overflow = 'hidden'; } 
+    else { document.body.style.overflow = ''; }
+    return () => { document.body.style.overflow = ''; };
+  }, [activeMenu, mobileMenuOpen]);
+
+  // --- LÓGICA VISUAL ---
+  const useDarkText = (isScrolled && !activeMenu); 
+  const isMenuOpen = !!activeMenu;
+
+  // CLASE DEL CONTENEDOR NAVBAR
+  let navContainerClass = "bg-transparent border-transparent";
+  
+  if (isMenuOpen) {
+    // TRUCO PRO: Transparente cuando abre el menú, para que el backdrop (el telón) se encargue del blur unificado.
+    navContainerClass = "bg-transparent border-transparent"; 
+  } else if (isScrolled) {
+    navContainerClass = "o247-glass"; 
+  }
+
+  // Texto del Header
+  const headerTextColor = isMenuOpen 
+    ? "text-white hover:text-white/80" 
+    : (isScrolled ? "text-[#1a1a1a] hover:text-[#1a1a1a]/70" : "text-white hover:text-white/80");
+  
+  const logoClass = isMenuOpen
+    ? "text-white"
+    : (isScrolled ? "text-gradient-dark" : "text-white");
+
+  const hamburgerColor = (isMenuOpen || !isScrolled) ? "text-white" : "text-[#1a1a1a]";
+
+  const loginBorder = isMenuOpen || !isScrolled
+    ? "border-white/30 text-white hover:bg-white hover:text-[#1a1a1a]"
+    : "border-[#1a1a1a]/20 text-[#1a1a1a] hover:bg-[#1a1a1a] hover:text-white";
+
+  // --- RENDER SPOTLIGHT REACTIVO (Columna 4) ---
+  const renderSpotlightCard = (id: string) => {
+    const data = SPOTLIGHTS[id]; if (!data) return null;
+    return (
+      // GROUP: Controla el hover de toda la tarjeta
+      <Link href="#" className="group relative flex flex-col justify-between h-full w-full rounded-2xl overflow-hidden transition-all duration-300">
+          
+          {/* FONDO TARJETA: Invisible por defecto -> Blanco al Hover */}
+          <div className="absolute inset-0 bg-transparent group-hover:bg-white transition-colors duration-300 ease-in-out" />
+          
+          {/* Contenido Texto */}
+          <div className="p-6 relative z-10 flex flex-col h-full">
+            <div className="flex items-center gap-2 mb-4 text-white/40 group-hover:text-black/40 transition-colors duration-300">
+              <StarsMinimalistic size={16} />
+              <span className="text-[10px] font-bold tracking-[0.2em] uppercase font-sans">{data.tag}</span>
+            </div>
+            
+            <div className="mb-6">
+              {/* Título: Blanco -> Negro */}
+              <h3 className="text-xl font-bold text-white mb-2 leading-tight group-hover:text-[#1a1a1a] transition-colors duration-300 font-sans">{data.title}</h3>
+              {/* Desc: Blanco Opaco -> Gris Oscuro */}
+              <p className="text-[13px] text-white/60 leading-relaxed font-medium font-sans group-hover:text-[#575551] transition-colors duration-300">{data.desc}</p>
+            </div>
+
+            {/* Imagen Abajo */}
+            <div className="mt-auto w-full h-32 rounded-xl bg-white/10 group-hover:bg-[#f0fdf4] transition-colors duration-500 overflow-hidden relative">
+                <div className="absolute inset-0 flex items-center justify-center text-white/20 group-hover:text-[#1a1a1a]/20 font-bold text-xs uppercase tracking-widest transition-colors">
+                [{data.imageText}]
+                </div>
+            </div>
+          </div>
+      </Link>
+    );
+  };
+
   return (
-    <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
-      isScrolled ? 'bg-[#f7f7f5]/90 backdrop-blur-md border-b border-gray-200 py-3' : 'bg-transparent py-5'
-    }`}>
-      <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
-        
-        {/* LOGO */}
-        <div className="text-2xl font-bold tracking-tighter text-[#1a1a1a]">
-          O247
-        </div>
+    <>
+      {/* TELÓN DE VIDRIO ESMERILADO (FULL SCREEN BACKDROP) */}
+      <AnimatePresence>
+        {activeMenu && (
+          <motion.div 
+            initial={{ opacity: 0 }} 
+            animate={{ opacity: 1 }} 
+            exit={{ opacity: 0 }} 
+            transition={{ duration: 0.3 }}
+            // ESTO ES EL TELÓN: Ocupa toda la pantalla (inset-0), z-40 (detrás del contenido del menu, sobre el hero)
+            // bg-black/60 + backdrop-blur-3xl = Vidrio Oscuro Denso
+            className="fixed inset-0 z-40 bg-[#050505]/60 backdrop-blur-3xl"
+            onMouseEnter={() => setActiveMenu(null)} 
+          />
+        )}
+      </AnimatePresence>
 
-        {/* MENÚ DE ESCRITORIO (Desktop) */}
-        <div className="hidden md:flex space-x-8 items-center">
-          <Link href="/planning" className="text-xs font-bold tracking-widest text-[#4a4a4a] hover:text-[#a7e26e] uppercase transition-colors">
-            Planning
+      <header 
+        className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ease-in-out ${navContainerClass}`}
+        onMouseLeave={() => setActiveMenu(null)}
+      >
+        <div className="max-w-[1400px] mx-auto px-8 h-[80px] flex items-center justify-between relative z-50">
+          
+          {/* LOGO */}
+          <Link href="/" className="flex items-center gap-2 group">
+            <span className={`text-2xl font-bold tracking-tight antialiased font-sans ${logoClass}`}>
+              O247
+            </span>
           </Link>
-          <Link href="/disney" className="text-xs font-bold tracking-widest text-[#4a4a4a] hover:text-[#a7e26e] uppercase transition-colors">
-            Disney World
-          </Link>
-          <Link href="/universal" className="text-xs font-bold tracking-widest text-[#4a4a4a] hover:text-[#a7e26e] uppercase transition-colors">
-            Universal
-          </Link>
-          <Link href="/vanguard" className="bg-[#1a1a1a] text-white px-5 py-2 rounded-full text-xs font-bold tracking-widest hover:bg-[#a7e26e] hover:text-[#1a1a1a] transition-all uppercase flex items-center gap-2">
-            ✦ Vanguard
-          </Link>
-        </div>
 
-        {/* BOTÓN MENÚ MÓVIL (Mobile) */}
-        <div className="md:hidden">
-          <button 
-            onClick={() => setIsOpen(!isOpen)} 
-            className="text-[#1a1a1a] focus:outline-none transition-transform active:scale-95"
-          >
-            {isMounted && (isOpen ? (
-              <CloseCircle size={32} color="#1a1a1a" />
-            ) : (
-              <HamburgerMenu size={32} color="#1a1a1a" />
+          {/* MENU DESKTOP */}
+          <nav className="hidden xl:flex items-center gap-1 h-full">
+            {NAV_LABELS.map((item) => (
+              <div key={item.id} className="h-full flex items-center" onMouseEnter={() => !item.type && setActiveMenu(item.id)}>
+                {item.type === 'link' ? (
+                  <Link href={item.href || '#'} className={`px-4 py-2 text-[14px] tracking-wide antialiased font-sans font-medium transition-colors duration-300 ${headerTextColor}`}>
+                    {item.label}
+                  </Link>
+                ) : (
+                  <button className={`px-4 py-2 flex items-center gap-1.5 text-[14px] tracking-wide outline-none cursor-default antialiased font-sans font-medium transition-colors duration-300 ${activeMenu === item.id ? 'text-white font-bold' : headerTextColor}`}>
+                    {item.label}
+                    <motion.div initial={false} animate={{ rotate: activeMenu === item.id ? 180 : 0 }} transition={{ duration: 0.3 }} className={`${activeMenu === item.id ? 'text-[#a7e26e]' : 'text-white/40'}`}>
+                       {activeMenu === item.id ? <Minus size={12} /> : <Add size={12} />}
+                    </motion.div>
+                  </button>
+                )}
+              </div>
             ))}
+          </nav>
+
+          {/* BOTONES */}
+          <div className="hidden xl:flex items-center gap-3">
+            <Link href="/login" className={`px-5 py-2 rounded-full border text-[13px] antialiased transition-all duration-300 font-sans font-medium ${loginBorder}`}>Log In</Link>
+            <Link href="/signup" className="relative px-5 py-2 rounded-full bg-[#a7e26e] text-[#1a1a1a] text-[13px] font-bold tracking-wide hover:bg-[#96d658] transition-all duration-300 font-sans overflow-hidden">Sign Up</Link>
+          </div>
+
+          {/* HAMBURGER */}
+          <button className={`xl:hidden p-2 ${hamburgerColor} transition-colors duration-300`} onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+            {mobileMenuOpen ? <CloseCircle size={28} /> : <HamburgerMenu size={28} />}
           </button>
         </div>
-      </div>
 
-      {/* MENÚ DESPLEGABLE MÓVIL */}
-      {isOpen && (
-        <div className="md:hidden absolute top-full left-0 w-full bg-[#f7f7f5] border-b border-gray-200 shadow-xl flex flex-col items-center py-8 space-y-6">
-          <Link href="/planning" className="text-sm font-bold tracking-widest text-[#1a1a1a] uppercase" onClick={() => setIsOpen(false)}>
-            Planning
-          </Link>
-          <Link href="/disney" className="text-sm font-bold tracking-widest text-[#1a1a1a] uppercase" onClick={() => setIsOpen(false)}>
-            Disney World
-          </Link>
-          <Link href="/universal" className="text-sm font-bold tracking-widest text-[#1a1a1a] uppercase" onClick={() => setIsOpen(false)}>
-            Universal
-          </Link>
-          <Link href="/vanguard" className="text-sm font-bold tracking-widest text-[#a7e26e] uppercase" onClick={() => setIsOpen(false)}>
-            ✦ Vanguard Mode
-          </Link>
-        </div>
-      )}
-    </nav>
+        {/* --- MEGA MENU TRANSPARENTE (CONTENIDO FLOTANDO EN EL TELÓN) --- */}
+        <AnimatePresence>
+          {activeMenu && (
+            <motion.div 
+              initial={{ opacity: 0, height: 0 }} 
+              animate={{ opacity: 1, height: 'auto' }} 
+              exit={{ opacity: 0, height: 0 }} 
+              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }} 
+              // SIN FONDO. El fondo lo da el 'telón' (backdrop) de arriba.
+              className="absolute top-[80px] left-0 w-full hidden xl:block overflow-hidden origin-top z-50"
+              onMouseEnter={() => setActiveMenu(activeMenu)} onMouseLeave={() => setActiveMenu(null)}
+            >
+              <div className="max-w-[1400px] mx-auto px-8 pb-16 pt-0">
+                
+                {/* LÍNEA HORIZONTAL DIVISORIA (Limitada al ancho del contenido) */}
+                <div className="w-full h-px bg-white/10 mb-10"></div>
+                
+                {/* GRID 5 COLUMNAS */}
+                <div className="grid grid-cols-5 gap-0">
+                  
+                  {/* --- COL 1 --- */}
+                  <div className="col-span-1 pr-8">
+                    {activeMenu === 'planning' && (
+                        <>
+                          <MenuHeader>CÓMO, CUÁNDO Y DÓNDE</MenuHeader>
+                          <div className="flex flex-col gap-1">
+                            <MenuLink href="/planning/method" title="Metodología O247" />
+                            <MenuLink href="/planning/start" title="Primeros Pasos" />
+                            <MenuLink href="/planning/calendar" title="Crowd Calendar" badge="VITAL" />
+                            <MenuLink href="/planning/budget" title="Ingeniería de Costos" />
+                          </div>
+                        </>
+                    )}
+                    {activeMenu === 'disney' && (
+                        <>
+                          <MenuHeader>PARQUES TEMÁTICOS</MenuHeader>
+                          <div className="flex flex-col gap-1">
+                            <MenuLink href="/disney/mk" title="Magic Kingdom" />
+                            <MenuLink href="/disney/epcot" title="EPCOT" />
+                            <MenuLink href="/disney/hs" title="Hollywood Studios" />
+                            <MenuLink href="/disney/ak" title="Animal Kingdom" />
+                          </div>
+                        </>
+                    )}
+                    {activeMenu === 'universal' && (
+                        <>
+                           <MenuHeader>PARQUES TEMÁTICOS</MenuHeader>
+                          <div className="flex flex-col gap-1">
+                            <MenuLink href="/universal/epic" title="Epic Universe" highlight badge="2025" />
+                            <MenuLink href="/universal/us" title="Universal Studios" />
+                            <MenuLink href="/universal/ioa" title="Islands of Adventure" />
+                            <MenuLink href="/universal/volcano" title="Volcano Bay" />
+                          </div>
+                        </>
+                    )}
+                    {activeMenu === 'shoppinear' && (
+                        <>
+                          <MenuHeader>PREMIUM OUTLETS</MenuHeader>
+                          <div className="flex flex-col gap-1"><MenuLink href="/shop/vineland" title="Vineland Ave" /><MenuLink href="/shop/intl" title="International Dr" /></div>
+                        </>
+                    )}
+                  </div>
+
+                  {/* --- COL 2 --- */}
+                  <div className="col-span-1 px-8">
+                    {activeMenu === 'planning' && (
+                         <>
+                           <MenuHeader>HERRAMIENTAS</MenuHeader>
+                           <div className="flex flex-col gap-1">
+                             <MenuLink href="#" title="Calculadora de Gastos" />
+                             <MenuLink href="#" title="Checklists PDF" />
+                             <MenuLink href="#" title="Agente GATE" highlight />
+                           </div>
+                        </>
+                    )}
+                    {activeMenu === 'disney' && (
+                         <>
+                          <MenuHeader>LOGÍSTICA & TICKETS</MenuHeader>
+                          <div className="flex flex-col gap-1"><MenuLink href="/disney/tickets" title="Tickets Inteligentes" /><MenuLink href="/disney/ll" title="Lightning Lane" highlight badge="PRO" /><MenuLink href="/disney/virtual" title="Filas Virtuales" /></div>
+                        </>
+                    )}
+                     {activeMenu === 'universal' && (
+                         <>
+                           <MenuHeader>CITYWALK</MenuHeader>
+                           <div className="flex flex-col gap-1">
+                             <MenuLink href="/universal/citywalk-dining" title="Mejores Restaurantes" />
+                             <MenuLink href="/universal/citywalk-entertainment" title="Entretenimiento" />
+                           </div>
+                        </>
+                    )}
+                    {activeMenu === 'shoppinear' && (
+                         <>
+                          <MenuHeader>MALLS & LUJO</MenuHeader>
+                          <div className="flex flex-col gap-1"><MenuLink href="/shop/millenia" title="Mall at Millenia" /><MenuLink href="/shop/florida" title="The Florida Mall" /></div>
+                        </>
+                    )}
+                  </div>
+
+                  {/* --- COL 3 --- */}
+                  <div className="col-span-1 px-8">
+                    {activeMenu === 'planning' && (
+                         <>
+                          <MenuHeader>SOPORTE</MenuHeader>
+                          <div className="flex flex-col gap-1">
+                             <MenuLink href="#" title="Comunidad" />
+                             <MenuLink href="#" title="Ayuda" />
+                          </div>
+                        </>
+                    )}
+                    {activeMenu === 'disney' && (
+                         <>
+                           <MenuHeader>HOTELES & RESORTS</MenuHeader>
+                           <div className="flex flex-col gap-1"><MenuLink href="#" title="Skyliner Resorts" /><MenuLink href="#" title="Monorail Resorts" /><MenuLink href="#" title="Walking Distance" /></div>
+                        </>
+                    )}
+                    {activeMenu === 'universal' && (
+                         <>
+                           <MenuHeader>TICKETS & PASES</MenuHeader>
+                           <div className="flex flex-col gap-1">
+                             <MenuLink href="/universal/tickets" title="Park-to-Park" />
+                             <MenuLink href="/universal/express" title="Express Pass Hack" />
+                             <MenuLink href="/universal/vip" title="VIP Experience" />
+                           </div>
+                        </>
+                    )}
+                     {activeMenu === 'shoppinear' && (
+                         <>
+                           <MenuHeader>ESTRATEGIA</MenuHeader>
+                           <div className="flex flex-col gap-1"><MenuLink href="/shop/coupons" title="Cuponeras Digitales" /><MenuLink href="/shop/clearance" title="Rutas de Clearance" /></div>
+                        </>
+                    )}
+                  </div>
+
+                  {/* --- COL 4: SPOTLIGHT (CON BORDE DERECHO) --- */}
+                  <div className="col-span-1 border-r border-white/10 px-8">
+                     {renderSpotlightCard(activeMenu || '')}
+                  </div>
+
+                  {/* --- COL 5: GUÍA DE USUARIO (SIN LÍNEAS) --- */}
+                  <div className="col-span-1 pl-8">
+                    {activeMenu && SPOTLIGHTS[activeMenu] && (
+                        <div className="pt-0"> 
+                            <MenuHeader>{SPOTLIGHTS[activeMenu].guideTitle}</MenuHeader>
+                            <p className="text-[13px] text-white/60 leading-relaxed font-medium font-sans border-t border-white/10 pt-4 mt-2">
+                                {SPOTLIGHTS[activeMenu].guideText}
+                            </p>
+                        </div>
+                    )}
+                  </div>
+
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </header>
+      
+      {/* MENU MÓVIL */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+           <motion.div initial={{ opacity: 0, x: "100%" }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: "100%" }} transition={{ type: "spring", damping: 30, stiffness: 300 }}
+           className="fixed inset-0 bg-[#050505] z-50 pt-28 px-6 overflow-y-auto text-white"
+         >
+            <div className="flex flex-col gap-8 pb-10">
+              {NAV_LABELS.map((item) => (<div key={item.id} className="border-b border-white/10 pb-6"><span className="text-xs font-bold text-white/50 uppercase tracking-widest mb-4 block font-sans">{item.label}</span></div>))}
+              <Link href="/login" className="block text-center py-4 border border-white/30 rounded-full font-bold text-white font-sans">Log In</Link>
+              <Link href="/signup" className="block text-center py-4 bg-[#a7e26e] text-[#1a1a1a] rounded-full font-bold font-sans">Sign Up</Link>
+            </div>
+         </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 };
 

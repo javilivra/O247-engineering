@@ -2,66 +2,100 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Configuración Base */
+/* --- CONFIGURACIÓN DE VARIABLES --- */
+:root {
+  /* 1. Definimos la fuente EXACTA como viene del link */
+  --font-primary: "Google Sans Flex", sans-serif;
+  
+  /* 2. Tu fuente técnica */
+  --font-tech: 'JetBrains Mono', monospace;
+  
+  /* Colores O247 */
+  --color-surface: #f7f7f5;
+  --color-accent: #a7e26e;
+  --color-dark: #050505;
+}
+
 body {
-  background-color: #f7f7f5;
-  color: #222f30;
+  background-color: var(--color-surface);
+  color: #1a1a1a;
+  
+  /* APLICACIÓN GLOBAL CON TUS PARÁMETROS OFICIALES */
+  font-family: var(--font-primary);
+  font-optical-sizing: auto;
+  font-style: normal;
+  /* Configuración base: Ancho estándar (100), sin inclinación, sin grado extra */
+  font-variation-settings:
+    "slnt" 0,
+    "wdth" 100,
+    "GRAD" 0,
+    "ROND" 0;
+    
+  -webkit-font-smoothing: antialiased;
 }
 
-/* --- COMPONENTES O247 --- */
+/* --- UTILIDADES DE INGENIERÍA --- */
 
-/* 1. Botón Vanguard */
-.vanguard-btn {
-  position: relative;
-  background-color: #1a1a1a;
-  border-radius: 12px;
-  display: flex; align-items: center; justify-content: center;
-  padding: 8px 20px 8px 16px; gap: 12px;
-  border: 1px solid transparent;
-  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  min-width: 150px; z-index: 10;
-}
-.vanguard-btn::before {
-  content: ""; position: absolute; inset: -2px; z-index: -1;
-  background: linear-gradient(90deg, #A7E26E, #3498DB, #A7E26E);
-  background-size: 200% 200%; border-radius: 14px; opacity: 0;
-  transition: opacity 0.4s ease; animation: liquid-aura 3s linear infinite;
-}
-.vanguard-btn:hover::before { opacity: 1; }
-.vanguard-btn::after {
-  content: ""; position: absolute; inset: 1px;
-  background-color: #1a1a1a; border-radius: 11px; z-index: -1;
+/* Títulos Hero (Más pesados y ajustados) */
+.font-display {
+  font-family: var(--font-primary);
+  font-weight: 600; /* Peso visual fuerte */
+  letter-spacing: -0.03em; /* Tracking negativo elegante */
+  /* Ajuste óptico: Quizás un poco más de 'grade' para impacto */
+  font-variation-settings: "opsz" 32, "wdth" 100, "GRAD" 50; 
 }
 
-/* 2. Textos del Botón */
-.v-text-container { position: relative; height: 14px; width: 86px; overflow: hidden; display: flex; align-items: center; }
-.v-txt {
-  position: absolute; left: 0; top: 50%; transform: translateY(-50%);
-  font-family: sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.15em;
-  color: #e5e5e5; transition: all 0.4s ease; white-space: nowrap; line-height: 1;
-}
-.txt-1 { opacity: 1; }
-.txt-2 { opacity: 0; transform: translateY(150%); color: #A7E26E; display: flex; }
-.vanguard-btn:hover .txt-1 { opacity: 0; transform: translateY(-150%); filter: blur(4px); }
-.vanguard-btn:hover .txt-2 { opacity: 1; transform: translateY(-50%); }
-
-/* 3. Animaciones */
-@keyframes liquid-aura {
-  0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; }
-}
-@keyframes sheen-pass {
-  0%, 70% { left: -100%; } 100% { left: 200%; }
+/* Textos Técnicos */
+.font-tech {
+  font-family: var(--font-tech);
+  letter-spacing: -0.02em;
 }
 
-/* 4. Light Bridge */
-.light-bridge {
-  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-  height: 1px; width: 0;
-  background: linear-gradient(90deg, transparent, #A7E26E, #ffffff, #3498DB, transparent);
-  box-shadow: 0 0 15px rgba(167, 226, 110, 0.4);
-  pointer-events: none; z-index: 10; opacity: 0; border-radius: 999px;
-  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+/* Estilos O247 (Glass, Glow, etc) */
+.o247-glass {
+  background: rgba(247, 247, 245, 0.75); 
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
-header.header-scrolled .light-bridge { width: 95%; opacity: 0.8; }
+
+.text-lime-glow {
+  color: #a7e26e;
+  text-shadow: 0 0 25px rgba(167, 226, 110, 0.4);
+}
+
+.mask-gradient {
+  mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+}
+
+/* ... tu código anterior ... */
+
+/* --- TRAMA DE INGENIERÍA (El secreto de Averi) --- */
+.bg-grid-pattern {
+  background-size: 40px 40px;
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+  mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+  -webkit-mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+}
+
+.bg-dot-pattern {
+  background-image: radial-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 1px);
+  background-size: 24px 24px;
+  mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+  -webkit-mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+}
+
+/* Sombras Averi (Más suaves y difusas) */
+.shadow-averi {
+  box-shadow: 
+    0 1px 2px -1px rgba(0, 0, 0, 0.05),
+    0 4px 12px -2px rgba(0, 0, 0, 0.05);
+}
+
+.shadow-averi-hover {
+  box-shadow: 
+    0 4px 6px -1px rgba(0, 0, 0, 0.05),
+    0 12px 32px -4px rgba(0, 0, 0, 0.1);
+}

@@ -16,8 +16,12 @@ const config: Config = {
         charcoal: "#222f30",
       },
       fontFamily: {
-        display: ["var(--font-google-sans)", "sans-serif"],
-        body: ["var(--font-geist)", "sans-serif"],
+        // CORRECCIÓN CLAVE:
+        // Asignamos la variable a 'sans' para que sea la fuente DEFAULT de todo el sitio.
+        sans: ["var(--font-google-sans)", "sans-serif"],
+        
+        // Asignamos la técnica a 'mono' (para el Ticker y datos)
+        mono: ["var(--font-geist-mono)", "monospace"],
       },
     },
   },

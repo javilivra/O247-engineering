@@ -1,7 +1,13 @@
 import type { Metadata } from "next";
+import { JetBrains_Mono } from "next/font/google"; 
 import "./globals.css";
-// Salimos de app para buscar components
-import Navbar from "../components/Navbar"; 
+
+// Mantenemos JetBrains Mono para los datos técnicos
+const techMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-geist-mono",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "O247 Engineering",
@@ -14,17 +20,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      {/* AQUÍ ESTÁ LA CLAVE DE INGENIERÍA:
-         Aplicamos 'bg-background-light' y 'text-charcoal' a nivel raíz.
-         Esto conecta el config de Tailwind con el DOM real.
-      */}
+    <html lang="en" className={`${techMono.variable}`}>
+      <head>
+        {/* --- CÓDIGO OFICIAL DE GOOGLE FONTS (Inyección Directa) --- */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link 
+          href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,1..1000&display=swap" 
+          rel="stylesheet" 
+        />
+      </head>
+      
       <body 
-        className="bg-background-light text-charcoal antialiased min-h-screen"
-        data-gramm="false" 
+        className="antialiased min-h-screen bg-[#f7f7f5] text-[#1a1a1a]"
         suppressHydrationWarning={true}
       >
-        <Navbar />
         {children}
       </body>
     </html>
