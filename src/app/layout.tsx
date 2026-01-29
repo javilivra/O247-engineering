@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { JetBrains_Mono } from "next/font/google"; 
 import "./globals.css";
+import CookieConsent from "@/components/CookieConsent";
 
 // Mantenemos JetBrains Mono para los datos técnicos
 const techMono = JetBrains_Mono({
@@ -36,7 +37,10 @@ export default function RootLayout({
         suppressHydrationWarning={true}
       >
         {children}
-      </body>
+
+        // ... dentro del body
+<CookieConsent />
+</body>
     </html>
   );
 }

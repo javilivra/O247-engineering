@@ -5,6 +5,7 @@ import StatsTicker from "@/components/StatsTicker";
 import Workflow from "@/components/Workflow";
 import BentoGrid from "@/components/BentoGrid";
 import Footer from "@/components/Footer";
+import TravelerSelector from "@/components/TravelerSelector";
 
 export default function Home() {
   return (
@@ -17,19 +18,27 @@ export default function Home() {
          <Hero />
       </HeroScrollWrapper>
 
-      {/* 2. ZONA DE INGENIERÍA (Estilo Averi) */}
-      {/* Envolvemos estas 3 secciones para que compartan el fondo técnico */}
+      {/* 2. ZONA DE CONTENIDO */}
       <div className="relative w-full">
         
-        {/* CAPA DE FONDO: Trama de puntos técnica (Style: Engineering) */}
-        {/* Nota: Asegúrate de haber pegado la clase .bg-dot-pattern en tu globals.css */}
+        {/* Capa de fondo con trama de puntos (sutil en secciones claras) */}
         <div className="absolute inset-0 z-0 pointer-events-none bg-dot-pattern opacity-[0.35]" />
 
-        {/* CONTENIDO: Flotando sobre la trama */}
         <div className="relative z-10">
+          
+          {/* A. TICKER (Conexión visual con el Hero) */}
           <StatsTicker />
+
+          {/* B. PREGUNTA CLAVE (Post-Hero Inmediato) */}
+          {/* Aquí capturamos la intención del usuario apenas hace scroll */}
+          <TravelerSelector />
+
+          {/* C. EXPLICACIÓN (Cómo funciona) */}
           <Workflow />
+          
+          {/* D. CARACTERÍSTICAS (Bento Grid) */}
           <BentoGrid />
+          
         </div>
 
       </div>

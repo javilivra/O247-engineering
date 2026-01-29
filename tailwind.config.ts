@@ -8,20 +8,34 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      colors: {
-        primary: "#a7e26e",
-        "brand-blue": "#3498DB",
-        "background-light": "#f7f7f5",
-        "background-dark": "#192012",
-        charcoal: "#222f30",
-      },
       fontFamily: {
-        // CORRECCIÓN CLAVE:
-        // Asignamos la variable a 'sans' para que sea la fuente DEFAULT de todo el sitio.
-        sans: ["var(--font-google-sans)", "sans-serif"],
-        
-        // Asignamos la técnica a 'mono' (para el Ticker y datos)
-        mono: ["var(--font-geist-mono)", "monospace"],
+        // Asegúrate de que estas variables coincidan con las de tu layout.tsx
+        display: ["var(--font-google-sans)", "sans-serif"],
+        sans: ["var(--font-geist-sans)", "sans-serif"],
+      },
+      colors: {
+        // 🌑 GUNMETAL (Para secciones oscuras y texto principal)
+        gunmetal: {
+          DEFAULT: "#25343F",
+          light: "#334552", // Útil para hovers en fondos oscuros
+        },
+        // 🦴 BONE (Tu base clara color hueso/arena)
+        bone: {
+          DEFAULT: "#f7f7f5", // Volvemos al original neutro
+          // Si tenías una variante 'dark', dejala o ajustala si querés, 
+          // pero lo importante es el DEFAULT,
+          dark: "#E6D0C0", // Para bordes sutiles sobre el fondo hueso
+        },
+        // ☀️ SUNSET (Naranja intenso para acción)
+        sunset: {
+          DEFAULT: "#FF7043",
+          glow: "#FFAB91",
+        },
+        // 💧 CELESTE (Azul profundo tipo piscina)
+        celeste: {
+          DEFAULT: "#00B4D8",
+          soft: "#E0F7FA",
+        },
       },
     },
   },

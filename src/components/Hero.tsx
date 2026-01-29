@@ -58,7 +58,8 @@ const Hero = () => {
   const typewriterText = useTypewriter(questions);
 
   return (
-    <section className="relative w-full h-[100vh] bg-black overflow-hidden flex items-center">
+    /* Reemplazo: bg-black -> bg-gunmetal */
+    <section className="relative w-full h-[100vh] bg-gunmetal overflow-hidden flex items-center">
       
       {/* 1. VISUAL LAYER: IMAGEN DE FONDO + FUNDIDO PERFECTO */}
       <div className="absolute inset-0 z-0 w-full h-full">
@@ -72,14 +73,14 @@ const Hero = () => {
           }} 
         />
 
-        {/* EL "PARCHE" DE INTEGRACIÓN:
-            Gradiente agresivo desde la izquierda (negro sólido) hacia la derecha (transparente).
-            Cubre el corte de la imagen y permite que el texto de la izquierda sea legible.
-        */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black via-black/90 to-transparent w-[80%]" />
+        {/* EL "PARCHE" DE INTEGRACIÓN: */}
+        {/* Reemplazo: from-black -> from-gunmetal */}
+        {/* Reemplazo: via-black/90 -> via-gunmetal/90 */}
+        <div className="absolute inset-0 bg-gradient-to-r from-gunmetal via-gunmetal/90 to-transparent w-[80%]" />
         
         {/* Gradiente inferior para integrar el DataTicker */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80" />
+        {/* Reemplazo: from-black -> from-gunmetal */}
+        <div className="absolute inset-0 bg-gradient-to-t from-gunmetal via-transparent to-transparent opacity-80" />
       </div>
 
       {/* 2. CONTENT LAYER: TEXTO Y BUSCADOR */}
@@ -95,7 +96,9 @@ const Hero = () => {
           >
             Organizarte bien, <br />
             también es parte <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#a7e26e] to-emerald-400 drop-shadow-sm">
+            {/* Reemplazo: from-[#a7e26e] -> from-sunset */}
+            {/* Reemplazo: to-emerald-400 -> to-celeste */}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-sunset to-celeste drop-shadow-sm">
               de la Magia.
             </span>
           </motion.h1>
@@ -105,7 +108,8 @@ const Hero = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-            className="text-lg md:text-[19px] text-[#e0e0e0]/80 max-w-xl leading-relaxed font-medium mb-12 font-sans"
+            /* Reemplazo: text-[#e0e0e0]/80 -> text-bone/80 */
+            className="text-lg md:text-[19px] text-bone/80 max-w-xl leading-relaxed font-medium mb-12 font-sans"
           >
             <strong className="text-white">ORLANDO 247</strong> en equipo con <strong className="text-white">GATE</strong>, nuestro experto inteligente, se ocupan de las decisiones para que vos vivas la experiencia antes, durante y después del viaje.
           </motion.p>
@@ -118,24 +122,32 @@ const Hero = () => {
             className="w-full max-w-2xl relative group"
           >
             {/* ESTADO NORMAL: Glass (bg-white/5) + Borde fino
-               ESTADO FOCUS: Sólido (bg-[#f7f7f5]) + Sombra suave + Texto negro
+               ESTADO FOCUS: Sólido (bg-bone) + Sombra suave + Texto gunmetal
             */}
-            <div className="relative overflow-hidden rounded-full bg-white/10 border border-white/20 backdrop-blur-md transition-all duration-300 group-focus-within:bg-[#f7f7f5] group-focus-within:border-transparent group-focus-within:shadow-[0_0_30px_rgba(255,255,255,0.15)] group-focus-within:scale-[1.01]">
+            {/* Reemplazo: group-focus-within:bg-[#f7f7f5] -> group-focus-within:bg-bone */}
+            {/* Reemplazo: shadow-[0_0_30px_rgba(255,255,255,0.15)] -> shadow-[0_0_30px_rgba(255,112,67,0.15)] (Usando el valor RGB de sunset para la sombra) */}
+            <div className="relative overflow-hidden rounded-full bg-white/10 border border-white/20 backdrop-blur-md transition-all duration-300 group-focus-within:bg-bone group-focus-within:border-transparent group-focus-within:shadow-[0_0_30px_rgba(255,112,67,0.15)] group-focus-within:scale-[1.01]">
               
               {/* Icono Lupa */}
-              <div className="absolute inset-y-0 left-6 flex items-center pointer-events-none text-white/50 transition-colors duration-300 group-focus-within:text-[#1a1a1a]">
+              {/* Reemplazo: group-focus-within:text-[#1a1a1a] -> group-focus-within:text-gunmetal */}
+              <div className="absolute inset-y-0 left-6 flex items-center pointer-events-none text-white/50 transition-colors duration-300 group-focus-within:text-gunmetal">
                  <SearchIcon size={22} />
               </div>
               
               {/* Input */}
+              {/* Reemplazo: group-focus-within:text-[#1a1a1a] -> group-focus-within:text-gunmetal */}
+              {/* Reemplazo: group-focus-within:placeholder:text-[#1a1a1a]/40 -> group-focus-within:placeholder:text-gunmetal/40 */}
               <input 
                 type="text" 
                 placeholder={typewriterText}
-                className="w-full py-5 pl-16 pr-[260px] bg-transparent text-white placeholder:text-white/40 text-[16px] font-medium outline-none transition-colors duration-300 group-focus-within:text-[#1a1a1a] group-focus-within:placeholder:text-[#1a1a1a]/40 font-sans"
+                className="w-full py-5 pl-16 pr-[260px] bg-transparent text-white placeholder:text-white/40 text-[16px] font-medium outline-none transition-colors duration-300 group-focus-within:text-gunmetal group-focus-within:placeholder:text-gunmetal/40 font-sans"
               />
               
-              {/* BOTÓN CTA: Estilo Stitch (Azul -> Verde) */}
-              <button className="absolute right-1.5 top-1.5 bottom-1.5 px-8 rounded-full font-bold text-[11px] tracking-[0.15em] uppercase flex items-center gap-2 text-white shadow-lg transition-all duration-300 hover:brightness-110 hover:shadow-[#3498db]/20 active:scale-95 bg-gradient-to-r from-[#3498db] to-[#a7e26e] font-sans">
+              {/* BOTÓN CTA: Estilo Stitch (Celeste -> Naranja) */}
+              {/* Reemplazo: hover:shadow-[#3498db]/20 -> hover:shadow-celeste/20 */}
+              {/* Reemplazo: from-[#3498db] -> from-celeste */}
+              {/* Reemplazo: to-[#a7e26e] -> to-sunset */}
+              <button className="absolute right-1.5 top-1.5 bottom-1.5 px-8 rounded-full font-bold text-[11px] tracking-[0.15em] uppercase flex items-center gap-2 text-white shadow-lg transition-all duration-300 hover:brightness-110 hover:shadow-celeste/20 active:scale-95 bg-gradient-to-r from-celeste to-sunset font-sans">
                 GATE YO TE ELIJO
                 <ArrowRight size={14} />
               </button>
