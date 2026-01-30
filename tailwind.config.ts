@@ -9,32 +9,42 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        // Asegúrate de que estas variables coincidan con las de tu layout.tsx
+        // Ajustado al Brief Maestro: Google Sans + Geist
         display: ["var(--font-google-sans)", "sans-serif"],
         sans: ["var(--font-geist-sans)", "sans-serif"],
       },
       colors: {
-        // 🌑 GUNMETAL (Para secciones oscuras y texto principal)
+        // 🌑 GUNMETAL
         gunmetal: {
           DEFAULT: "#25343F",
-          light: "#334552", // Útil para hovers en fondos oscuros
+          light: "#334552",
         },
-        // 🦴 BONE (Tu base clara color hueso/arena)
+        // 🦴 BONE
         bone: {
-          DEFAULT: "#f7f7f5", // Volvemos al original neutro
-          // Si tenías una variante 'dark', dejala o ajustala si querés, 
-          // pero lo importante es el DEFAULT,
-          dark: "#E6D0C0", // Para bordes sutiles sobre el fondo hueso
+          DEFAULT: "#f7f7f5",
+          dark: "#E6D0C0",
         },
-        // ☀️ SUNSET (Naranja intenso para acción)
+        // ☀️ SUNSET
         sunset: {
           DEFAULT: "#FF7043",
           glow: "#FFAB91",
         },
-        // 💧 CELESTE (Azul profundo tipo piscina)
+        // 💧 CELESTE
         celeste: {
           DEFAULT: "#00B4D8",
           soft: "#E0F7FA",
+        },
+        // 🌿 VANGUARD GREEN (Necesario para el status "AHORA" y alertas)
+        "vanguard-green": "#a7e26e",
+      },
+      // Animaciones integradas correctamente dentro de 'extend'
+      animation: {
+        marquee: 'marquee 40s linear infinite',
+      },
+      keyframes: {
+        marquee: {
+          '0%': { transform: 'translateX(0%)' },
+          '100%': { transform: 'translateX(-50%)' },
         },
       },
     },

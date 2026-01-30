@@ -1,21 +1,46 @@
 "use client";
-import { motion } from "framer-motion";
-import { ReactNode } from "react";
 
-interface ScrollRevealProps {
-  children: ReactNode;
+import { useRef, useEffect } from "react";
+import { motion, useInView, useAnimation } from "framer-motion";
+
+interface Props {
+  children: React.ReactNode;
   width?: "fit-content" | "100%";
-  delay?: number;
+  delay?: number;   // Retraso para secuenciar elementos manualmente
+  stagger?: number; // Tiempo entre la aparición de hijos (efecto cascada)
 }
 
-export const ScrollReveal = ({ children, width = "100%", delay = 0 }: ScrollRevealProps) => {
+export const ScrollReveal = ({ children, width = "fit-content", delay = 0, stagger = 0 }: Props) => {
+  const ref = useRef(null);
+  // Margin "-50px" asegura que la animación inicie cuando el elemento ya entró un poco en pantalla
+  const isInView = useInView(ref, { once: true, margin: "-50px 0px" }); 
+  const controls = useAnimation();
+
+  useEffect(() => {
+    if (isInView) {
+      controls.start("visible");
+    }
+  }, [isInView, controls]);
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30, filter: "blur(8px)" }}
-      whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: delay }}
-      style={{ width }}
+      ref={ref}
+      variants={{
+        hidden: { opacity: 0, y: 40 }, // Empieza un poco más abajo para mayor dramatismo
+        visible: { 
+            opacity: 1, 
+            y: 0,
+            transition: {
+                duration: 0.9, // Un poco más lento para acompañar a Lenis
+                ease: [0.21, 0.47, 0.32, 0.98], // Curva física (Expo Out)
+                delay: delay,
+                staggerChildren: stagger 
+            }
+        },
+      }}
+      initial="hidden"
+      animate={controls}
+      style={{ width, position: "relative" }}
     >
       {children}
     </motion.div>

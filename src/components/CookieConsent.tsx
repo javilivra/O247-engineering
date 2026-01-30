@@ -3,13 +3,37 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
+// Icono de Check animado
+const AnimatedCheckIcon = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+    <motion.path
+      initial={{ pathLength: 0 }}
+      animate={{ pathLength: 1 }}
+      transition={{ duration: 0.3, ease: "easeOut" }}
+      d="M20 6L9 17l-5-5"
+    />
+  </svg>
+);
+
 export default function CookieConsent() {
   const [isVisible, setIsVisible] = useState(false);
+  const [isAccepted, setIsAccepted] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => setIsVisible(true), 2000); // Un poco más de delay
+    const timer = setTimeout(() => setIsVisible(true), 2500);
     return () => clearTimeout(timer);
   }, []);
+
+  const handleAccept = () => {
+    setIsAccepted(true);
+    setTimeout(() => {
+      setIsVisible(false);
+    }, 1200);
+  };
+
+  const handleReject = () => {
+    setIsVisible(false);
+  };
 
   if (!isVisible) return null;
 
@@ -21,22 +45,65 @@ export default function CookieConsent() {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 100, opacity: 0 }}
           transition={{ duration: 0.5, ease: "circOut" }}
-          className="fixed bottom-8 left-0 right-0 z-50 flex justify-center px-4"
+          className="fixed bottom-6 left-0 right-0 z-[60] flex justify-center px-4"
         >
-          {/* Usamos bg-white puro para que resalte sobre el fondo bg-bone */}
-          <div className="bg-white rounded-full shadow-[0_10px_30px_rgba(37,52,63,0.15)] py-3 px-6 md:px-8 flex flex-col md:flex-row items-center gap-4 md:gap-8 border border-bone/50 max-w-xl w-full md:w-auto">
+          {/* CONTENEDOR AJUSTADO (Spatial UI):
+            - pl-6 (izquierda generosa para texto)
+            - pr-2 (derecha ajustada para el grupo de botones)
+            - py-2 (altura esbelta, similar al Hero CTA)
+          */}
+          <div className="bg-white/90 backdrop-blur-md rounded-full shadow-[0_10px_30px_rgba(37,52,63,0.12)] border border-gunmetal/5 flex flex-col md:flex-row items-center gap-4 md:gap-6 pl-6 pr-2 py-2 max-w-2xl w-full md:w-auto">
             
-            <p className="text-gunmetal text-xs md:text-sm font-medium text-center md:text-left">
-              This website uses <span className="font-bold text-sunset">cookies</span> to optimize your travel planning adventure.
+            {/* TEXTO: Compacto y alineado */}
+            <p className="type-body text-[11px] md:text-xs font-medium text-center md:text-left text-gunmetal/80 leading-tight md:mr-2 py-2 md:py-0">
+              Utilizamos cookies para <span className="font-bold text-sunset">calibrar la precisión</span> de tu experiencia.
             </p>
 
-            <div className="flex items-center gap-3 w-full md:w-auto justify-center">
-                {/* Botón Gunmetal que cambia a Sunset */}
+            {/* GRUPO DE ACCIONES */}
+            <div className="flex items-center gap-1 w-full md:w-auto justify-center md:justify-end">
+                
+                {/* OPCIÓN RECHAZAR: Ghost Button (Sutil) */}
                 <button 
-                    onClick={() => setIsVisible(false)}
-                    className="bg-gunmetal text-white text-[10px] md:text-xs font-bold uppercase tracking-wider px-6 py-2.5 rounded-full hover:bg-sunset hover:text-gunmetal transition-colors duration-300 w-full md:w-auto"
+                    onClick={handleReject}
+                    className="type-tech text-[10px] font-bold uppercase tracking-wider text-gunmetal/40 hover:text-gunmetal/80 px-4 py-2 transition-colors duration-200"
                 >
-                    Accept
+                    Rechazar
+                </button>
+
+                {/* OPCIÓN ACEPTAR: Solid Button (Pill) */}
+                <button 
+                    onClick={handleAccept}
+                    disabled={isAccepted}
+                    // Padding ajustado a px-5 py-2 para replicar el Hero CTA exacto
+                    className={`type-tech relative flex items-center justify-center text-[10px] font-bold uppercase tracking-wider rounded-full transition-all duration-300 shadow-sm min-w-[100px]
+                      ${isAccepted 
+                        ? "bg-sunset text-gunmetal px-5 py-2" // Estado Confirmado
+                        : "bg-gunmetal text-white hover:bg-sunset hover:text-gunmetal px-5 py-2" // Estado Normal
+                      }`}
+                >
+                    <AnimatePresence mode="wait">
+                      {isAccepted ? (
+                        <motion.div
+                          key="check"
+                          initial={{ scale: 0.5, opacity: 0 }}
+                          animate={{ scale: 1, opacity: 1 }}
+                          exit={{ scale: 0.5, opacity: 0 }}
+                          className="flex items-center gap-2"
+                        >
+                          <span className="sr-only">Aceptado</span>
+                          <AnimatedCheckIcon />
+                        </motion.div>
+                      ) : (
+                        <motion.span
+                          key="text"
+                          initial={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          transition={{ duration: 0.1 }}
+                        >
+                          ACEPTAR
+                        </motion.span>
+                      )}
+                    </AnimatePresence>
                 </button>
             </div>
 

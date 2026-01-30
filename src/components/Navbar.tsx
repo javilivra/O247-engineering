@@ -1,4 +1,4 @@
-// @STATUS: GOLDEN MASTER V4 - FULL SCREEN FROST & REACTIVE SPOTLIGHT
+// @STATUS: GOLDEN MASTER V5.2 - PARK SELECTOR LINK ADDED
 "use client";
 
 import React, { useState, useEffect } from 'react';
@@ -7,16 +7,17 @@ import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 
 // --- ICONOS ---
-const Minus = ({ size = 24 }) => (<svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 12h12" strokeLinecap="round" strokeLinejoin="round"/></svg>);
-const Add = ({ size = 24 }) => (<svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 6v12m-6-6h12" strokeLinecap="round" strokeLinejoin="round"/></svg>);
-const HamburgerMenu = ({ size = 24 }) => (<svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 6h16M4 12h16M4 18h16" strokeLinecap="round" strokeLinejoin="round"/></svg>);
-const CloseCircle = ({ size = 24 }) => (<svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="9" /><path d="M9 9l6 6M15 9l-6 6" strokeLinecap="round" strokeLinejoin="round"/></svg>);
+const Minus = ({ size = 24 }: { size?: number }) => (<svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 12h12" strokeLinecap="round" strokeLinejoin="round"/></svg>);
+const Add = ({ size = 24 }: { size?: number }) => (<svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 6v12m-6-6h12" strokeLinecap="round" strokeLinejoin="round"/></svg>);
+const HamburgerMenu = ({ size = 24 }: { size?: number }) => (<svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 6h16M4 12h16M4 18h16" strokeLinecap="round" strokeLinejoin="round"/></svg>);
+const CloseCircle = ({ size = 24 }: { size?: number }) => (<svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="9" /><path d="M9 9l6 6M15 9l-6 6" strokeLinecap="round" strokeLinejoin="round"/></svg>);
 const StarsMinimalistic = ({ size = 24, className }: { size?: number, className?: string }) => (<svg width={size} height={size} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}><path d="M12 2L14.3175 9.68253L22 12L14.3175 14.3175L12 22L9.68253 14.3175L2 12L9.68253 9.68253L12 2Z" fill="currentColor" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>);
-const ChevronRight = ({ size = 16 }) => (<svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6"/></svg>);
+const ChevronRight = ({ size = 16 }: { size?: number }) => (<svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6"/></svg>);
 
 // --- COMPONENTES AUXILIARES ---
 const MenuHeader = ({ children }: { children: React.ReactNode }) => (
-  <div className="mb-6 text-[11px] font-bold tracking-[0.2em] text-white/40 uppercase leading-relaxed antialiased font-sans">
+  // USO DE TYPE-TECH para encabezados pequeños
+  <div className="mb-6 text-[11px] font-bold tracking-[0.2em] text-white/40 uppercase leading-relaxed antialiased font-mono">
     {children}
   </div>
 );
@@ -25,20 +26,18 @@ const MenuHeader = ({ children }: { children: React.ReactNode }) => (
 const MenuLink = ({ href, title, highlight = false, badge }: { href: string, title: string, highlight?: boolean, badge?: string }) => (
   <Link href={href} className="group flex items-center justify-between w-full py-2 pr-4">
     <div className="flex items-center gap-2">
-      {/* Reemplazo: text-lime-glow -> text-sunset-glow */}
-      {/* Reemplazo: hover:text-[#a7e26e] -> hover:text-sunset */}
-      <span className={`text-[14px] font-medium tracking-tight transition-colors duration-200 antialiased font-sans ${highlight ? 'text-sunset-glow' : 'text-white/90 group-hover:text-sunset'}`}>
+      {/* COLOR SYSTEM UPDATE: text-sunset y hover:text-sunset */}
+      <span className={`text-[14px] font-medium tracking-tight transition-colors duration-200 antialiased font-sans ${highlight ? 'text-sunset drop-shadow-[0_0_8px_rgba(255,112,67,0.4)]' : 'text-white/90 group-hover:text-sunset'}`}>
         {title}
       </span>
       {badge && (
-        /* Reemplazo: bg-[#a7e26e] -> bg-sunset */
-        /* Reemplazo: text-[#1a1a1a] -> text-gunmetal */
-        <span className="px-1.5 py-0.5 bg-sunset text-gunmetal text-[9px] font-bold rounded-sm tracking-wide shadow-none">
+        /* COLOR SYSTEM UPDATE: bg-sunset text-gunmetal */
+        <span className="px-1.5 py-0.5 bg-sunset text-gunmetal text-[9px] font-bold rounded-sm tracking-wide shadow-none font-mono">
           {badge}
         </span>
       )}
     </div>
-    {/* Reemplazo: text-[#a7e26e] -> text-sunset */}
+    {/* COLOR SYSTEM UPDATE: text-sunset */}
     <motion.div 
       initial={{ opacity: 0, x: -5 }} 
       whileHover={{ opacity: 1, x: 0 }} 
@@ -56,7 +55,8 @@ const NAV_LABELS = [
   { id: 'universal', label: 'Universal Studios' }, 
   { id: 'shoppinear', label: 'Shoppinear' }, 
   { id: 'news', label: 'News247', type: 'link', href: '/news' }, 
-  { id: 'faq', label: 'FAQ', type: 'link', href: '/faq' }
+  // --- ACTUALIZACIÓN AQUÍ: href apunta al ID #faq ---
+  { id: 'faq', label: 'FAQ', type: 'link', href: '/#faq' }
 ];
 
 const SPOTLIGHTS: Record<string, any> = { 
@@ -118,36 +118,33 @@ const Navbar = () => {
   }, [activeMenu, mobileMenuOpen]);
 
   // --- LÓGICA VISUAL ---
-  const useDarkText = (isScrolled && !activeMenu); 
   const isMenuOpen = !!activeMenu;
 
   // CLASE DEL CONTENEDOR NAVBAR
+  // Mantenemos transparencia total si el menú está abierto para dejar ver el backdrop
   let navContainerClass = "bg-transparent border-transparent";
   
   if (isMenuOpen) {
     navContainerClass = "bg-transparent border-transparent"; 
   } else if (isScrolled) {
-    navContainerClass = "o247-glass"; 
+    // Si scrolleamos, aplicamos un vidrio muy sutil
+    navContainerClass = "bg-white/80 backdrop-blur-md border-b border-gunmetal/5 shadow-sm"; 
   }
 
   // Texto del Header
-  /* Reemplazo: text-[#1a1a1a] -> text-gunmetal */
-  /* Reemplazo: hover:text-[#1a1a1a]/70 -> hover:text-gunmetal/70 */
+  // COLOR SYSTEM UPDATE: text-gunmetal como base oscura
   const headerTextColor = isMenuOpen 
     ? "text-white hover:text-white/80" 
     : (isScrolled ? "text-gunmetal hover:text-gunmetal/70" : "text-white hover:text-white/80");
   
   const logoClass = isMenuOpen
     ? "text-white"
-    /* Reemplazo: text-gradient-dark -> text-gunmetal (Asumiendo que esto era el texto oscuro) */
     : (isScrolled ? "text-gunmetal" : "text-white");
 
-  /* Reemplazo: text-[#1a1a1a] -> text-gunmetal */
   const hamburgerColor = (isMenuOpen || !isScrolled) ? "text-white" : "text-gunmetal";
 
-  /* Reemplazo: text-[#1a1a1a] -> text-gunmetal */
-  /* Reemplazo: hover:bg-[#1a1a1a] -> hover:bg-gunmetal */
-  /* Reemplazo: border-[#1a1a1a]/20 -> border-gunmetal/20 */
+  // Botón Login Border Logic
+  // COLOR SYSTEM UPDATE: border-gunmetal/20
   const loginBorder = isMenuOpen || !isScrolled
     ? "border-white/30 text-white hover:bg-white hover:text-gunmetal"
     : "border-gunmetal/20 text-gunmetal hover:bg-gunmetal hover:text-white";
@@ -156,34 +153,32 @@ const Navbar = () => {
   const renderSpotlightCard = (id: string) => {
     const data = SPOTLIGHTS[id]; if (!data) return null;
     return (
-      // GROUP: Controla el hover de toda la tarjeta
       <Link href="#" className="group relative flex flex-col justify-between h-full w-full rounded-2xl overflow-hidden transition-all duration-300">
           
-          {/* FONDO TARJETA: Invisible por defecto -> Blanco al Hover */}
+          {/* FONDO TARJETA: Invisible -> Blanco al Hover */}
           <div className="absolute inset-0 bg-transparent group-hover:bg-white transition-colors duration-300 ease-in-out" />
           
           {/* Contenido Texto */}
           <div className="p-6 relative z-10 flex flex-col h-full">
-            {/* Reemplazo: group-hover:text-black/40 -> group-hover:text-gunmetal/40 */}
+            {/* COLOR SYSTEM UPDATE: group-hover:text-gunmetal/40 */}
             <div className="flex items-center gap-2 mb-4 text-white/40 group-hover:text-gunmetal/40 transition-colors duration-300">
               <StarsMinimalistic size={16} />
-              <span className="text-[10px] font-bold tracking-[0.2em] uppercase font-sans">{data.tag}</span>
+              <span className="text-[10px] font-bold tracking-[0.2em] uppercase font-mono">{data.tag}</span>
             </div>
             
             <div className="mb-6">
-              {/* Título: Blanco -> Negro */}
-              {/* Reemplazo: group-hover:text-[#1a1a1a] -> group-hover:text-gunmetal */}
-              <h3 className="text-xl font-bold text-white mb-2 leading-tight group-hover:text-gunmetal transition-colors duration-300 font-sans">{data.title}</h3>
-              {/* Desc: Blanco Opaco -> Gris Oscuro */}
-              {/* Reemplazo: group-hover:text-[#575551] -> group-hover:text-gunmetal/80 */}
+              {/* Título: Blanco -> Gunmetal */}
+              {/* COLOR SYSTEM UPDATE: group-hover:text-gunmetal */}
+              <h3 className="text-xl font-bold text-white mb-2 leading-tight group-hover:text-gunmetal transition-colors duration-300 font-display tracking-tight">{data.title}</h3>
+              {/* Desc: Blanco Opaco -> Gunmetal/80 */}
               <p className="text-[13px] text-white/60 leading-relaxed font-medium font-sans group-hover:text-gunmetal/80 transition-colors duration-300">{data.desc}</p>
             </div>
 
             {/* Imagen Abajo */}
-            {/* Reemplazo: group-hover:bg-[#f0fdf4] -> group-hover:bg-sunset/5 */}
+            {/* COLOR SYSTEM UPDATE: group-hover:bg-sunset/5 */}
             <div className="mt-auto w-full h-32 rounded-xl bg-white/10 group-hover:bg-sunset/5 transition-colors duration-500 overflow-hidden relative">
-                {/* Reemplazo: group-hover:text-[#1a1a1a]/20 -> group-hover:text-gunmetal/20 */}
-                <div className="absolute inset-0 flex items-center justify-center text-white/20 group-hover:text-gunmetal/20 font-bold text-xs uppercase tracking-widest transition-colors">
+                {/* COLOR SYSTEM UPDATE: group-hover:text-gunmetal/20 */}
+                <div className="absolute inset-0 flex items-center justify-center text-white/20 group-hover:text-gunmetal/20 font-bold text-xs uppercase tracking-widest transition-colors font-mono">
                 [{data.imageText}]
                 </div>
             </div>
@@ -202,9 +197,7 @@ const Navbar = () => {
             animate={{ opacity: 1 }} 
             exit={{ opacity: 0 }} 
             transition={{ duration: 0.3 }}
-            // ESTO ES EL TELÓN: Ocupa toda la pantalla (inset-0), z-40 (detrás del contenido del menu, sobre el hero)
-            // bg-black/60 + backdrop-blur-3xl = Vidrio Oscuro Denso
-            /* Reemplazo: bg-[#050505]/60 -> bg-gunmetal/60 */
+            // COLOR SYSTEM UPDATE: bg-gunmetal/60 (Base oscura oficial)
             className="fixed inset-0 z-40 bg-gunmetal/60 backdrop-blur-3xl"
             onMouseEnter={() => setActiveMenu(null)} 
           />
@@ -219,7 +212,8 @@ const Navbar = () => {
           
           {/* LOGO */}
           <Link href="/" className="flex items-center gap-2 group">
-            <span className={`text-2xl font-bold tracking-tight antialiased font-sans ${logoClass}`}>
+            {/* TIPOGRAFIA: font-display para el logo */}
+            <span className={`text-2xl font-bold tracking-tight antialiased font-display ${logoClass}`}>
               O247
             </span>
           </Link>
@@ -233,9 +227,10 @@ const Navbar = () => {
                     {item.label}
                   </Link>
                 ) : (
-                  /* Reemplazo: activeMenu === item.id ? 'text-[#a7e26e]' : 'text-white/40' -> activeMenu === item.id ? 'text-sunset' : 'text-white/40' */
+                  // COLOR SYSTEM UPDATE: activeMenu ? text-sunset : text-white/40
                   <button className={`px-4 py-2 flex items-center gap-1.5 text-[14px] tracking-wide outline-none cursor-default antialiased font-sans font-medium transition-colors duration-300 ${activeMenu === item.id ? 'text-white font-bold' : headerTextColor}`}>
                     {item.label}
+                    {/* Flecha: text-sunset si activo */}
                     <motion.div initial={false} animate={{ rotate: activeMenu === item.id ? 180 : 0 }} transition={{ duration: 0.3 }} className={`${activeMenu === item.id ? 'text-sunset' : 'text-white/40'}`}>
                        {activeMenu === item.id ? <Minus size={12} /> : <Add size={12} />}
                     </motion.div>
@@ -248,10 +243,12 @@ const Navbar = () => {
           {/* BOTONES */}
           <div className="hidden xl:flex items-center gap-3">
             <Link href="/login" className={`px-5 py-2 rounded-full border text-[13px] antialiased transition-all duration-300 font-sans font-medium ${loginBorder}`}>Log In</Link>
-            {/* Reemplazo: bg-[#a7e26e] -> bg-sunset */}
-            {/* Reemplazo: text-[#1a1a1a] -> text-gunmetal */}
-            {/* Reemplazo: hover:bg-[#96d658] -> hover:bg-sunset-glow */}
-            <Link href="/signup" className="relative px-5 py-2 rounded-full bg-sunset text-gunmetal text-[13px] font-bold tracking-wide hover:bg-sunset-glow transition-all duration-300 font-sans overflow-hidden">Sign Up</Link>
+            
+            {/* BOTÓN SIGN UP: Acción Primaria */}
+            {/* COLOR SYSTEM UPDATE: bg-sunset text-gunmetal hover:bg-sunset/90 */}
+            <Link href="/signup" className="relative px-5 py-2 rounded-full bg-sunset text-gunmetal text-[13px] font-bold tracking-wide hover:brightness-110 transition-all duration-300 font-sans overflow-hidden hover:shadow-[0_0_15px_rgba(255,112,67,0.4)]">
+              Sign Up
+            </Link>
           </div>
 
           {/* HAMBURGER */}
@@ -260,7 +257,7 @@ const Navbar = () => {
           </button>
         </div>
 
-        {/* --- MEGA MENU TRANSPARENTE (CONTENIDO FLOTANDO EN EL TELÓN) --- */}
+        {/* --- MEGA MENU TRANSPARENTE --- */}
         <AnimatePresence>
           {activeMenu && (
             <motion.div 
@@ -268,13 +265,12 @@ const Navbar = () => {
               animate={{ opacity: 1, height: 'auto' }} 
               exit={{ opacity: 0, height: 0 }} 
               transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }} 
-              // SIN FONDO. El fondo lo da el 'telón' (backdrop) de arriba.
               className="absolute top-[80px] left-0 w-full hidden xl:block overflow-hidden origin-top z-50"
               onMouseEnter={() => setActiveMenu(activeMenu)} onMouseLeave={() => setActiveMenu(null)}
             >
               <div className="max-w-[1400px] mx-auto px-8 pb-16 pt-0">
                 
-                {/* LÍNEA HORIZONTAL DIVISORIA (Limitada al ancho del contenido) */}
+                {/* LÍNEA HORIZONTAL DIVISORIA */}
                 <div className="w-full h-px bg-white/10 mb-10"></div>
                 
                 {/* GRID 5 COLUMNAS */}
@@ -301,6 +297,18 @@ const Navbar = () => {
                             <MenuLink href="/disney/epcot" title="EPCOT" />
                             <MenuLink href="/disney/hs" title="Hollywood Studios" />
                             <MenuLink href="/disney/ak" title="Animal Kingdom" />
+                            
+                            {/* --- AQUÍ ESTÁ EL CAMBIO --- */}
+                            {/* Separador y Enlace "Ver todos..." conectado a /disney/parks */}
+                            <div className="mt-4 pt-4 border-t border-white/5">
+                                <Link 
+                                    href="/disney/parks" 
+                                    className="flex items-center gap-2 text-[12px] font-bold text-sunset hover:text-white uppercase tracking-wider transition-colors duration-200 group/link"
+                                >
+                                    Ver todos...
+                                    <span className="group-hover/link:translate-x-1 transition-transform">→</span>
+                                </Link>
+                            </div>
                           </div>
                         </>
                     )}
@@ -421,15 +429,14 @@ const Navbar = () => {
       <AnimatePresence>
         {mobileMenuOpen && (
            <motion.div initial={{ opacity: 0, x: "100%" }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: "100%" }} transition={{ type: "spring", damping: 30, stiffness: 300 }}
-           /* Reemplazo: bg-[#050505] -> bg-gunmetal */
+           // COLOR SYSTEM UPDATE: bg-gunmetal (Fondo oscuro total para menú móvil)
            className="fixed inset-0 bg-gunmetal z-50 pt-28 px-6 overflow-y-auto text-white"
          >
             <div className="flex flex-col gap-8 pb-10">
-              {NAV_LABELS.map((item) => (<div key={item.id} className="border-b border-white/10 pb-6"><span className="text-xs font-bold text-white/50 uppercase tracking-widest mb-4 block font-sans">{item.label}</span></div>))}
-              <Link href="/login" className="block text-center py-4 border border-white/30 rounded-full font-bold text-white font-sans">Log In</Link>
-              {/* Reemplazo: bg-[#a7e26e] -> bg-sunset */}
-              {/* Reemplazo: text-[#1a1a1a] -> text-gunmetal */}
-              <Link href="/signup" className="block text-center py-4 bg-sunset text-gunmetal rounded-full font-bold font-sans">Sign Up</Link>
+              {NAV_LABELS.map((item) => (<div key={item.id} className="border-b border-white/10 pb-6"><Link href={item.href || '#'} className="text-xs font-bold text-white/50 uppercase tracking-widest mb-4 block font-mono">{item.label}</Link></div>))}
+              <Link href="/login" className="block text-center py-4 border border-white/30 rounded-full font-bold text-white font-sans hover:bg-white hover:text-gunmetal transition-colors">Log In</Link>
+              {/* COLOR SYSTEM UPDATE: bg-sunset text-gunmetal */}
+              <Link href="/signup" className="block text-center py-4 bg-sunset text-gunmetal rounded-full font-bold font-sans hover:brightness-110 transition-colors">Sign Up</Link>
             </div>
          </motion.div>
         )}

@@ -111,3 +111,70 @@
     0 4px 6px -1px rgba(0, 0, 0, 0.05),
     0 12px 32px -4px rgba(0, 0, 0, 0.1);
 }
+
+@layer components {
+  /* --- 1. TYPOGRAPHY TOOLS --- */
+  
+  /* Voz Narrativa de Alto Impacto (H1, H2) */
+  .type-display {
+    @apply font-display font-medium tracking-tighter leading-[1.1] text-gunmetal;
+    /* Ajuste variable para punch visual */
+    font-variation-settings: "opsz" 32, "wdth" 100, "GRAD" 50; 
+  }
+
+  /* Voz de Lectura Inmersiva (Párrafos) */
+  .type-body {
+    @apply font-sans text-base font-normal tracking-normal leading-relaxed text-gunmetal/80;
+  }
+
+  /* Voz Técnica de Precisión (Datos, Etiquetas) */
+  .type-tech {
+    @apply font-mono font-medium tracking-wider leading-tight text-gunmetal;
+  }
+
+  /* --- 2. PHYSICS & SHAPE TOOLS --- */
+
+  /* Contenedores Estándar (Oasis) */
+  .card-oasis {
+    @apply bg-white rounded-2xl border border-gunmetal/5 shadow-sm;
+  }
+
+  /* Elementos Flotantes (Solo usar sobre mapas/imgs) */
+  .glass-panel {
+    @apply backdrop-blur-md bg-white/80 border border-white/40 shadow-lg;
+  }
+  
+  /* Botones Primarios (Acción Solar) */
+  .btn-primary {
+    @apply bg-sunset text-gunmetal font-medium rounded-full px-6 py-3 
+           hover:shadow-[0_0_20px_rgba(255,112,67,0.3)] hover:-translate-y-0.5 
+           transition-all duration-300 ease-out;
+  }
+}
+
+
+/* SCROLL SUAVE NATIVO */
+html {
+  scroll-behavior: smooth;
+}
+
+/* --- LENIS SMOOTH SCROLL CONFIG --- */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
