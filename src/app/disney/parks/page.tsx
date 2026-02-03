@@ -2,13 +2,14 @@
 
 import { motion } from "framer-motion";
 import { Icon } from "@iconify/react";
+import Link from "next/link"; // <--- IMPORTACIÓN CLAVE PARA LA NAVEGACIÓN
 import ParkCard, { ParkData } from "@/components/parks/ParkCard";
 import ParkDetailHero from "@/components/parks/ParkDetailHero";
 import DistrictsGrid from "@/components/parks/DistrictsGrid";
 import LogisticsPanel from "@/components/parks/LogisticsPanel";
 import ActivityList from "@/components/parks/ActivityList";
 
-// --- DATA: LOS PARQUES (Punto 5: WeatherTypes agregados) ---
+// --- DATA: LOS PARQUES ---
 const parksData: ParkData[] = [
   {
     id: "mk",
@@ -75,13 +76,12 @@ const waterParksData: ParkData[] = [
     }
 ];
 
-// --- COMPONENTE: NEWS TICKER (Punto 4: Loop Infinito) ---
+// --- COMPONENTE: NEWS TICKER ---
 const NewsTicker = () => (
-  // Se usa w-max y un contenedor duplicate para lograr el loop perfecto
   <div className="w-full bg-gunmetal border-y border-white/5 overflow-hidden py-3 flex relative z-10">
     <div className="flex whitespace-nowrap animate-marquee">
-      {/* Bloque 1 */}
-      <div className="flex items-center gap-16 mr-16">
+      {[1, 2, 3].map((i) => (
+        <div key={i} className="flex items-center gap-16 mr-16">
             <span className="flex items-center gap-3 font-mono text-[10px] tracking-widest uppercase text-bone/60">
                 <span className="text-vanguard-green font-bold px-1.5 py-0.5 bg-vanguard-green/10 rounded border border-vanguard-green/20">NEW</span>
                 Nueva atracción Tiana's Bayou Adventure - Coming Soon
@@ -94,44 +94,14 @@ const NewsTicker = () => (
                 <span className="text-white font-bold px-1.5 py-0.5 bg-white/10 rounded border border-white/20">INFO</span>
                 Nuevos protocolos de Virtual Queue disponibles
             </span>
-      </div>
-      {/* Bloque 2 (Duplicado para loop) */}
-      <div className="flex items-center gap-16 mr-16">
-            <span className="flex items-center gap-3 font-mono text-[10px] tracking-widest uppercase text-bone/60">
-                <span className="text-vanguard-green font-bold px-1.5 py-0.5 bg-vanguard-green/10 rounded border border-vanguard-green/20">NEW</span>
-                Nueva atracción Tiana's Bayou Adventure - Coming Soon
-            </span>
-            <span className="flex items-center gap-3 font-mono text-[10px] tracking-widest uppercase text-bone/60">
-                <span className="text-sunset font-bold px-1.5 py-0.5 bg-sunset/10 rounded border border-sunset/20">ALERT</span>
-                Actualización de Test Track en Epcot: Status Processing...
-            </span>
-            <span className="flex items-center gap-3 font-mono text-[10px] tracking-widest uppercase text-bone/60">
-                <span className="text-white font-bold px-1.5 py-0.5 bg-white/10 rounded border border-white/20">INFO</span>
-                Nuevos protocolos de Virtual Queue disponibles
-            </span>
-      </div>
-      {/* Bloque 3 (Seguridad extra para pantallas anchas) */}
-      <div className="flex items-center gap-16 mr-16">
-            <span className="flex items-center gap-3 font-mono text-[10px] tracking-widest uppercase text-bone/60">
-                <span className="text-vanguard-green font-bold px-1.5 py-0.5 bg-vanguard-green/10 rounded border border-vanguard-green/20">NEW</span>
-                Nueva atracción Tiana's Bayou Adventure - Coming Soon
-            </span>
-            <span className="flex items-center gap-3 font-mono text-[10px] tracking-widest uppercase text-bone/60">
-                <span className="text-sunset font-bold px-1.5 py-0.5 bg-sunset/10 rounded border border-sunset/20">ALERT</span>
-                Actualización de Test Track en Epcot: Status Processing...
-            </span>
-            <span className="flex items-center gap-3 font-mono text-[10px] tracking-widest uppercase text-bone/60">
-                <span className="text-white font-bold px-1.5 py-0.5 bg-white/10 rounded border border-white/20">INFO</span>
-                Nuevos protocolos de Virtual Queue disponibles
-            </span>
-      </div>
+        </div>
+      ))}
     </div>
   </div>
 );
 
 export default function ParksPage() {
   return (
-    // PUNTO 2: pt-[100px] asegura que el Navbar principal (que es fixed) no tape el contenido
     <main className="min-h-screen bg-[#f7f7f5] pt-[120px] pb-20"> 
       
       <div className="w-full max-w-[1440px] mx-auto px-6 lg:px-12">
@@ -155,7 +125,7 @@ export default function ParksPage() {
             </motion.h1>
         </div>
 
-        {/* ROW 1: PARQUES PRINCIPALES */}
+        {/* ROW 1: PARQUES PRINCIPALES (CON LINK A MK) */}
         <motion.div 
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
@@ -163,7 +133,18 @@ export default function ParksPage() {
             className="flex flex-col lg:flex-row gap-4 w-full h-auto lg:h-[550px] mb-4"
         >
             {parksData.map((park) => (
-                <ParkCard key={park.id} data={park} />
+                // 🔗 AQUÍ ESTÁ LA MAGIA:
+                // Si el ID es 'mk', crea un enlace real. Si no, es un div pasivo.
+                park.id === 'mk' ? (
+                  <Link key={park.id} href="/disney/mk" className="flex-1 min-w-0 h-full">
+                     <ParkCard data={park} />
+                  </Link>
+                ) : (
+                  // Para los demás parques (aún sin página), solo mostramos la card
+                  <div key={park.id} className="flex-1 min-w-0 h-full">
+                     <ParkCard data={park} />
+                  </div>
+                )
             ))}
         </motion.div>
 
@@ -180,15 +161,12 @@ export default function ParksPage() {
         </motion.div>
       </div>
 
-      {/* PUNTO 3: TICKER REUBICADO DEBAJO DE LAS CARDS */}
       <NewsTicker />
 
       <div className="w-full max-w-[1440px] mx-auto px-6 lg:px-12 mt-12">
         
-        {/* SEPARADOR VISUAL */}
         <div className="w-full h-px bg-gunmetal/5 my-20"></div>
 
-        {/* DETALLE ACTIVO (DISNEY SPRINGS) */}
         <div id="active-view">
             <ParkDetailHero />
             <DistrictsGrid />
@@ -196,7 +174,6 @@ export default function ParksPage() {
             <ActivityList />
         </div>
 
-        {/* GLOSARIO TÉCNICO */}
         <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}

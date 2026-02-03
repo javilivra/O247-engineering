@@ -1,8 +1,11 @@
+// @STATUS: GOLDEN MASTER V2 - GLOBAL LAYOUT WITH STEPPER
 import type { Metadata } from "next";
 import { JetBrains_Mono } from "next/font/google"; 
 import "./globals.css";
 import CookieConsent from "@/components/CookieConsent";
 import SmoothScroll from "@/components/SmoothScroll"; 
+import Navbar from "@/components/Navbar"; 
+import VerticalStepper from "@/components/VerticalStepper"; // <--- 1. IMPORTAR
 
 const techMono = JetBrains_Mono({
   subsets: ["latin"],
@@ -35,12 +38,19 @@ export default function RootLayout({
         className="antialiased min-h-screen bg-[#f7f7f5] text-[#1a1a1a]"
         suppressHydrationWarning={true}
       >
-        {/* El Scroll Suave envuelve solo el contenido navegable */}
+        {/* ELEMENTOS FIJOS GLOBALES (UI SHELL) */}
+        
+        <Navbar />
+        
+        {/* 2. STEPPER GLOBAL: Se mantiene fijo sobre toda la app */}
+        <VerticalStepper />
+
+        {/* CONTENIDO SCROLLEABLE */}
         <SmoothScroll>
            {children}
         </SmoothScroll>
 
-        {/* Elementos fijos (Modales, Cookies, Toasts) van fuera */}
+        {/* MODALES Y TOASTS */}
         <CookieConsent />
       </body>
     </html>
