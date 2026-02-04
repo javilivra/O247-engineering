@@ -1,0 +1,9 @@
+[33m82c96b4[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m feat: rediseño logistica MK con tarjetas 3D y stepper interactivo
+[33m068034f[m [2026-01-30] feat: Core Physics Engine & Disney Parks Tactical Dashboard
+[33mabc8ba0[m style: apply new color system to key components and fix bone color tone 28-01-26
+[33ma92c7b5[m feat: Final landing structure with Solar Icons
+[33m18758e5[m fix: resolve hydration errors and update styling
+[33m6aa577d[m fix: update git author identity
+[33mb9acd00[m chore: trigger vercel build
+[33m6fb1008[m feat: deploy landing page design V2
+[33m64dfc30[m Initialized workspace with Firebase Studio
