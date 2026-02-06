@@ -634,32 +634,208 @@ function LandsContent() {
     )
 }
 
+// --------------------------------------------------------
+// 🏆 BUCKET LIST: COLECCIONISTA DE MOMENTOS (SPIN STACK)
+// --------------------------------------------------------
 function BucketListContent() {
+    const [activeTab, setActiveTab] = useState(0);
+    const [cardIndex, setCardIndex] = useState(0);
+    const [activeTerm, setActiveTerm] = useState<string | null>(null);
+
+    const openGlossary = (term: string) => setActiveTerm(term);
+    const closeGlossary = () => setActiveTerm(null);
+
+    // Reiniciar índice de tarjeta al cambiar de nivel
+    useEffect(() => {
+        setCardIndex(0);
+    }, [activeTab]);
+
+    // --- DATOS DE NIVELES ---
+    const LEVELS = [
+        { 
+            id: 0, label: "Classic", desc: "Nivel 1", 
+            style: "bg-white border-gray-200 text-gunmetal hover:bg-gray-50",
+            activeStyle: "bg-white border-gray-300 text-gunmetal ring-2 ring-gray-200 shadow-lg"
+        },
+        { 
+            id: 1, label: "Gold", desc: "Nivel 2", 
+            style: "bg-gradient-to-br from-amber-50 to-amber-100 border-amber-200 text-amber-900 hover:to-amber-200",
+            activeStyle: "bg-gradient-to-br from-amber-100 to-amber-200 border-amber-400 text-amber-950 ring-2 ring-amber-300 shadow-lg shadow-amber-100"
+        },
+        { 
+            id: 2, label: "Platinum", desc: "Nivel 3", 
+            style: "bg-gradient-to-br from-slate-100 to-slate-200 border-slate-300 text-slate-700 hover:to-slate-300",
+            activeStyle: "bg-gradient-to-br from-slate-200 to-slate-300 border-slate-400 text-slate-900 ring-2 ring-slate-400 shadow-lg shadow-slate-200"
+        },
+        { 
+            id: 3, label: "Black", desc: "Nivel 4", 
+            style: "bg-gunmetal border-gunmetal text-gray-400 hover:text-white",
+            activeStyle: "bg-[#1a1a1a] border-black text-white ring-2 ring-gray-700 shadow-xl shadow-gray-900/50"
+        },
+    ];
+
+    // --- DATOS DE ITEMS ---
+    const BUCKET_ITEMS = [
+        // NIVEL 1
+        [
+            { title: "Protocolo Dole Whip", type: "Snack", desc: (<>Cómetelo en Aloha Isle. Tip O247: Usa <Term id="mobile-order" onOpen={openGlossary}>Mobile Order</Term> para no hacer fila al sol.</>) },
+            { title: "El Muro Morado", type: "Photo Op", desc: "Un clásico de Instagram en Tomorrowland. La luz de la tarde es la mejor para esta foto." },
+            { title: "Encontrar a Pascal", type: "Discovery", desc: "Busca los camaleones escondidos en el área de descanso de Rapunzel en Fantasyland." }
+        ],
+        // NIVEL 2
+        [
+            { title: "Héroe Galáctico", type: "Gaming", desc: "Obtén 999,999 puntos en Buzz Lightyear. Apunta al volcán y debajo de la garra de Zurg." },
+            { title: "Castillo Vacío", type: "Photo Op", desc: "Reserva desayuno temprano en Crystal Palace o quédate hasta el Kiss Goodnight para esta foto." }
+        ],
+        // NIVEL 3
+        [
+            { title: "The Flag Retreat", type: "Ceremony", desc: "5:00 PM en Town Square. Emotiva ceremonia patriótica con veteranos. Un momento de calma." },
+            { title: "Kiss Goodnight", type: "Magic", desc: "30 min después del cierre. El castillo se ilumina y suena un mensaje de despedida especial." },
+            { title: "Correo Mágico", type: "Legacy", desc: "Envía una postal desde los buzones reales de Main Street. Tendrá el matasellos de Magic Kingdom." }
+        ],
+        // NIVEL 4
+        [
+            { title: "Cinderella’s Table", type: "Dining", desc: "Comer dentro del castillo. Requiere reserva 60 días antes. Si fallas, usa nuestras alertas." },
+            { title: "Fireworks Party", type: "Event", desc: "¿Vale la pena? Sí, si odias las multitudes y tienes presupuesto extra para verlos sentado." },
+            { title: "Keys to the Kingdom", type: "Tour", desc: "Tour guiado de 5 horas que baja a los túneles subterráneos (Utilidors). Solo adultos." }
+        ]
+    ];
+
+    const currentItems = BUCKET_ITEMS[activeTab];
+    const itemsLength = currentItems.length;
+    const activeItem = currentItems[cardIndex];
+
+    const nextCard = () => setCardIndex((prev) => (prev + 1) % itemsLength);
+    const prevCard = () => setCardIndex((prev) => (prev - 1 + itemsLength) % itemsLength);
+
     return (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-4">
-                <h4 className="text-xs font-black uppercase tracking-widest text-gray-400 border-b border-gray-100 pb-2 font-mono">Must Do - Atracciones</h4>
-                <ul className="space-y-3">
-                    {['TRON Lightcycle / Run', 'Seven Dwarfs Mine Train', 'Space Mountain', 'Haunted Mansion', 'Pirates of the Caribbean'].map((item, i) => (
-                        <li key={i} className="flex items-center gap-3 text-sm font-medium text-gunmetal font-sans">
-                            <span className="text-sunset font-mono text-xs font-bold">0{i+1}</span>
-                            {item}
-                        </li>
+        <>
+            <AnimatePresence>
+                {activeTerm && <GlossaryModal termKey={activeTerm} onClose={closeGlossary} />}
+            </AnimatePresence>
+
+            <div className="flex flex-col gap-10">
+                {/* 1. TABS DE NIVELES */}
+                <div className="flex overflow-x-auto gap-3 pb-4 scrollbar-hide px-1 snap-x">
+                    {LEVELS.map((level) => (
+                        <button
+                            key={level.id}
+                            onClick={() => setActiveTab(level.id)}
+                            className={`relative flex-shrink-0 w-36 h-24 rounded-xl border flex flex-col justify-between p-4 transition-all duration-300 snap-center ${activeTab === level.id ? level.activeStyle : level.style}`}
+                        >
+                            <div className={`w-7 h-5 rounded-md bg-gradient-to-br from-yellow-200 via-yellow-400 to-yellow-600 opacity-80 shadow-sm ${activeTab === level.id ? 'opacity-100' : 'grayscale opacity-40'}`} />
+                            <div className="text-left z-10">
+                                <span className="block text-[9px] font-bold font-mono tracking-widest uppercase opacity-70 mb-1">{level.desc}</span>
+                                <span className="block text-sm font-black font-sans tracking-wide uppercase">{level.label}</span>
+                            </div>
+                            {level.id > 1 && <div className="absolute top-0 right-0 w-20 h-20 bg-white/5 rounded-full blur-xl -mr-5 -mt-5 pointer-events-none" />}
+                        </button>
                     ))}
-                </ul>
+                </div>
+
+                {/* 2. SPLIT CONTENT (60% FOTOS SPIN | 40% TEXTO FLOTANTE) */}
+                <div className="relative w-full flex flex-col md:flex-row gap-8 items-center min-h-[450px]"> 
+                    
+                    {/* 🟢 IZQUIERDA (60%): FOTO STACK GIRATORIO */}
+                    <div className="relative w-full md:w-[60%] h-[400px] flex items-center justify-center">
+                        
+                        {/* Controles de Navegación */}
+                        <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex justify-between z-50 pointer-events-none px-4">
+                            <button onClick={prevCard} className="pointer-events-auto w-10 h-10 rounded-full bg-white/80 backdrop-blur shadow-lg flex items-center justify-center text-gunmetal hover:scale-110 transition-all border border-white/50">
+                                <Icon icon="solar:alt-arrow-left-linear" className="w-5 h-5" />
+                            </button>
+                            <button onClick={nextCard} className="pointer-events-auto w-10 h-10 rounded-full bg-white/80 backdrop-blur shadow-lg flex items-center justify-center text-gunmetal hover:scale-110 transition-all border border-white/50">
+                                <Icon icon="solar:alt-arrow-right-linear" className="w-5 h-5" />
+                            </button>
+                        </div>
+
+                        {/* El Stack de Cartas */}
+                        <div className="relative w-[85%] h-full flex items-center justify-center">
+                            {currentItems.map((item, index) => {
+                                let relativeIndex = (index - cardIndex + itemsLength) % itemsLength;
+                                const isVisible = relativeIndex < 3 || relativeIndex > itemsLength - 2; 
+                                
+                                // Matemáticas para el efecto "Spin Stack"
+                                const yOffset = relativeIndex * 15; 
+                                const scale = 1 - (relativeIndex * 0.05);
+                                const opacity = relativeIndex === 0 ? 1 : 1 - (relativeIndex * 0.3);
+                                const zIndex = itemsLength - relativeIndex;
+                                const rotate = relativeIndex * 8; 
+
+                                return (
+                                    <motion.div
+                                        key={`${activeTab}-${index}`}
+                                        animate={{
+                                            top: relativeIndex === 0 ? 'auto' : undefined,
+                                            y: relativeIndex === 0 ? 0 : Math.abs(relativeIndex) * 25,
+                                            x: relativeIndex * 35,
+                                            rotate: rotate,
+                                            scale: scale,
+                                            opacity: relativeIndex > 2 ? 0 : opacity,
+                                            zIndex: zIndex,
+                                            filter: relativeIndex === 0 ? 'blur(0px)' : 'blur(2px)'
+                                        }}
+                                        transition={{ type: "spring", stiffness: 200, damping: 20 }}
+                                        className="absolute w-full max-w-sm h-[280px] bg-white rounded-3xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] border-4 border-white overflow-hidden origin-center"
+                                        style={{ display: relativeIndex > 2 ? 'none' : 'block' }}
+                                    >
+                                        <div className="w-full h-full bg-gray-200 relative">
+                                            <div className="absolute inset-0 flex items-center justify-center text-gray-400">
+                                                <Icon icon="solar:gallery-wide-bold-duotone" className="w-24 h-24 opacity-30" />
+                                            </div>
+                                            {/* Badge Tipo */}
+                                            <div className="absolute top-5 left-5 px-3 py-1.5 rounded-full bg-white/90 backdrop-blur text-[10px] font-black font-mono text-gunmetal uppercase tracking-widest shadow-sm">
+                                                {item.type}
+                                            </div>
+                                        </div>
+                                    </motion.div>
+                                );
+                            })}
+                        </div>
+                    </div>
+
+                    {/* 🟣 DERECHA (40%): TEXTO FLOTANTE */}
+                    <div className="w-full md:w-[40%] pl-6 flex flex-col justify-center min-h-[250px]">
+                        <AnimatePresence mode='wait'>
+                            <motion.div
+                                key={cardIndex}
+                                initial={{ opacity: 0, x: 20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                exit={{ opacity: 0, x: -20 }}
+                                transition={{ duration: 0.3, ease: "easeOut" }}
+                            >
+                                {/* Header Breadcrumb */}
+                                <div className="mb-3 flex items-center gap-3 opacity-40">
+                                    <span className="text-[9px] font-bold font-mono uppercase tracking-widest text-gunmetal">
+                                        {LEVELS[activeTab].label}
+                                    </span>
+                                    <div className="h-px flex-1 bg-gunmetal"></div>
+                                    <span className="text-[9px] font-bold font-mono text-gunmetal">
+                                        0{cardIndex + 1} / 0{itemsLength}
+                                    </span>
+                                </div>
+
+                                <h3 className="text-4xl font-black text-gunmetal font-sans leading-[0.9] mb-5 tracking-tight">
+                                    {activeItem.title}
+                                </h3>
+                                
+                                <div className="text-sm text-gunmetal/80 font-sans leading-relaxed font-medium mb-8">
+                                    {activeItem.desc}
+                                </div>
+
+                                <button className="inline-flex items-center gap-3 px-8 py-3.5 rounded-full bg-[#1a1a1a] text-white hover:bg-sunset transition-all duration-300 shadow-xl hover:shadow-2xl hover:-translate-y-1 group">
+                                    <span className="text-[10px] font-bold font-mono uppercase tracking-widest">
+                                        Agregar al Plan
+                                    </span>
+                                    <Icon icon="solar:arrow-right-linear" className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                                </button>
+                            </motion.div>
+                        </AnimatePresence>
+                    </div>
+
+                </div>
             </div>
-            <div className="space-y-4">
-                <h4 className="text-xs font-black uppercase tracking-widest text-gray-400 border-b border-gray-100 pb-2 font-mono">Must Eat - Snacks</h4>
-                <ul className="space-y-3">
-                    {['Dole Whip (Adventureland)', 'Cheeseburger Spring Rolls', 'Corn Dog Nuggets', 'Warm Cinnamon Roll'].map((item, i) => (
-                        <li key={i} className="flex items-center gap-3 text-sm font-medium text-gunmetal font-sans">
-                            <Icon icon="solar:star-bold" className="w-3 h-3 text-emerald-400" />
-                            {item}
-                        </li>
-                    ))}
-                </ul>
-            </div>
-        </div>
+        </>
     )
 }
 
@@ -1197,7 +1373,7 @@ function TheCoreAccordion() {
 
 export default function MagicKingdomPage() {
   return (
-    <div className="min-h-screen bg-[#f7f7f5] pt-28 pb-20 px-6 md:px-12 lg:px-24 font-sans text-[#1a1a1a]">
+    <div className="min-h-screen bg-[#f7f7f5] pt-0 pb-20 px-6 md:px-12 lg:px-24 font-sans text-[#1a1a1a]">
       
       <motion.div 
         initial="hidden"
@@ -1206,20 +1382,7 @@ export default function MagicKingdomPage() {
         className="max-w-[1200px] mx-auto flex flex-col gap-10"
       >
 
-        {/* 1. BREADCRUMB */}
-        <motion.div variants={itemVariants} className="flex flex-col gap-4 relative z-30">
-            <nav className="flex items-center gap-2 text-[10px] font-bold tracking-[0.2em] uppercase text-gunmetal/40 font-mono">
-                <Link href="/" className="hover:text-gunmetal hover:underline decoration-sunset decoration-2 underline-offset-4 transition-all duration-300">
-                    HOME
-                </Link>
-                <Icon icon="solar:alt-arrow-right-linear" className="text-gunmetal/30" />
-                <Link href="/disney/parks" className="hover:text-gunmetal hover:underline decoration-sunset decoration-2 underline-offset-4 transition-all duration-300">
-                    DISNEY WORLD
-                </Link>
-                <Icon icon="solar:alt-arrow-right-linear" className="text-gunmetal/30" />
-                <span className="text-sunset font-bold cursor-default">MAGIC KINGDOM</span>
-            </nav>
-        </motion.div>
+
 
         {/* 2. HERO SECTION */}
         <motion.div 
@@ -1337,15 +1500,21 @@ export default function MagicKingdomPage() {
             <TheCoreAccordion />
         </motion.div>
 
-        {/* 5. DIRECTORIO */}
-        <motion.div variants={itemVariants} className="mt-8">
+       {/* 5. DIRECTORIO */}
+       <motion.div variants={itemVariants} className="mt-8">
             <div className="flex items-center gap-4 mb-6">
                 <h3 className="text-lg font-bold text-gunmetal font-sans">Directorio</h3>
                 <span className="bg-gunmetal/5 text-gunmetal text-[9px] font-bold px-2 py-1 rounded font-mono">142_ITEMS</span>
             </div>
             <div className="bg-white rounded-3xl border border-white/50 shadow-[0_2px_10px_rgba(0,0,0,0.02)] p-8">
                 <div className="grid grid-cols-2 md:grid-cols-5 gap-8 divide-x divide-gunmetal/5">
-                    <DirectoryItem icon="solar:ticket-bold-duotone" label="Atracciones" />
+                    
+                    {/* --- AQUÍ ESTÁ LA CLAVE: EL LINK --- */}
+                    <Link href="/disney/mk/attractions" className="group cursor-pointer block">
+                        <DirectoryItem icon="solar:ticket-bold-duotone" label="Atracciones" />
+                    </Link>
+                    {/* ----------------------------------- */}
+
                     <DirectoryItem icon="solar:chef-hat-bold-duotone" label="Restaurantes" />
                     <DirectoryItem icon="solar:bolt-bold-duotone" label="Comida Rápida" />
                     <DirectoryItem icon="solar:mask-happly-bold-duotone" label="Personajes" />

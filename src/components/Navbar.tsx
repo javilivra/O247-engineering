@@ -1,4 +1,4 @@
-// @STATUS: GOLDEN MASTER V5.4 - TRANSPARENT INTERNAL & DARK TEXT FIX
+// @STATUS: GOLDEN MASTER V5.5 - IMMERSIVE PATHS AWARENESS
 "use client";
 
 import React, { useState, useEffect } from 'react';
@@ -96,6 +96,13 @@ const Navbar = () => {
   const pathname = usePathname();
 
   const isHome = pathname === "/";
+  
+  // [+] LÓGICA AGREGADA: Detección de Páginas Inmersivas (Fondo Oscuro)
+  const TRANSPARENT_PATHS = ["tron", "space", "velocicoaster"];
+  const isImmersive = TRANSPARENT_PATHS.some((path) => pathname.includes(path));
+
+  // Variable maestra: Se comporta como Home si es Home O es una página inmersiva
+  const treatAsTransparentHero = isHome || isImmersive;
 
   useEffect(() => { setActiveMenu(null); setMobileMenuOpen(false); }, [pathname]);
 
@@ -133,9 +140,9 @@ const Navbar = () => {
   // Usamos texto OSCURO (Gunmetal) si:
   // - El menú está CERRADO
   // - Y:
-  //    a) Estamos en HOME y hay SCROLL (Fondo blanco -> Texto oscuro)
-  //    b) O estamos en INTERNA (Siempre fondo claro -> Texto oscuro desde el inicio)
-  const useDarkText = !isMenuOpen && ( (isHome && isScrolled) || !isHome );
+  //    a) Estamos en HOME/INMERSIVA y hay SCROLL (Fondo blanco -> Texto oscuro)
+  //    b) O estamos en INTERNA ESTANDAR (Siempre fondo claro -> Texto oscuro desde el inicio)
+  const useDarkText = !isMenuOpen && ( (treatAsTransparentHero && isScrolled) || !treatAsTransparentHero );
 
   const headerTextColor = useDarkText 
     ? "text-gunmetal hover:text-gunmetal/70" 

@@ -102,20 +102,12 @@ const NewsTicker = () => (
 
 export default function ParksPage() {
   return (
-    <main className="min-h-screen bg-[#f7f7f5] pt-[120px] pb-20"> 
+    <main className="min-h-screen bg-[#f7f7f5] pt-0 pb-20"> 
       
       <div className="w-full max-w-[1440px] mx-auto px-6 lg:px-12">
         
         {/* HEADER */}
         <div className="flex flex-col gap-6 mb-8">
-            <div className="flex items-center gap-2 text-[10px] font-bold tracking-[0.2em] uppercase text-gunmetal/40 font-mono">
-                <a href="/" className="hover:text-sunset transition-colors">Home</a>
-                <Icon icon="solar:alt-arrow-right-linear" />
-                <span className="text-gunmetal">Disney World</span>
-                <Icon icon="solar:alt-arrow-right-linear" />
-                <span className="text-sunset">Interactive Grid</span>
-            </div>
-            
             <motion.h1 
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}

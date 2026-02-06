@@ -1,11 +1,12 @@
-// @STATUS: GOLDEN MASTER V2 - GLOBAL LAYOUT WITH STEPPER
+// @STATUS: GOLDEN MASTER V2.1 - GLOBAL LAYOUT WITH STEPPER & BREADCRUMBS
 import type { Metadata } from "next";
 import { JetBrains_Mono } from "next/font/google"; 
 import "./globals.css";
 import CookieConsent from "@/components/CookieConsent";
 import SmoothScroll from "@/components/SmoothScroll"; 
 import Navbar from "@/components/Navbar"; 
-import VerticalStepper from "@/components/VerticalStepper"; // <--- 1. IMPORTAR
+import VerticalStepper from "@/components/VerticalStepper"; 
+import GlobalBreadcrumbs from "@/components/GlobalBreadcrumbs"; // <--- 1. IMPORTAR
 
 const techMono = JetBrains_Mono({
   subsets: ["latin"],
@@ -14,8 +15,8 @@ const techMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "O247 Engineering",
-  description: "Advanced Travel Systems",
+  title: "ORLANDO 247 La felicidad de viajar a Disney",
+  description: "Advanced Travel Systems for Orlando Theme Parks",
 };
 
 export default function RootLayout({
@@ -47,6 +48,9 @@ export default function RootLayout({
 
         {/* CONTENIDO SCROLLEABLE */}
         <SmoothScroll>
+           {/* 3. BREADCRUMBS: Flotando sobre el contenido (Hero) */}
+           <GlobalBreadcrumbs />
+           
            {children}
         </SmoothScroll>
 
