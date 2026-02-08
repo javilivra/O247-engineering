@@ -21,7 +21,7 @@ const PATH_MAP: Record<string, string> = {
     "tiana": "Tiana's Bayou Adventure",
 };
 
-// 🌑 LISTA DE RUTAS CON HERO OSCURO (Texto debe ser BLANCO + POSICIÓN ABSOLUTA)
+// 🌑 LISTA DE RUTAS CON HERO OSCURO
 const DARK_HERO_PATHS = [
     "tron",
     "space",
@@ -31,13 +31,9 @@ const DARK_HERO_PATHS = [
 export default function GlobalBreadcrumbs() {
     const pathname = usePathname();
 
-    // 1. REGLA: Ocultar en Home
     if (pathname === '/') return null;
 
-    // 2. Procesar Segmentos
     const pathSegments = pathname.split('/').filter(segment => segment !== '');
-
-    // 3. Detectar Modo de Color (Inteligencia de Contraste)
     const isDarkMode = pathSegments.some(seg => DARK_HERO_PATHS.includes(seg));
     
     // Clases dinámicas de Color
@@ -46,17 +42,16 @@ export default function GlobalBreadcrumbs() {
     const activeColor = "text-celeste"; 
     const ellipsisColor = isDarkMode ? "text-white/30" : "text-gunmetal/30";
 
-    // LÓGICA DE POSICIONAMIENTO CLAVE:
-    // DarkMode -> 'absolute': Flota sobre la imagen.
-    // LightMode -> 'relative': Empuja el contenido (mt-24 ajustado).
+    // LÓGICA DE POSICIONAMIENTO OPTIMIZADA (Sin espacios muertos)
+    // Absolute: top-[90px] -> Justo debajo del navbar transparente.
+    // Relative: mt-20 -> (80px) Compensa exactamente la altura del navbar fijo, sin gap extra.
     const positionClass = isDarkMode 
-        ? "absolute top-[100px] left-0 z-30" 
-        : "relative mt-24 mb-6 z-30";
+        ? "absolute top-[90px] left-0 z-30" 
+        : "relative mt-20 mb-2 z-30";
 
-    // 4. Lógica de Compresión
     let visibleSegments = [];
     const TRIGGER_COMPRESSION_AT = 3; 
-    const SHOW_LAST_N = 3; // Mostramos 3 para dar más contexto (Padre > Categoría > Actual)
+    const SHOW_LAST_N = 3; 
 
     const getName = (segment: string) => PATH_MAP[segment] || segment.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
 
@@ -82,25 +77,22 @@ export default function GlobalBreadcrumbs() {
             initial={{ opacity: 0, y: -5 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            // Aplicamos la clase de posición dinámica aquí
             className={`${positionClass} px-6 md:px-12 w-full pointer-events-none`}
         >
             <div className="max-w-7xl mx-auto">
-                <nav className="flex items-center gap-3 text-[10px] md:text-xs font-mono uppercase tracking-widest pointer-events-auto w-fit flex-wrap leading-none">
+                <nav className="flex items-center gap-2 text-[10px] font-mono uppercase tracking-widest pointer-events-auto w-fit flex-wrap leading-none">
                     
-                    {/* INICIO */}
                     <Link href="/" className={`${textColor} transition-colors flex items-center gap-1 group font-medium`}>
                         <span className="group-hover:underline decoration-celeste decoration-2 underline-offset-4">INICIO</span>
                     </Link>
 
                     <span className={`${separatorColor} font-light`}>/</span>
 
-                    {/* SEGMENTOS */}
                     {visibleSegments.map((segment, index) => {
                         const isLast = index === visibleSegments.length - 1;
 
                         return (
-                            <div key={index} className="flex items-center gap-3">
+                            <div key={index} className="flex items-center gap-2">
                                 {segment.isEllipsis ? (
                                     <span className={`${ellipsisColor} select-none tracking-widest`}>...</span>
                                 ) : isLast ? (

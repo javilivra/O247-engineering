@@ -102,12 +102,13 @@ const NewsTicker = () => (
 
 export default function ParksPage() {
   return (
-    <main className="min-h-screen bg-[#f7f7f5] pt-0 pb-20"> 
+    <main className="min-h-screen bg-[#f7f7f5] pt-10 pb-20"> 
       
       <div className="w-full max-w-[1440px] mx-auto px-6 lg:px-12">
         
-        {/* HEADER */}
-        <div className="flex flex-col gap-6 mb-8">
+{/* HEADER */}
+        {/* Consejo: Si aún sientes mucho espacio, puedes cambiar 'gap-6' por 'gap-2' o quitarlo */}
+        <div className="flex flex-col gap-4 mb-8">
             <motion.h1 
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
