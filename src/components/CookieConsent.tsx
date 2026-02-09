@@ -20,11 +20,20 @@ export default function CookieConsent() {
   const [isAccepted, setIsAccepted] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => setIsVisible(true), 2500);
-    return () => clearTimeout(timer);
+    // 1. Verificamos si ya existe el consentimiento guardado
+    const hasConsent = localStorage.getItem("O247_COOKIE_CONSENT");
+    
+    // Si NO hay consentimiento previo, mostramos el banner tras 2.5s
+    if (!hasConsent) {
+        const timer = setTimeout(() => setIsVisible(true), 2500);
+        return () => clearTimeout(timer);
+    }
   }, []);
 
   const handleAccept = () => {
+    // 2. Guardamos la decisión en el navegador (Persistencia)
+    localStorage.setItem("O247_COOKIE_CONSENT", "true");
+    
     setIsAccepted(true);
     setTimeout(() => {
       setIsVisible(false);
@@ -32,6 +41,8 @@ export default function CookieConsent() {
   };
 
   const handleReject = () => {
+    // Opcional: Guardar rechazo para no volver a preguntar en X tiempo
+    // Por ahora, simplemente cerramos:
     setIsVisible(false);
   };
 
@@ -47,22 +58,13 @@ export default function CookieConsent() {
           transition={{ duration: 0.5, ease: "circOut" }}
           className="fixed bottom-6 left-0 right-0 z-[60] flex justify-center px-4"
         >
-          {/* CONTENEDOR AJUSTADO (Spatial UI):
-            - pl-6 (izquierda generosa para texto)
-            - pr-2 (derecha ajustada para el grupo de botones)
-            - py-2 (altura esbelta, similar al Hero CTA)
-          */}
           <div className="bg-white/90 backdrop-blur-md rounded-full shadow-[0_10px_30px_rgba(37,52,63,0.12)] border border-gunmetal/5 flex flex-col md:flex-row items-center gap-4 md:gap-6 pl-6 pr-2 py-2 max-w-2xl w-full md:w-auto">
             
-            {/* TEXTO: Compacto y alineado */}
             <p className="type-body text-[11px] md:text-xs font-medium text-center md:text-left text-gunmetal/80 leading-tight md:mr-2 py-2 md:py-0">
               Utilizamos cookies para <span className="font-bold text-sunset">calibrar la precisión</span> de tu experiencia.
             </p>
 
-            {/* GRUPO DE ACCIONES */}
             <div className="flex items-center gap-1 w-full md:w-auto justify-center md:justify-end">
-                
-                {/* OPCIÓN RECHAZAR: Ghost Button (Sutil) */}
                 <button 
                     onClick={handleReject}
                     className="type-tech text-[10px] font-bold uppercase tracking-wider text-gunmetal/40 hover:text-gunmetal/80 px-4 py-2 transition-colors duration-200"
@@ -70,15 +72,13 @@ export default function CookieConsent() {
                     Rechazar
                 </button>
 
-                {/* OPCIÓN ACEPTAR: Solid Button (Pill) */}
                 <button 
                     onClick={handleAccept}
                     disabled={isAccepted}
-                    // Padding ajustado a px-5 py-2 para replicar el Hero CTA exacto
                     className={`type-tech relative flex items-center justify-center text-[10px] font-bold uppercase tracking-wider rounded-full transition-all duration-300 shadow-sm min-w-[100px]
                       ${isAccepted 
-                        ? "bg-sunset text-gunmetal px-5 py-2" // Estado Confirmado
-                        : "bg-gunmetal text-white hover:bg-sunset hover:text-gunmetal px-5 py-2" // Estado Normal
+                        ? "bg-sunset text-gunmetal px-5 py-2" 
+                        : "bg-gunmetal text-white hover:bg-sunset hover:text-gunmetal px-5 py-2" 
                       }`}
                 >
                     <AnimatePresence mode="wait">
@@ -106,7 +106,6 @@ export default function CookieConsent() {
                     </AnimatePresence>
                 </button>
             </div>
-
           </div>
         </motion.div>
       )}

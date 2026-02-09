@@ -147,7 +147,7 @@ export default function AttractionsPage() {
   });
 
   return (
-    <div className="min-h-screen bg-[#f7f7f5] text-gunmetal font-sans selection:bg-celeste selection:text-white pb-32 relative">
+    <div className="min-h-screen bg-bone text-gunmetal font-sans selection:bg-celeste selection:text-white pb-32 relative">
       
       {/* 1. HERO SLIDER */}
       <div className="absolute inset-x-0 top-0 h-[85vh] overflow-hidden z-0">
@@ -165,7 +165,7 @@ export default function AttractionsPage() {
                 />
             </AnimatePresence>
             <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/20 to-transparent opacity-80" />
-            <div className="absolute bottom-0 left-0 right-0 h-64 bg-gradient-to-t from-[#f7f7f5] via-[#f7f7f5]/80 to-transparent" />
+            <div className="absolute bottom-0 left-0 right-0 h-64 bg-gradient-to-t from-bone via-bone/80 to-transparent" />
       </div>
 
       {/* 2. CONTENIDO */}

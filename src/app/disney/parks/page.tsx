@@ -102,7 +102,7 @@ const NewsTicker = () => (
 
 export default function ParksPage() {
   return (
-    <main className="min-h-screen bg-[#f7f7f5] pt-10 pb-20"> 
+    <main className="min-h-screen bg-bone pt-10 pb-20"> 
       
       <div className="w-full max-w-[1440px] mx-auto px-6 lg:px-12">
         

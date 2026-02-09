@@ -54,7 +54,7 @@ export default function AttractionDetailPanel({ attraction, onClose }: Props) {
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "spring", damping: 25, stiffness: 200 }}
-            className="fixed top-0 right-0 h-full w-full md:w-[500px] bg-[#f7f7f5] z-[60] shadow-2xl overflow-y-auto"
+            className="fixed top-0 right-0 h-full w-full md:w-[500px] bg-bone z-[60] shadow-2xl overflow-y-auto"
           >
             {/* --- HEADER CON IMAGEN --- */}
             <div className="relative h-72 w-full">

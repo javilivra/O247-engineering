@@ -1,403 +1,587 @@
-// @STATUS: GOLDEN MASTER V5.5 - IMMERSIVE PATHS AWARENESS
+// @STATUS: REFACTORED V6.0 — MOBILE-FIRST + A11Y
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 
-// --- ICONOS ---
-const Minus = ({ size = 24 }: { size?: number }) => (<svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 12h12" strokeLinecap="round" strokeLinejoin="round"/></svg>);
-const Add = ({ size = 24 }: { size?: number }) => (<svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 6v12m-6-6h12" strokeLinecap="round" strokeLinejoin="round"/></svg>);
-const HamburgerMenu = ({ size = 24 }: { size?: number }) => (<svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 6h16M4 12h16M4 18h16" strokeLinecap="round" strokeLinejoin="round"/></svg>);
-const CloseCircle = ({ size = 24 }: { size?: number }) => (<svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="9" /><path d="M9 9l6 6M15 9l-6 6" strokeLinecap="round" strokeLinejoin="round"/></svg>);
-const StarsMinimalistic = ({ size = 24, className }: { size?: number, className?: string }) => (<svg width={size} height={size} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}><path d="M12 2L14.3175 9.68253L22 12L14.3175 14.3175L12 22L9.68253 14.3175L2 12L9.68253 9.68253L12 2Z" fill="currentColor" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>);
-const ChevronRight = ({ size = 16 }: { size?: number }) => (<svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6"/></svg>);
-
-// --- COMPONENTES AUXILIARES ---
-const MenuHeader = ({ children }: { children: React.ReactNode }) => (
-  <div className="mb-6 text-[11px] font-bold tracking-[0.2em] text-white/40 uppercase leading-relaxed antialiased font-mono">
-    {children}
-  </div>
+// ─── ICONOS SVG (Inline, zero-dependency) ───
+const IconHamburger = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M4 6h16M4 12h16M4 18h16" />
+  </svg>
+);
+const IconClose = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M18 6L6 18M6 6l12 12" />
+  </svg>
+);
+const IconChevron = ({ open }: { open: boolean }) => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
+    className={`transition-transform duration-300 ${open ? 'rotate-180' : ''}`}>
+    <path d="M6 9l6 6 6-6" />
+  </svg>
+);
+const IconPlus = () => (
+  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M12 6v12m-6-6h12" />
+  </svg>
+);
+const IconMinus = () => (
+  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M6 12h12" />
+  </svg>
+);
+const IconArrow = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M9 18l6-6-6-6" />
+  </svg>
 );
 
-const MenuLink = ({ href, title, highlight = false, badge }: { href: string, title: string, highlight?: boolean, badge?: string }) => (
-  <Link href={href} className="group flex items-center justify-between w-full py-2 pr-4">
-    <div className="flex items-center gap-2">
-      <span className={`text-[14px] font-medium tracking-tight transition-colors duration-200 antialiased font-sans ${highlight ? 'text-sunset drop-shadow-[0_0_8px_rgba(255,112,67,0.4)]' : 'text-white/90 group-hover:text-sunset'}`}>
-        {title}
-      </span>
-      {badge && (
-        <span className="px-1.5 py-0.5 bg-sunset text-gunmetal text-[9px] font-bold rounded-sm tracking-wide shadow-none font-mono">
-          {badge}
-        </span>
-      )}
-    </div>
-    <motion.div 
-      initial={{ opacity: 0, x: -5 }} 
-      whileHover={{ opacity: 1, x: 0 }} 
-      className="text-sunset opacity-0 group-hover:opacity-100 transition-all duration-200 transform translate-x-[-10px] group-hover:translate-x-0"
-    >
-      <ChevronRight size={14} />
-    </motion.div>
-  </Link>
-);
+// ─── DATA ───
+interface NavItem {
+  id: string;
+  label: string;
+  href?: string;          // Link directo (FAQ, News)
+  sections?: NavSection[]; // Mega menu sections
+  spotlight?: {
+    tag: string;
+    title: string;
+    desc: string;
+  };
+}
 
-// --- DATA ---
-const NAV_LABELS = [
-  { id: 'planning', label: 'Planning' }, 
-  { id: 'disney', label: 'Disney World' }, 
-  { id: 'universal', label: 'Universal Studios' }, 
-  { id: 'shoppinear', label: 'Shoppinear' }, 
-  { id: 'news', label: 'News247', type: 'link', href: '/news' }, 
-  { id: 'faq', label: 'FAQ', type: 'link', href: '/#faq' }
+interface NavSection {
+  title: string;
+  links: { href: string; label: string; badge?: string; highlight?: boolean }[];
+}
+
+const NAV_ITEMS: NavItem[] = [
+  {
+    id: 'planning',
+    label: 'Planning',
+    spotlight: { tag: 'SPOTLIGHT', title: 'El Algoritmo O247', desc: 'Ingeniería aplicada para maximizar la diversión.' },
+    sections: [
+      {
+        title: 'CÓMO, CUÁNDO Y DÓNDE',
+        links: [
+          { href: '/planning/method', label: 'Metodología O247' },
+          { href: '/planning/start', label: 'Primeros Pasos' },
+          { href: '/planning/calendar', label: 'Crowd Calendar', badge: 'VITAL' },
+          { href: '/planning/budget', label: 'Ingeniería de Costos' },
+        ],
+      },
+      {
+        title: 'HERRAMIENTAS',
+        links: [
+          { href: '/planning/calculator', label: 'Calculadora de Gastos' },
+          { href: '/planning/checklists', label: 'Checklists PDF' },
+          { href: '/planning/gate', label: 'Agente GATE', highlight: true },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'disney',
+    label: 'Disney World',
+    spotlight: { tag: 'DESTACADO', title: 'Guía Lightning Lane', desc: 'Domina el sistema de filas rápidas y evita esperas.' },
+    sections: [
+      {
+        title: 'PARQUES TEMÁTICOS',
+        links: [
+          { href: '/disney/mk', label: 'Magic Kingdom' },
+          { href: '/disney/epcot', label: 'EPCOT' },
+          { href: '/disney/hs', label: 'Hollywood Studios' },
+          { href: '/disney/ak', label: 'Animal Kingdom' },
+        ],
+      },
+      {
+        title: 'LOGÍSTICA & TICKETS',
+        links: [
+          { href: '/disney/tickets', label: 'Tickets Inteligentes' },
+          { href: '/disney/ll', label: 'Lightning Lane', badge: 'PRO', highlight: true },
+          { href: '/disney/virtual', label: 'Filas Virtuales' },
+        ],
+      },
+      {
+        title: 'HOTELES & RESORTS',
+        links: [
+          { href: '/disney/resorts/skyliner', label: 'Skyliner Resorts' },
+          { href: '/disney/resorts/monorail', label: 'Monorail Resorts' },
+          { href: '/disney/resorts/walking', label: 'Walking Distance' },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'universal',
+    label: 'Universal',
+    spotlight: { tag: 'NUEVO', title: 'Epic Universe 2025', desc: 'Todo sobre el nuevo parque temático más grande.' },
+    sections: [
+      {
+        title: 'PARQUES TEMÁTICOS',
+        links: [
+          { href: '/universal/epic', label: 'Epic Universe', badge: '2025', highlight: true },
+          { href: '/universal/us', label: 'Universal Studios' },
+          { href: '/universal/ioa', label: 'Islands of Adventure' },
+          { href: '/universal/volcano', label: 'Volcano Bay' },
+        ],
+      },
+      {
+        title: 'TICKETS & PASES',
+        links: [
+          { href: '/universal/tickets', label: 'Park-to-Park' },
+          { href: '/universal/express', label: 'Express Pass Hack' },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'shoppinear',
+    label: 'Shoppinear',
+    spotlight: { tag: 'AHORRO', title: 'Cuponeras Premium', desc: 'Accede a descuentos secretos de Outlets.' },
+    sections: [
+      {
+        title: 'PREMIUM OUTLETS',
+        links: [
+          { href: '/shop/vineland', label: 'Vineland Ave' },
+          { href: '/shop/intl', label: 'International Dr' },
+        ],
+      },
+      {
+        title: 'MALLS & ESTRATEGIA',
+        links: [
+          { href: '/shop/millenia', label: 'Mall at Millenia' },
+          { href: '/shop/coupons', label: 'Cuponeras Digitales' },
+        ],
+      },
+    ],
+  },
+  { id: 'news', label: 'News247', href: '/news' },
+  { id: 'faq', label: 'FAQ', href: '/#faq' },
 ];
 
-const SPOTLIGHTS: Record<string, any> = { 
-  planning: { 
-    tag: 'SPOTLIGHT', 
-    title: 'El Algoritmo O247', 
-    desc: 'Ingeniería aplicada para maximizar la diversión.',
-    imageText: 'ALGORITMO',
-    guideTitle: 'Guía de Planificación',
-    guideText: 'Define la arquitectura de tu viaje. Desde la optimización logística hasta la sincronización de itinerarios.'
-  }, 
-  disney: { 
-    tag: 'DESTACADO', 
-    title: 'Guía Lightning Lane', 
-    desc: 'Domina el sistema de filas rápidas y evita esperas.',
-    imageText: 'LIGHTNING LANE',
-    guideTitle: 'Explora Disney World',
-    guideText: 'Navega por los 4 parques temáticos, hoteles resort y sistemas de transporte con precisión.'
-  }, 
-  universal: { 
-    tag: 'NUEVO', 
-    title: 'Epic Universe 2025', 
-    desc: 'Todo sobre el nuevo parque temático más grande.',
-    imageText: 'EPIC UNIVERSE',
-    guideTitle: 'Universo de Acción',
-    guideText: 'Dos parques legendarios, un parque acuático y el nuevo gigante. Estrategias de recorrido.'
-  }, 
-  shoppinear: { 
-    tag: 'AHORRO', 
-    title: 'Cuponeras Premium', 
-    desc: 'Accede a descuentos secretos de Outlets.',
-    imageText: 'OUTLETS VIP',
-    guideTitle: 'Compras Inteligentes',
-    guideText: 'Mapas de outlets, cupones digitales y rutas de ahorro estratégico para maximizar tu presupuesto.'
-  } 
-};
-
-// --- COMPONENTES PRINCIPAL ---
-const Navbar = () => {
-  const [activeMenu, setActiveMenu] = useState<string | null>(null);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+// ─── COMPONENTE PRINCIPAL ───
+export default function Navbar() {
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
+  const [desktopMenu, setDesktopMenu] = useState<string | null>(null);
   const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
+  const navRef = useRef<HTMLElement>(null);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
 
-  const isHome = pathname === "/";
-  
-  // [+] LÓGICA AGREGADA: Detección de Páginas Inmersivas (Fondo Oscuro)
-  const TRANSPARENT_PATHS = ["tron", "space", "velocicoaster"];
-  const isImmersive = TRANSPARENT_PATHS.some((path) => pathname.includes(path));
+  // ── Detección de páginas con hero oscuro ──
+  const isHome = pathname === '/';
+  const IMMERSIVE_PATHS = ['tron', 'space', 'velocicoaster'];
+  const isImmersive = IMMERSIVE_PATHS.some((p) => pathname.includes(p));
+  const isTransparentHero = isHome || isImmersive;
 
-  // Variable maestra: Se comporta como Home si es Home O es una página inmersiva
-  const treatAsTransparentHero = isHome || isImmersive;
-
-  useEffect(() => { setActiveMenu(null); setMobileMenuOpen(false); }, [pathname]);
-
+  // ── Scroll detection (throttled via rAF) ──
   useEffect(() => {
-    const handleScroll = () => { setIsScrolled(window.scrollY > 20); };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    let ticking = false;
+    const onScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          setIsScrolled(window.scrollY > 20);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  // ── Cerrar menú mobile al navegar ──
   useEffect(() => {
-    if (activeMenu || mobileMenuOpen) { document.body.style.overflow = 'hidden'; } 
-    else { document.body.style.overflow = ''; }
+    setMobileOpen(false);
+    setMobileExpanded(null);
+    setDesktopMenu(null);
+  }, [pathname]);
+
+  // ── Scroll lock cuando menú mobile está abierto ──
+  useEffect(() => {
+    if (mobileOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
     return () => { document.body.style.overflow = ''; };
-  }, [activeMenu, mobileMenuOpen]);
+  }, [mobileOpen]);
 
-  // --- LÓGICA VISUAL ---
-  const isMenuOpen = !!activeMenu;
+  // ── Escape handler ──
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        if (mobileOpen) setMobileOpen(false);
+        if (desktopMenu) setDesktopMenu(null);
+      }
+    };
+    document.addEventListener('keydown', onKeyDown);
+    return () => document.removeEventListener('keydown', onKeyDown);
+  }, [mobileOpen, desktopMenu]);
 
-  // 1. Lógica del Fondo (Container)
-  let navContainerClass = "";
+  // ── Focus trap para menú mobile ──
+  useEffect(() => {
+    if (!mobileOpen || !mobileMenuRef.current) return;
 
-  if (isMenuOpen) {
-    // Si el menú está abierto, transparente (el backdrop hace el trabajo)
-    navContainerClass = "bg-transparent border-transparent";
-  } else {
-    // LÓGICA UNIFICADA:
-    // Si hay scroll: Fondo Blanco Vidrioso (Glass)
-    // Si NO hay scroll: Transparente (Tanto para Home como para Internas)
-    navContainerClass = isScrolled 
-      ? "bg-white/80 backdrop-blur-md border-b border-gunmetal/5 shadow-sm" 
-      : "bg-transparent border-transparent";
-  }
+    const menu = mobileMenuRef.current;
+    const focusableSelector = 'a[href], button, [tabindex]:not([tabindex="-1"])';
+    const focusableEls = menu.querySelectorAll<HTMLElement>(focusableSelector);
+    const firstEl = focusableEls[0];
+    const lastEl = focusableEls[focusableEls.length - 1];
 
-  // 2. Lógica del Texto (Colores)
-  // Usamos texto OSCURO (Gunmetal) si:
-  // - El menú está CERRADO
-  // - Y:
-  //    a) Estamos en HOME/INMERSIVA y hay SCROLL (Fondo blanco -> Texto oscuro)
-  //    b) O estamos en INTERNA ESTANDAR (Siempre fondo claro -> Texto oscuro desde el inicio)
-  const useDarkText = !isMenuOpen && ( (treatAsTransparentHero && isScrolled) || !treatAsTransparentHero );
+    // Focus al primer elemento al abrir
+    firstEl?.focus();
 
-  const headerTextColor = useDarkText 
-    ? "text-gunmetal hover:text-gunmetal/70" 
-    : "text-white hover:text-white/80";
-  
-  const logoClass = useDarkText ? "text-gunmetal" : "text-white";
-  const hamburgerColor = useDarkText ? "text-gunmetal" : "text-white";
+    const trapFocus = (e: KeyboardEvent) => {
+      if (e.key !== 'Tab') return;
+      if (e.shiftKey) {
+        if (document.activeElement === firstEl) {
+          e.preventDefault();
+          lastEl?.focus();
+        }
+      } else {
+        if (document.activeElement === lastEl) {
+          e.preventDefault();
+          firstEl?.focus();
+        }
+      }
+    };
+
+    document.addEventListener('keydown', trapFocus);
+    return () => document.removeEventListener('keydown', trapFocus);
+  }, [mobileOpen]);
+
+  // ── Lógica visual ──
+  const isDesktopMenuOpen = !!desktopMenu;
+
+  const useDarkText = !isDesktopMenuOpen && (
+    (isTransparentHero && isScrolled) || !isTransparentHero
+  );
+
+  const navBg = isDesktopMenuOpen
+    ? 'bg-transparent border-transparent'
+    : isScrolled
+      ? 'bg-white/80 backdrop-blur-md border-b border-gunmetal/5 shadow-sm'
+      : 'bg-transparent border-transparent';
+
+  const textClass = useDarkText
+    ? 'text-gunmetal hover:text-gunmetal/70'
+    : 'text-white hover:text-white/80';
+
+  const logoClass = useDarkText ? 'text-gunmetal' : 'text-white';
 
   const loginBorder = useDarkText
-    ? "border-gunmetal/20 text-gunmetal hover:bg-gunmetal hover:text-white"
-    : "border-white/30 text-white hover:bg-white hover:text-gunmetal";
+    ? 'border-gunmetal/20 text-gunmetal hover:bg-gunmetal hover:text-white'
+    : 'border-white/30 text-white hover:bg-white hover:text-gunmetal';
 
-
-  // --- RENDER SPOTLIGHT ---
-  const renderSpotlightCard = (id: string) => {
-    const data = SPOTLIGHTS[id]; if (!data) return null;
-    return (
-      <Link href="#" className="group relative flex flex-col justify-between h-full w-full rounded-2xl overflow-hidden transition-all duration-300">
-          <div className="absolute inset-0 bg-transparent group-hover:bg-white transition-colors duration-300 ease-in-out" />
-          <div className="p-6 relative z-10 flex flex-col h-full">
-            <div className="flex items-center gap-2 mb-4 text-white/40 group-hover:text-gunmetal/40 transition-colors duration-300">
-              <StarsMinimalistic size={16} />
-              <span className="text-[10px] font-bold tracking-[0.2em] uppercase font-mono">{data.tag}</span>
-            </div>
-            <div className="mb-6">
-              <h3 className="text-xl font-bold text-white mb-2 leading-tight group-hover:text-gunmetal transition-colors duration-300 font-display tracking-tight">{data.title}</h3>
-              <p className="text-[13px] text-white/60 leading-relaxed font-medium font-sans group-hover:text-gunmetal/80 transition-colors duration-300">{data.desc}</p>
-            </div>
-            <div className="mt-auto w-full h-32 rounded-xl bg-white/10 group-hover:bg-sunset/5 transition-colors duration-500 overflow-hidden relative">
-                <div className="absolute inset-0 flex items-center justify-center text-white/20 group-hover:text-gunmetal/20 font-bold text-xs uppercase tracking-widest transition-colors font-mono">
-                [{data.imageText}]
-                </div>
-            </div>
-          </div>
-      </Link>
-    );
-  };
+  // ── Toggle mobile sub-menu ──
+  const toggleMobileSection = useCallback((id: string) => {
+    setMobileExpanded((prev) => (prev === id ? null : id));
+  }, []);
 
   return (
     <>
+      {/* ══ BACKDROP MEGA MENU (Desktop) ══ */}
       <AnimatePresence>
-        {activeMenu && (
-          <motion.div 
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}
+        {desktopMenu && (
+          <motion.div
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
             className="fixed inset-0 z-40 bg-gunmetal/60 backdrop-blur-3xl"
-            onMouseEnter={() => setActiveMenu(null)} 
+            onClick={() => setDesktopMenu(null)}
           />
         )}
       </AnimatePresence>
 
-      <header 
-        className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ease-in-out ${navContainerClass}`}
-        onMouseLeave={() => setActiveMenu(null)}
+      {/* ══ HEADER ══ */}
+      <header
+        ref={navRef}
+        className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ease-in-out ${navBg}`}
+        onMouseLeave={() => setDesktopMenu(null)}
       >
-        <div className="max-w-[1400px] mx-auto px-8 h-[80px] flex items-center justify-between relative z-50">
-          
+        <div className="max-w-[1400px] mx-auto px-6 md:px-8 h-[72px] md:h-[80px] flex items-center justify-between relative z-50">
+
           {/* LOGO */}
-          <Link href="/" className="flex items-center gap-2 group">
+          <Link href="/" className="flex items-center gap-2 group" aria-label="O247 — Ir al inicio">
             <span className={`text-2xl font-bold tracking-tight antialiased font-display ${logoClass}`}>
               O247
             </span>
           </Link>
 
-          {/* MENU DESKTOP */}
-          <nav className="hidden xl:flex items-center gap-1 h-full">
-            {NAV_LABELS.map((item) => (
-              <div key={item.id} className="h-full flex items-center" onMouseEnter={() => !item.type && setActiveMenu(item.id)}>
-                {item.type === 'link' ? (
-                  <Link href={item.href || '#'} className={`px-4 py-2 text-[14px] tracking-wide antialiased font-sans font-medium transition-colors duration-300 ${headerTextColor}`}>
+          {/* NAV DESKTOP */}
+          <nav className="hidden xl:flex items-center gap-1 h-full" aria-label="Navegación principal">
+            {NAV_ITEMS.map((item) => (
+              <div
+                key={item.id}
+                className="h-full flex items-center"
+                onMouseEnter={() => !item.href && setDesktopMenu(item.id)}
+              >
+                {item.href ? (
+                  <Link
+                    href={item.href}
+                    className={`px-4 py-2 text-[14px] tracking-wide antialiased font-sans font-medium transition-colors duration-300 ${textClass}`}
+                  >
                     {item.label}
                   </Link>
                 ) : (
-                  <button className={`px-4 py-2 flex items-center gap-1.5 text-[14px] tracking-wide outline-none cursor-default antialiased font-sans font-medium transition-colors duration-300 ${activeMenu === item.id ? 'text-white font-bold' : headerTextColor}`}>
+                  <button
+                    className={`px-4 py-2 flex items-center gap-1.5 text-[14px] tracking-wide outline-none cursor-default antialiased font-sans font-medium transition-colors duration-300 ${
+                      desktopMenu === item.id ? 'text-white font-bold' : textClass
+                    }`}
+                    aria-expanded={desktopMenu === item.id}
+                    aria-haspopup="true"
+                  >
                     {item.label}
-                    <motion.div initial={false} animate={{ rotate: activeMenu === item.id ? 180 : 0 }} transition={{ duration: 0.3 }} className={`${activeMenu === item.id ? 'text-sunset' : (useDarkText ? 'text-gunmetal/40' : 'text-white/40')}`}>
-                       {activeMenu === item.id ? <Minus size={12} /> : <Add size={12} />}
-                    </motion.div>
+                    <span className={desktopMenu === item.id ? 'text-sunset' : useDarkText ? 'text-gunmetal/40' : 'text-white/40'}>
+                      {desktopMenu === item.id ? <IconMinus /> : <IconPlus />}
+                    </span>
                   </button>
                 )}
               </div>
             ))}
           </nav>
 
-          {/* BOTONES */}
+          {/* BOTONES DESKTOP */}
           <div className="hidden xl:flex items-center gap-3">
-            <Link href="/login" className={`px-5 py-2 rounded-full border text-[13px] antialiased transition-all duration-300 font-sans font-medium ${loginBorder}`}>Log In</Link>
-            <Link href="/signup" className="relative px-5 py-2 rounded-full bg-sunset text-gunmetal text-[13px] font-bold tracking-wide hover:brightness-110 transition-all duration-300 font-sans overflow-hidden hover:shadow-[0_0_15px_rgba(255,112,67,0.4)]">
+            <Link
+              href="/login"
+              className={`px-5 py-2 rounded-full border text-[13px] antialiased transition-all duration-300 font-sans font-medium ${loginBorder}`}
+            >
+              Log In
+            </Link>
+            <Link
+              href="/signup"
+              className="px-5 py-2 rounded-full bg-sunset text-gunmetal text-[13px] font-bold tracking-wide hover:brightness-110 transition-all duration-300 font-sans overflow-hidden hover:shadow-[0_0_15px_rgba(255,112,67,0.4)]"
+            >
               Sign Up
             </Link>
           </div>
 
-          {/* HAMBURGER */}
-          <button className={`xl:hidden p-2 ${hamburgerColor} transition-colors duration-300`} onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-            {mobileMenuOpen ? <CloseCircle size={28} /> : <HamburgerMenu size={28} />}
+          {/* HAMBURGER (Mobile) */}
+          <button
+            className={`xl:hidden p-3 min-w-[48px] min-h-[48px] flex items-center justify-center ${useDarkText ? 'text-gunmetal' : 'text-white'} transition-colors duration-300`}
+            onClick={() => setMobileOpen(!mobileOpen)}
+            aria-label={mobileOpen ? 'Cerrar menú' : 'Abrir menú'}
+            aria-expanded={mobileOpen}
+            aria-controls="mobile-menu"
+          >
+            {mobileOpen ? <IconClose /> : <IconHamburger />}
           </button>
         </div>
 
-        {/* MEGA MENU */}
+        {/* ══ MEGA MENU DESKTOP ══ */}
         <AnimatePresence>
-          {activeMenu && (
-            <motion.div 
-              initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }} 
-              className="absolute top-[80px] left-0 w-full hidden xl:block overflow-hidden origin-top z-50"
-              onMouseEnter={() => setActiveMenu(activeMenu)} onMouseLeave={() => setActiveMenu(null)}
-            >
-              <div className="max-w-[1400px] mx-auto px-8 pb-16 pt-0">
-                <div className="w-full h-px bg-white/10 mb-10"></div>
-                
-                <div className="grid grid-cols-5 gap-0">
-                  {/* COL 1 */}
-                  <div className="col-span-1 pr-8">
-                    {activeMenu === 'planning' && (
-                        <>
-                          <MenuHeader>CÓMO, CUÁNDO Y DÓNDE</MenuHeader>
-                          <div className="flex flex-col gap-1">
-                            <MenuLink href="/planning/method" title="Metodología O247" />
-                            <MenuLink href="/planning/start" title="Primeros Pasos" />
-                            <MenuLink href="/planning/calendar" title="Crowd Calendar" badge="VITAL" />
-                            <MenuLink href="/planning/budget" title="Ingeniería de Costos" />
+          {desktopMenu && (() => {
+            const item = NAV_ITEMS.find((i) => i.id === desktopMenu);
+            if (!item?.sections) return null;
+            return (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                className="absolute top-[80px] left-0 w-full hidden xl:block overflow-hidden origin-top z-50"
+                onMouseEnter={() => setDesktopMenu(desktopMenu)}
+                onMouseLeave={() => setDesktopMenu(null)}
+              >
+                <div className="max-w-[1400px] mx-auto px-8 pb-16 pt-0">
+                  <div className="w-full h-px bg-white/10 mb-10" />
+
+                  <div className="flex gap-12">
+                    {/* COLUMNAS DE LINKS */}
+                    <div className="flex gap-10 flex-1">
+                      {item.sections.map((section) => (
+                        <div key={section.title} className="min-w-[180px]">
+                          <div className="mb-5 text-[11px] font-bold tracking-[0.2em] text-white/40 uppercase font-mono">
+                            {section.title}
                           </div>
-                        </>
-                    )}
-                    {activeMenu === 'disney' && (
-                        <>
-                          <MenuHeader>PARQUES TEMÁTICOS</MenuHeader>
                           <div className="flex flex-col gap-1">
-                            <MenuLink href="/disney/mk" title="Magic Kingdom" />
-                            <MenuLink href="/disney/epcot" title="EPCOT" />
-                            <MenuLink href="/disney/hs" title="Hollywood Studios" />
-                            <MenuLink href="/disney/ak" title="Animal Kingdom" />
-                            
-                            {/* ENLACE VER TODOS */}
-                            <div className="mt-4 pt-4 border-t border-white/5">
-                                <Link href="/disney/parks" className="flex items-center gap-2 text-[12px] font-bold text-sunset hover:text-white uppercase tracking-wider transition-colors duration-200 group/link">
-                                    Ver todos...
-                                    <span className="group-hover/link:translate-x-1 transition-transform">→</span>
-                                </Link>
-                            </div>
+                            {section.links.map((link) => (
+                              <Link
+                                key={link.href}
+                                href={link.href}
+                                onClick={() => setDesktopMenu(null)}
+                                className="group flex items-center justify-between w-full py-2 pr-4"
+                              >
+                                <div className="flex items-center gap-2">
+                                  <span className={`text-[14px] font-medium tracking-tight transition-colors duration-200 antialiased font-sans ${
+                                    link.highlight
+                                      ? 'text-sunset drop-shadow-[0_0_8px_rgba(255,112,67,0.4)]'
+                                      : 'text-white/90 group-hover:text-sunset'
+                                  }`}>
+                                    {link.label}
+                                  </span>
+                                  {link.badge && (
+                                    <span className="px-1.5 py-0.5 bg-sunset text-gunmetal text-[9px] font-bold rounded-sm tracking-wide font-mono">
+                                      {link.badge}
+                                    </span>
+                                  )}
+                                </div>
+                                <span className="text-sunset opacity-0 group-hover:opacity-100 transition-all duration-200 translate-x-[-10px] group-hover:translate-x-0">
+                                  <IconArrow />
+                                </span>
+                              </Link>
+                            ))}
                           </div>
-                        </>
-                    )}
-                    {activeMenu === 'universal' && (
-                        <>
-                           <MenuHeader>PARQUES TEMÁTICOS</MenuHeader>
-                          <div className="flex flex-col gap-1">
-                            <MenuLink href="/universal/epic" title="Epic Universe" highlight badge="2025" />
-                            <MenuLink href="/universal/us" title="Universal Studios" />
-                            <MenuLink href="/universal/ioa" title="Islands of Adventure" />
-                            <MenuLink href="/universal/volcano" title="Volcano Bay" />
-                          </div>
-                        </>
-                    )}
-                    {activeMenu === 'shoppinear' && (
-                        <>
-                          <MenuHeader>PREMIUM OUTLETS</MenuHeader>
-                          <div className="flex flex-col gap-1"><MenuLink href="/shop/vineland" title="Vineland Ave" /><MenuLink href="/shop/intl" title="International Dr" /></div>
-                        </>
-                    )}
-                  </div>
-
-                  {/* COL 2 */}
-                  <div className="col-span-1 px-8">
-                    {activeMenu === 'planning' && (
-                         <>
-                           <MenuHeader>HERRAMIENTAS</MenuHeader>
-                           <div className="flex flex-col gap-1"><MenuLink href="#" title="Calculadora de Gastos" /><MenuLink href="#" title="Checklists PDF" /><MenuLink href="#" title="Agente GATE" highlight /></div>
-                        </>
-                    )}
-                    {activeMenu === 'disney' && (
-                         <>
-                          <MenuHeader>LOGÍSTICA & TICKETS</MenuHeader>
-                          <div className="flex flex-col gap-1"><MenuLink href="/disney/tickets" title="Tickets Inteligentes" /><MenuLink href="/disney/ll" title="Lightning Lane" highlight badge="PRO" /><MenuLink href="/disney/virtual" title="Filas Virtuales" /></div>
-                        </>
-                    )}
-                     {activeMenu === 'universal' && (
-                         <>
-                           <MenuHeader>CITYWALK</MenuHeader>
-                           <div className="flex flex-col gap-1"><MenuLink href="/universal/citywalk-dining" title="Mejores Restaurantes" /><MenuLink href="/universal/citywalk-entertainment" title="Entretenimiento" /></div>
-                        </>
-                    )}
-                    {activeMenu === 'shoppinear' && (
-                         <>
-                          <MenuHeader>MALLS & LUJO</MenuHeader>
-                          <div className="flex flex-col gap-1"><MenuLink href="/shop/millenia" title="Mall at Millenia" /><MenuLink href="/shop/florida" title="The Florida Mall" /></div>
-                        </>
-                    )}
-                  </div>
-
-                  {/* COL 3 */}
-                  <div className="col-span-1 px-8">
-                    {activeMenu === 'planning' && (
-                         <>
-                          <MenuHeader>SOPORTE</MenuHeader>
-                          <div className="flex flex-col gap-1"><MenuLink href="#" title="Comunidad" /><MenuLink href="#" title="Ayuda" /></div>
-                        </>
-                    )}
-                    {activeMenu === 'disney' && (
-                         <>
-                           <MenuHeader>HOTELES & RESORTS</MenuHeader>
-                           <div className="flex flex-col gap-1"><MenuLink href="#" title="Skyliner Resorts" /><MenuLink href="#" title="Monorail Resorts" /><MenuLink href="#" title="Walking Distance" /></div>
-                        </>
-                    )}
-                    {activeMenu === 'universal' && (
-                         <>
-                           <MenuHeader>TICKETS & PASES</MenuHeader>
-                           <div className="flex flex-col gap-1"><MenuLink href="/universal/tickets" title="Park-to-Park" /><MenuLink href="/universal/express" title="Express Pass Hack" /><MenuLink href="/universal/vip" title="VIP Experience" /></div>
-                        </>
-                    )}
-                     {activeMenu === 'shoppinear' && (
-                         <>
-                           <MenuHeader>ESTRATEGIA</MenuHeader>
-                           <div className="flex flex-col gap-1"><MenuLink href="/shop/coupons" title="Cuponeras Digitales" /><MenuLink href="/shop/clearance" title="Rutas de Clearance" /></div>
-                        </>
-                    )}
-                  </div>
-
-                  {/* COL 4 */}
-                  <div className="col-span-1 border-r border-white/10 px-8">
-                     {renderSpotlightCard(activeMenu || '')}
-                  </div>
-
-                  {/* COL 5 */}
-                  <div className="col-span-1 pl-8">
-                    {activeMenu && SPOTLIGHTS[activeMenu] && (
-                        <div className="pt-0"> 
-                            <MenuHeader>{SPOTLIGHTS[activeMenu].guideTitle}</MenuHeader>
-                            <p className="text-[13px] text-white/60 leading-relaxed font-medium font-sans border-t border-white/10 pt-4 mt-2">
-                                {SPOTLIGHTS[activeMenu].guideText}
-                            </p>
                         </div>
+                      ))}
+                    </div>
+
+                    {/* SPOTLIGHT */}
+                    {item.spotlight && (
+                      <div className="w-[280px] border-l border-white/10 pl-10">
+                        <div className="flex items-center gap-2 mb-4 text-white/40">
+                          <span className="text-[10px] font-bold tracking-[0.2em] uppercase font-mono">{item.spotlight.tag}</span>
+                        </div>
+                        <h3 className="text-xl font-bold text-white mb-2 leading-tight font-display tracking-tight">
+                          {item.spotlight.title}
+                        </h3>
+                        <p className="text-[13px] text-white/60 leading-relaxed font-medium font-sans">
+                          {item.spotlight.desc}
+                        </p>
+                      </div>
                     )}
                   </div>
                 </div>
-              </div>
-            </motion.div>
-          )}
+              </motion.div>
+            );
+          })()}
         </AnimatePresence>
       </header>
-      
-      {/* MOBILE MENU */}
+
+      {/* ══ MENÚ MOBILE (Full-screen overlay) ══ */}
       <AnimatePresence>
-        {mobileMenuOpen && (
-           <motion.div initial={{ opacity: 0, x: "100%" }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: "100%" }} transition={{ type: "spring", damping: 30, stiffness: 300 }}
-           className="fixed inset-0 bg-gunmetal z-50 pt-28 px-6 overflow-y-auto text-white"
-         >
-            <div className="flex flex-col gap-8 pb-10">
-              {NAV_LABELS.map((item) => (<div key={item.id} className="border-b border-white/10 pb-6"><Link href={item.href || '#'} className="text-xs font-bold text-white/50 uppercase tracking-widest mb-4 block font-mono">{item.label}</Link></div>))}
-              <Link href="/login" className="block text-center py-4 border border-white/30 rounded-full font-bold text-white font-sans hover:bg-white hover:text-gunmetal transition-colors">Log In</Link>
-              <Link href="/signup" className="block text-center py-4 bg-sunset text-gunmetal rounded-full font-bold font-sans hover:brightness-110 transition-colors">Sign Up</Link>
+        {mobileOpen && (
+          <motion.div
+            id="mobile-menu"
+            ref={mobileMenuRef}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Menú de navegación"
+            initial={{ opacity: 0, x: '100%' }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: '100%' }}
+            transition={{ type: 'spring', damping: 30, stiffness: 300 }}
+            className="fixed inset-0 bg-gunmetal z-[60] flex flex-col overflow-y-auto"
+          >
+            {/* Header del menú mobile */}
+            <div className="flex items-center justify-between px-6 h-[72px] border-b border-white/10 shrink-0">
+              <Link href="/" className="text-2xl font-bold text-white font-display tracking-tight" onClick={() => setMobileOpen(false)}>
+                O247
+              </Link>
+              <button
+                onClick={() => setMobileOpen(false)}
+                className="p-3 min-w-[48px] min-h-[48px] flex items-center justify-center text-white/60 hover:text-white transition-colors"
+                aria-label="Cerrar menú"
+              >
+                <IconClose />
+              </button>
             </div>
-         </motion.div>
+
+            {/* Items de navegación */}
+            <nav className="flex-1 px-6 pt-6 pb-8" aria-label="Navegación móvil">
+              <div className="flex flex-col gap-2">
+                {NAV_ITEMS.map((item) => {
+                  if (item.href) {
+                    // Link directo
+                    return (
+                      <Link
+                        key={item.id}
+                        href={item.href}
+                        onClick={() => setMobileOpen(false)}
+                        className="flex items-center justify-between py-4 px-4 text-white font-medium text-base rounded-xl hover:bg-white/5 transition-colors min-h-[48px]"
+                      >
+                        {item.label}
+                        <IconArrow />
+                      </Link>
+                    );
+                  }
+
+                  // Sección expandible
+                  const isExpanded = mobileExpanded === item.id;
+                  return (
+                    <div key={item.id}>
+                      <button
+                        onClick={() => toggleMobileSection(item.id)}
+                        className={`flex items-center justify-between w-full py-4 px-4 text-white font-medium text-base rounded-xl transition-colors min-h-[48px] ${
+                          isExpanded ? 'bg-white/5' : 'hover:bg-white/5'
+                        }`}
+                        aria-expanded={isExpanded}
+                      >
+                        <span>{item.label}</span>
+                        <IconChevron open={isExpanded} />
+                      </button>
+
+                      <AnimatePresence>
+                        {isExpanded && item.sections && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: 'auto', opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.25 }}
+                            className="overflow-hidden"
+                          >
+                            <div className="pl-4 pr-2 pb-4 pt-2">
+                              {item.sections.map((section) => (
+                                <div key={section.title} className="mb-4 last:mb-0">
+                                  <div className="text-[10px] font-bold tracking-[0.2em] text-white/30 uppercase font-mono mb-3 px-4">
+                                    {section.title}
+                                  </div>
+                                  {section.links.map((link) => (
+                                    <Link
+                                      key={link.href}
+                                      href={link.href}
+                                      onClick={() => setMobileOpen(false)}
+                                      className="flex items-center gap-3 py-3 px-4 rounded-lg hover:bg-white/5 transition-colors min-h-[44px]"
+                                    >
+                                      <span className={`text-sm font-medium ${
+                                        link.highlight ? 'text-sunset' : 'text-white/80'
+                                      }`}>
+                                        {link.label}
+                                      </span>
+                                      {link.badge && (
+                                        <span className="px-1.5 py-0.5 bg-sunset text-gunmetal text-[9px] font-bold rounded-sm tracking-wide font-mono">
+                                          {link.badge}
+                                        </span>
+                                      )}
+                                    </Link>
+                                  ))}
+                                </div>
+                              ))}
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  );
+                })}
+              </div>
+            </nav>
+
+            {/* Botones de auth (mobile) */}
+            <div className="px-6 pb-8 pt-4 border-t border-white/10 shrink-0 flex flex-col gap-3">
+              <Link
+                href="/login"
+                onClick={() => setMobileOpen(false)}
+                className="block text-center py-4 border border-white/30 rounded-full font-bold text-white font-sans hover:bg-white hover:text-gunmetal transition-colors min-h-[48px]"
+              >
+                Log In
+              </Link>
+              <Link
+                href="/signup"
+                onClick={() => setMobileOpen(false)}
+                className="block text-center py-4 bg-sunset text-gunmetal rounded-full font-bold font-sans hover:brightness-110 transition-colors min-h-[48px]"
+              >
+                Sign Up
+              </Link>
+            </div>
+          </motion.div>
         )}
       </AnimatePresence>
     </>
   );
-};
-
-export default Navbar;
+}

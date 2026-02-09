@@ -23,7 +23,7 @@ const HeroScrollWrapper = ({ children }: { children: React.ReactNode }) => {
   const overlayOpacity = useTransform(scrollYProgress, [0, 0.5], [0, 0.2]);
 
   return (
-    <div ref={containerRef} className="h-[120vh] w-full relative flex items-start justify-center bg-[#f7f7f5]">
+    <div ref={containerRef} className="h-[120vh] w-full relative flex items-start justify-center bg-bone">
       <div className="sticky top-0 w-full h-screen overflow-hidden">
         <motion.div
           style={{ scale, borderRadius }}

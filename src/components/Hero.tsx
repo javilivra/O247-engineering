@@ -1,8 +1,8 @@
-// @STATUS: GOLDEN MASTER V6 - FINAL POLISH & SYNC
+// @STATUS: GOLDEN MASTER V-FINAL - FIXED TYPESCRIPT VARIANTS
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion'; 
+import { motion, Variants } from 'framer-motion'; // <--- AGREGADO: Variants
 import ParallaxText from "./ParallaxText"; 
 import SmartAssistantDemo from './SmartAssistantDemo';
 
@@ -49,23 +49,23 @@ const useTypewriter = (phrases: string[]) => {
   return text;
 };
 
-// --- VARIANTES DE ANIMACIÓN ---
-const containerVariants = {
+// --- VARIANTES DE ANIMACIÓN (TIPADAS CORRECTAMENTE) ---
+const containerVariants: Variants = { // <--- TIPADO EXPLÍCITO
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
     transition: { 
-      staggerChildren: 0.3, // Cascada suave entre textos
+      staggerChildren: 0.3,
       delayChildren: 0.2 
     }
   }
 };
 
-const itemVariants = {
+const itemVariants: Variants = { // <--- TIPADO EXPLÍCITO
   hidden: { opacity: 0, y: 30 },
   visible: { 
     opacity: 1, y: 0,
-    transition: { duration: 1.2, ease: [0.25, 0.1, 0.25, 1.0] } // Curva cinemática
+    transition: { duration: 1.2, ease: [0.25, 0.1, 0.25, 1.0] } // Ahora TS sabe que esto es una curva Bezier válida
   }
 };
 
@@ -91,7 +91,6 @@ const Hero = () => {
             backgroundPosition: "center center", 
           }} 
         />
-        {/* Máscaras de fusión con el fondo */}
         <div className="absolute inset-0 bg-gradient-to-r from-gunmetal via-gunmetal/90 to-transparent w-[80%]" />
         <div className="absolute inset-0 bg-gradient-to-t from-gunmetal via-transparent to-transparent opacity-80" />
       </div>
@@ -99,7 +98,7 @@ const Hero = () => {
       {/* 2. CONTENT GRID */}
       <div className="w-full max-w-[1400px] mx-auto px-8 h-full flex items-center relative z-10">
         
-        {/* COLUMNA 1: IZQUIERDA (Cascada de Textos) */}
+        {/* COLUMNA 1: IZQUIERDA */}
         <motion.div 
           className="w-full lg:w-3/5 flex flex-col justify-center items-start text-left pt-12"
           variants={containerVariants}
@@ -136,7 +135,7 @@ const Hero = () => {
             </p>
           </motion.div>
 
-          {/* Search Bar Inteligente */}
+          {/* Search Bar */}
           <motion.div variants={itemVariants} className="w-full">
             <div className="w-full max-w-2xl relative group">
                 <div className="relative overflow-hidden rounded-full bg-white/10 border border-white/20 backdrop-blur-md transition-all duration-500 group-focus-within:bg-bone group-focus-within:border-transparent group-focus-within:shadow-[0_0_40px_rgba(255,112,67,0.1)]">
@@ -158,7 +157,6 @@ const Hero = () => {
         </motion.div>
 
         {/* COLUMNA 2: DERECHA (Demo IA) */}
-        {/* Entra con Delay de 1.8s para respetar la lectura de la Columna 1 */}
         <motion.div 
             initial={{ opacity: 0, x: 40, filter: "blur(12px)" }}
             animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}

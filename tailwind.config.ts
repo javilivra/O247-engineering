@@ -9,9 +9,12 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        // Ajustado al Brief Maestro: Google Sans + Geist
-        display: ["var(--font-google-sans)", "sans-serif"],
-        sans: ["var(--font-geist-sans)", "sans-serif"],
+        // CORRECCIÓN CRÍTICA:
+        // Ahora apuntan a las variables reales definidas en globals.css (--font-primary)
+        // Esto forzará Google Sans Flex en todo el sitio.
+        display: ["var(--font-primary)", "sans-serif"],
+        sans: ["var(--font-primary)", "sans-serif"],
+        mono: ["var(--font-tech)", "monospace"], // JetBrains Mono para datos técnicos
       },
       colors: {
         // 🌑 GUNMETAL
@@ -34,12 +37,17 @@ const config: Config = {
           DEFAULT: "#00B4D8",
           soft: "#E0F7FA",
         },
-        // 🌿 VANGUARD GREEN (Necesario para el status "AHORA" y alertas)
+        // 🌿 VANGUARD GREEN
         "vanguard-green": "#a7e26e",
       },
-      // Animaciones integradas correctamente dentro de 'extend'
+      // Sistema de Sombras Custom
+      boxShadow: {
+        'averi': '0 4px 20px -2px rgba(37, 52, 63, 0.12)',
+        'averi-reverse': '-10px -10px 30px rgba(37, 52, 63, 0.03)',
+      },
       animation: {
-        marquee: 'marquee 40s linear infinite',
+        'marquee': 'marquee 40s linear infinite',
+        'marquee-fast': 'marquee 20s linear infinite',
       },
       keyframes: {
         marquee: {

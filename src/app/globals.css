@@ -178,3 +178,32 @@ html.lenis, html.lenis body {
 .lenis.lenis-scrolling iframe {
   pointer-events: none;
 }
+
+/* =========================================================================
+   FASE 4: MEJORAS DE ACCESIBILIDAD (WCAG Focus & Utils)
+   ========================================================================= */
+
+/* Anillo de foco visible SOLO para navegación por teclado */
+:focus-visible {
+  outline: 2px solid #FF7043; /* Color Sunset - Alto contraste */
+  outline-offset: 2px;
+}
+
+/* Asegurar contraste en selección de texto para legibilidad */
+::selection {
+  background-color: #FF7043; /* Sunset */
+  color: #1a1a1a; /* Gunmetal */
+}
+
+/* Utilidad para esconder elementos visualmente pero mantenerlos para lectores de pantalla (Screen Readers) */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
