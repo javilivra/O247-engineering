@@ -1,12 +1,13 @@
-// @STATUS: REFACTORED V6.0 — MOBILE-FIRST + A11Y
+// @STATUS: REFACTORED V6.0 -- MOBILE-FIRST + A11Y
 "use client";
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useModal } from "@/context/ModalContext";
 
-// ─── ICONOS SVG (Inline, zero-dependency) ───
+// --- ICONOS SVG (Inline, zero-dependency) ---
 const IconHamburger = () => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M4 6h16M4 12h16M4 18h16" />
@@ -39,7 +40,7 @@ const IconArrow = () => (
   </svg>
 );
 
-// ─── DATA ───
+// --- DATA ---
 interface NavItem {
   id: string;
   label: string;
@@ -88,12 +89,13 @@ const NAV_ITEMS: NavItem[] = [
     spotlight: { tag: 'DESTACADO', title: 'Guía Lightning Lane', desc: 'Domina el sistema de filas rápidas y evita esperas.' },
     sections: [
       {
-        title: 'PARQUES TEMÁTICOS',
+        title: 'PARQUES TEMATICOS',
         links: [
           { href: '/disney/mk', label: 'Magic Kingdom' },
           { href: '/disney/epcot', label: 'EPCOT' },
           { href: '/disney/hs', label: 'Hollywood Studios' },
           { href: '/disney/ak', label: 'Animal Kingdom' },
+          { href: '/disney/parks', label: 'Ver Todos los Parques', highlight: true },
         ],
       },
       {
@@ -120,12 +122,13 @@ const NAV_ITEMS: NavItem[] = [
     spotlight: { tag: 'NUEVO', title: 'Epic Universe 2025', desc: 'Todo sobre el nuevo parque temático más grande.' },
     sections: [
       {
-        title: 'PARQUES TEMÁTICOS',
+        title: 'PARQUES TEMATICOS',
         links: [
           { href: '/universal/epic', label: 'Epic Universe', badge: '2025', highlight: true },
           { href: '/universal/us', label: 'Universal Studios' },
           { href: '/universal/ioa', label: 'Islands of Adventure' },
           { href: '/universal/volcano', label: 'Volcano Bay' },
+          { href: '/universal/parks', label: 'Ver Todos los Parques', highlight: true },
         ],
       },
       {
@@ -140,20 +143,32 @@ const NAV_ITEMS: NavItem[] = [
   {
     id: 'shoppinear',
     label: 'Shoppinear',
-    spotlight: { tag: 'AHORRO', title: 'Cuponeras Premium', desc: 'Accede a descuentos secretos de Outlets.' },
+    spotlight: { tag: 'UTIL', title: 'Calculadora de Compras', desc: 'Calcula si realmente conviene comprar algo en Orlando vs. tu pais.' },
     sections: [
       {
-        title: 'PREMIUM OUTLETS',
+        title: 'PROTOCOLO DE COMPRAS',
         links: [
-          { href: '/shop/vineland', label: 'Vineland Ave' },
-          { href: '/shop/intl', label: 'International Dr' },
+          { href: '/shoppinear#protocolo', label: 'Matriz de Decision' },
+          { href: '/shoppinear#protocolo', label: 'Ropa y Calzado' },
+          { href: '/shoppinear#protocolo', label: 'Tecnologia' },
+          { href: '/shoppinear#protocolo', label: 'Souvenirs y Merch' },
         ],
       },
       {
-        title: 'MALLS & ESTRATEGIA',
+        title: 'DONDE COMPRAR',
         links: [
-          { href: '/shop/millenia', label: 'Mall at Millenia' },
-          { href: '/shop/coupons', label: 'Cuponeras Digitales' },
+          { href: '/shoppinear#zonas', label: 'Premium Outlets' },
+          { href: '/shoppinear#zonas', label: 'Disney Springs' },
+          { href: '/shoppinear#zonas', label: 'Walmart & Target' },
+          { href: '/shoppinear#zonas', label: 'Ver Todas las Zonas', highlight: true },
+        ],
+      },
+      {
+        title: 'HERRAMIENTAS',
+        links: [
+          { href: '/shoppinear#calculadora', label: 'Calculadora de Compras', highlight: true },
+          { href: '/shoppinear#tips', label: 'Tips de Ahorro' },
+          { href: '/shoppinear#tips', label: 'Guia Tax-Free' },
         ],
       },
     ],
@@ -162,8 +177,9 @@ const NAV_ITEMS: NavItem[] = [
   { id: 'faq', label: 'FAQ', href: '/#faq' },
 ];
 
-// ─── COMPONENTE PRINCIPAL ───
+// --- COMPONENTE PRINCIPAL ---
 export default function Navbar() {
+  const { openSignUp } = useModal();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
   const [desktopMenu, setDesktopMenu] = useState<string | null>(null);
@@ -172,13 +188,13 @@ export default function Navbar() {
   const navRef = useRef<HTMLElement>(null);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
 
-  // ── Detección de páginas con hero oscuro ──
+  // -- Detección de páginas con hero oscuro --
   const isHome = pathname === '/';
   const IMMERSIVE_PATHS = ['tron', 'space', 'velocicoaster'];
   const isImmersive = IMMERSIVE_PATHS.some((p) => pathname.includes(p));
   const isTransparentHero = isHome || isImmersive;
 
-  // ── Scroll detection (throttled via rAF) ──
+  // -- Scroll detection (throttled via rAF) --
   useEffect(() => {
     let ticking = false;
     const onScroll = () => {
@@ -194,14 +210,14 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // ── Cerrar menú mobile al navegar ──
+  // -- Cerrar menú mobile al navegar --
   useEffect(() => {
     setMobileOpen(false);
     setMobileExpanded(null);
     setDesktopMenu(null);
   }, [pathname]);
 
-  // ── Scroll lock cuando menú mobile está abierto ──
+  // -- Scroll lock cuando menú mobile está abierto --
   useEffect(() => {
     if (mobileOpen) {
       document.body.style.overflow = 'hidden';
@@ -211,7 +227,7 @@ export default function Navbar() {
     return () => { document.body.style.overflow = ''; };
   }, [mobileOpen]);
 
-  // ── Escape handler ──
+  // -- Escape handler --
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -223,7 +239,7 @@ export default function Navbar() {
     return () => document.removeEventListener('keydown', onKeyDown);
   }, [mobileOpen, desktopMenu]);
 
-  // ── Focus trap para menú mobile ──
+  // -- Focus trap para menú mobile --
   useEffect(() => {
     if (!mobileOpen || !mobileMenuRef.current) return;
 
@@ -255,7 +271,7 @@ export default function Navbar() {
     return () => document.removeEventListener('keydown', trapFocus);
   }, [mobileOpen]);
 
-  // ── Lógica visual ──
+  // -- Lógica visual --
   const isDesktopMenuOpen = !!desktopMenu;
 
   const useDarkText = !isDesktopMenuOpen && (
@@ -278,14 +294,14 @@ export default function Navbar() {
     ? 'border-gunmetal/20 text-gunmetal hover:bg-gunmetal hover:text-white'
     : 'border-white/30 text-white hover:bg-white hover:text-gunmetal';
 
-  // ── Toggle mobile sub-menu ──
+  // -- Toggle mobile sub-menu --
   const toggleMobileSection = useCallback((id: string) => {
     setMobileExpanded((prev) => (prev === id ? null : id));
   }, []);
 
   return (
     <>
-      {/* ══ BACKDROP MEGA MENU (Desktop) ══ */}
+      {/* == BACKDROP MEGA MENU (Desktop) == */}
       <AnimatePresence>
         {desktopMenu && (
           <motion.div
@@ -297,7 +313,7 @@ export default function Navbar() {
         )}
       </AnimatePresence>
 
-      {/* ══ HEADER ══ */}
+      {/* == HEADER == */}
       <header
         ref={navRef}
         className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ease-in-out ${navBg}`}
@@ -306,7 +322,7 @@ export default function Navbar() {
         <div className="max-w-[1400px] mx-auto px-6 md:px-8 h-[72px] md:h-[80px] flex items-center justify-between relative z-50">
 
           {/* LOGO */}
-          <Link href="/" className="flex items-center gap-2 group" aria-label="O247 — Ir al inicio">
+          <Link href="/" className="flex items-center gap-2 group" aria-label="O247 -- Ir al inicio">
             <span className={`text-2xl font-bold tracking-tight antialiased font-display ${logoClass}`}>
               O247
             </span>
@@ -353,12 +369,12 @@ export default function Navbar() {
             >
               Log In
             </Link>
-            <Link
-              href="/signup"
+            <button
+              onClick={openSignUp}
               className="px-5 py-2 rounded-full bg-sunset text-gunmetal text-[13px] font-bold tracking-wide hover:brightness-110 transition-all duration-300 font-sans overflow-hidden hover:shadow-[0_0_15px_rgba(255,112,67,0.4)]"
             >
               Sign Up
-            </Link>
+            </button>
           </div>
 
           {/* HAMBURGER (Mobile) */}
@@ -373,7 +389,7 @@ export default function Navbar() {
           </button>
         </div>
 
-        {/* ══ MEGA MENU DESKTOP ══ */}
+        {/* == MEGA MENU DESKTOP == */}
         <AnimatePresence>
           {desktopMenu && (() => {
             const item = NAV_ITEMS.find((i) => i.id === desktopMenu);
@@ -453,7 +469,7 @@ export default function Navbar() {
         </AnimatePresence>
       </header>
 
-      {/* ══ MENÚ MOBILE (Full-screen overlay) ══ */}
+      {/* == MENÚ MOBILE (Full-screen overlay) == */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
@@ -571,13 +587,15 @@ export default function Navbar() {
               >
                 Log In
               </Link>
-              <Link
-                href="/signup"
-                onClick={() => setMobileOpen(false)}
-                className="block text-center py-4 bg-sunset text-gunmetal rounded-full font-bold font-sans hover:brightness-110 transition-colors min-h-[48px]"
+              <button
+                onClick={() => {
+                  setMobileOpen(false);
+                  openSignUp();
+                }}
+                className="block text-center py-4 bg-sunset text-gunmetal rounded-full font-bold font-sans hover:brightness-110 transition-colors min-h-[48px] w-full"
               >
                 Sign Up
-              </Link>
+              </button>
             </div>
           </motion.div>
         )}

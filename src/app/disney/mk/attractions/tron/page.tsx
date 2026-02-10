@@ -324,7 +324,7 @@ export default function TronPage() {
                                 </p>
                             </div>
                             <div>
-                                <h4 className="text-celeste font-bold text-celeste text-[10px] tracking-widest uppercase mb-2">LLAVES DIGITALES</h4>
+                                <h4 className="text-celeste font-bold text-[10px] tracking-widest uppercase mb-2">LLAVES DIGITALES</h4>
                                 <p className="text-xs text-white/70 leading-relaxed">
                                     Asegura tu entrada vía Fila Virtual (07:00 / 13:00) o despliega fondos ILL para acceso prioritario inmediato.
                                 </p>

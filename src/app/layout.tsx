@@ -8,6 +8,8 @@ import CookieConsent from "@/components/CookieConsent";
 import SmoothScroll from "@/components/SmoothScroll"; 
 import Navbar from "@/components/Navbar"; 
 import GlobalBreadcrumbs from "@/components/GlobalBreadcrumbs";
+import Footer from "@/components/Footer";
+import { ModalProvider } from "@/context/ModalContext";
 
 // 1. CONFIGURACIÓN DE FUENTES
 // Mantenemos JetBrains Mono optimizada con next/font
@@ -73,14 +75,16 @@ export default function RootLayout({
         className="antialiased min-h-screen bg-bone text-gunmetal font-sans selection:bg-sunset selection:text-white"
         // F12: Eliminamos la supresión de errores para asegurar calidad de código
       >
-        {/* UI SHELL GLOBAL */}
-        <Navbar />
-        <SmoothScroll>
-           <GlobalBreadcrumbs />
-           {children}
-        </SmoothScroll>
-
-        <CookieConsent />
+        <ModalProvider>
+          {/* UI SHELL GLOBAL */}
+          <Navbar />
+          <SmoothScroll>
+             <GlobalBreadcrumbs />
+             {children}
+          </SmoothScroll>
+          <CookieConsent />
+          <Footer />
+        </ModalProvider>
       </body>
     </html>
   );
