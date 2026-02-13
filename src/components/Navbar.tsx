@@ -102,7 +102,7 @@ const NAV_ITEMS: NavItem[] = [
         title: 'LOGÍSTICA & TICKETS',
         links: [
           { href: '/disney/tickets', label: 'Tickets Inteligentes' },
-          { href: '/disney/ll', label: 'Lightning Lane', badge: 'PRO', highlight: true },
+          { href: '/disney/tickets#ll', label: 'Lightning Lane', badge: 'PRO', highlight: true },
           { href: '/disney/virtual', label: 'Filas Virtuales' },
         ],
       },
