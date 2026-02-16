@@ -46,18 +46,21 @@ function getTypeConfig(type: string) {
       return { accent: 'text-pink-400', bgBadge: 'bg-pink-500/20 text-pink-200', actionLabel: 'Ubicacion' };
     case 'Attraction':
     default:
-      return { accent: 'text-celeste', bgBadge: 'bg-celeste/20 text-celeste', actionLabel: 'Detalles' };
+      return { accent: 'text-celeste', bgBadge: 'bg-celeste/20 text-celeste', actionLabel: 'Ver detalles' };
   }
 }
 
 // =============================================
-// FRONT FACE (shared between Attraction + flip)
+// FRONT FACE
 // =============================================
 function CardFront({ data, config }: { data: ParkItem; config: ReturnType<typeof getTypeConfig> }) {
   const safeImage = (data.image && data.image.trim() !== '') ? data.image : '/images/mk_att_heroslide_1.webp';
 
   return (
-    <div className="absolute inset-0 rounded-3xl overflow-hidden backface-hidden">
+    <div
+      className="absolute inset-0 rounded-3xl overflow-hidden"
+      style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' }}
+    >
       {/* Image */}
       <div className="absolute inset-0 z-0">
         <Image
@@ -101,12 +104,6 @@ function CardFront({ data, config }: { data: ParkItem; config: ReturnType<typeof
           {data.name}
         </h3>
 
-        {data.description && (
-          <p className="text-xs text-white/60 line-clamp-2 mb-4 font-medium leading-relaxed hidden sm:block">
-            {data.description}
-          </p>
-        )}
-
         {/* Footer */}
         <div className="flex items-center justify-between border-t border-white/10 pt-3 mt-1">
           <div className="flex items-center gap-2">
@@ -140,7 +137,10 @@ function CardFront({ data, config }: { data: ParkItem; config: ReturnType<typeof
 // =============================================
 function CardBack({ data, config, onFlipBack }: { data: ParkItem; config: ReturnType<typeof getTypeConfig>; onFlipBack: () => void }) {
   return (
-    <div className="absolute inset-0 rounded-3xl overflow-hidden bg-gunmetal p-6 flex flex-col backface-hidden [transform:rotateY(180deg)]">
+    <div
+      className="absolute inset-0 rounded-3xl overflow-hidden bg-gunmetal p-6 flex flex-col"
+      style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
+    >
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div className={`${config.bgBadge} backdrop-blur-md text-[9px] font-black px-2.5 py-1 rounded-lg uppercase tracking-[0.15em] border border-white/5`}>
@@ -199,11 +199,11 @@ export default function BentoCard({ data }: { data: ParkItem }) {
   const [isFlipped, setIsFlipped] = useState(false);
   const config = getTypeConfig(data.type);
 
-  // Attractions -> Link to detail page
+  // Attractions -> Link to detail page (NO flip)
   if (data.type === 'Attraction') {
     const slug = (data as any).slug || data.id.replace(/_/g, '-');
     return (
-      <Link href={`/disney/mk/attractions/${slug}`} className="block group">
+      <Link href={`/disney/mk/${slug}`} className="block group">
         <motion.div
           whileHover={{ y: -5, scale: 1.01 }}
           className="relative h-64 md:h-72 w-full rounded-3xl overflow-hidden cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-300 bg-gunmetal"
@@ -214,16 +214,16 @@ export default function BentoCard({ data }: { data: ParkItem }) {
     );
   }
 
-  // Dining, Shows, Characters -> Flip card
+  // Dining, Shows, Characters -> Flip card on click
   return (
     <div
       className="group cursor-pointer"
-      style={{ perspective: '1000px' }}
+      style={{ perspective: '1200px' }}
       onClick={() => setIsFlipped(!isFlipped)}
     >
       <motion.div
         animate={{ rotateY: isFlipped ? 180 : 0 }}
-        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         className="relative h-64 md:h-72 w-full shadow-lg hover:shadow-2xl transition-shadow duration-300"
         style={{ transformStyle: 'preserve-3d' }}
       >

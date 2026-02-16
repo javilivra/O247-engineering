@@ -5,7 +5,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useModal } from "@/context/ModalContext";
+// Auth removed in Phase 1
 
 // --- ICONOS SVG (Inline, zero-dependency) ---
 const IconHamburger = () => (
@@ -59,30 +59,6 @@ interface NavSection {
 }
 
 const NAV_ITEMS: NavItem[] = [
-  {
-    id: 'planning',
-    label: 'Planning',
-    spotlight: { tag: 'SPOTLIGHT', title: 'El Algoritmo O247', desc: 'Ingeniería aplicada para maximizar la diversión.' },
-    sections: [
-      {
-        title: 'CÓMO, CUÁNDO Y DÓNDE',
-        links: [
-          { href: '/planning/method', label: 'Metodología O247' },
-          { href: '/planning/start', label: 'Primeros Pasos' },
-          { href: '/planning/calendar', label: 'Crowd Calendar', badge: 'VITAL' },
-          { href: '/planning/budget', label: 'Ingeniería de Costos' },
-        ],
-      },
-      {
-        title: 'HERRAMIENTAS',
-        links: [
-          { href: '/planning/calculator', label: 'Calculadora de Gastos' },
-          { href: '/planning/checklists', label: 'Checklists PDF' },
-          { href: '/planning/gate', label: 'Agente GATE', highlight: true },
-        ],
-      },
-    ],
-  },
   {
     id: 'disney',
     label: 'Disney World',
@@ -179,7 +155,7 @@ const NAV_ITEMS: NavItem[] = [
 
 // --- COMPONENTE PRINCIPAL ---
 export default function Navbar() {
-  const { openSignUp } = useModal();
+  // Modal context no longer needed for auth
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
   const [desktopMenu, setDesktopMenu] = useState<string | null>(null);
@@ -290,10 +266,6 @@ export default function Navbar() {
 
   const logoClass = useDarkText ? 'text-gunmetal' : 'text-white';
 
-  const loginBorder = useDarkText
-    ? 'border-gunmetal/20 text-gunmetal hover:bg-gunmetal hover:text-white'
-    : 'border-white/30 text-white hover:bg-white hover:text-gunmetal';
-
   // -- Toggle mobile sub-menu --
   const toggleMobileSection = useCallback((id: string) => {
     setMobileExpanded((prev) => (prev === id ? null : id));
@@ -360,22 +332,6 @@ export default function Navbar() {
               </div>
             ))}
           </nav>
-
-          {/* BOTONES DESKTOP */}
-          <div className="hidden xl:flex items-center gap-3">
-            <Link
-              href="/login"
-              className={`px-5 py-2 rounded-full border text-[13px] antialiased transition-all duration-300 font-sans font-medium ${loginBorder}`}
-            >
-              Log In
-            </Link>
-            <button
-              onClick={openSignUp}
-              className="px-5 py-2 rounded-full bg-sunset text-gunmetal text-[13px] font-bold tracking-wide hover:brightness-110 transition-all duration-300 font-sans overflow-hidden hover:shadow-[0_0_15px_rgba(255,112,67,0.4)]"
-            >
-              Sign Up
-            </button>
-          </div>
 
           {/* HAMBURGER (Mobile) */}
           <button
@@ -578,25 +534,6 @@ export default function Navbar() {
               </div>
             </nav>
 
-            {/* Botones de auth (mobile) */}
-            <div className="px-6 pb-8 pt-4 border-t border-white/10 shrink-0 flex flex-col gap-3">
-              <Link
-                href="/login"
-                onClick={() => setMobileOpen(false)}
-                className="block text-center py-4 border border-white/30 rounded-full font-bold text-white font-sans hover:bg-white hover:text-gunmetal transition-colors min-h-[48px]"
-              >
-                Log In
-              </Link>
-              <button
-                onClick={() => {
-                  setMobileOpen(false);
-                  openSignUp();
-                }}
-                className="block text-center py-4 bg-sunset text-gunmetal rounded-full font-bold font-sans hover:brightness-110 transition-colors min-h-[48px] w-full"
-              >
-                Sign Up
-              </button>
-            </div>
           </motion.div>
         )}
       </AnimatePresence>

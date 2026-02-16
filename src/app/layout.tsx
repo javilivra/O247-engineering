@@ -1,4 +1,4 @@
-// @STATUS: GOLDEN MASTER V3.1 - INFRASTRUCTURE FIX (Google Sans Flex Version)
+// @STATUS: V4.0 - HOME REDESIGN + CUSTOM CURSOR
 import type { Metadata, Viewport } from "next";
 import { JetBrains_Mono } from "next/font/google"; 
 import "./globals.css";
@@ -9,36 +9,36 @@ import SmoothScroll from "@/components/SmoothScroll";
 import Navbar from "@/components/Navbar"; 
 import GlobalBreadcrumbs from "@/components/GlobalBreadcrumbs";
 import Footer from "@/components/Footer";
+import CustomCursor from "@/components/CustomCursor";
 import { ModalProvider } from "@/context/ModalContext";
 
 // 1. CONFIGURACIÓN DE FUENTES
-// Mantenemos JetBrains Mono optimizada con next/font
 const monoFont = JetBrains_Mono({
   subsets: ["latin"],
-  variable: "--font-mono", // Variable semántica corregida
+  variable: "--font-mono",
   display: "swap",
 });
 
-// 2. METADATA SEO COMPLETA (F27 - Hallazgo de Auditoría)
+// 2. METADATA SEO (Alineada a brand voice O247 — sin jerga técnica)
 export const metadata: Metadata = {
   title: {
     template: "%s | O247",
-    default: "O247 | Ingeniería de Viajes a Orlando",
+    default: "O247 | Planificá tu viaje a Orlando con claridad",
   },
-  description: "Plataforma de planificación estratégica para Disney World y Universal Studios. Algoritmos de optimización, guías tácticas y herramientas de ahorro.",
-  metadataBase: new URL("https://o247.com"), // Cambiar por tu dominio real cuando lo tengas
+  description: "La guía estructurada en español para Disney World y Universal Studios. Menos caos, mejores decisiones, más tiempo para disfrutar.",
+  metadataBase: new URL("https://o247.com"),
   openGraph: {
-    title: "O247 | Ingeniería de Viajes a Orlando",
-    description: "Maximiza tu viaje a Disney y Universal con ingeniería aplicada. Menos filas, más magia.",
+    title: "O247 | Planificá tu viaje a Orlando con claridad",
+    description: "Toda la información que necesitás para entender Orlando antes de reservar. Guías detalladas, criterio real y sin presión de venta.",
     url: "https://o247.com",
-    siteName: "O247 Engineering",
+    siteName: "O247",
     locale: "es_ES",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "O247 | Ingeniería de Viajes a Orlando",
-    description: "Planificación táctica para parques temáticos.",
+    title: "O247 | Planificá tu viaje a Orlando con claridad",
+    description: "Guías estructuradas para Disney World y Universal Studios en español.",
   },
   robots: {
     index: true,
@@ -58,10 +58,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    // F12: Idioma corregido a español
     <html lang="es" className={`${monoFont.variable}`}>
       <head>
-        {/* F05: Mantenemos tu fuente Google Sans Flex original */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link 
@@ -71,11 +69,12 @@ export default function RootLayout({
       </head>
       
       <body 
-        // Usamos bg-bone y text-gunmetal (tokens del sistema) en lugar de hexcodes hardcodeados
         className="antialiased min-h-screen bg-bone text-gunmetal font-sans selection:bg-sunset selection:text-white"
-        // F12: Eliminamos la supresión de errores para asegurar calidad de código
       >
         <ModalProvider>
+          {/* Custom Cursor — solo desktop, oculto en touch devices */}
+          <CustomCursor />
+          
           {/* UI SHELL GLOBAL */}
           <Navbar />
           <SmoothScroll>
