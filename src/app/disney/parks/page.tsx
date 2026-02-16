@@ -5,7 +5,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Icon } from "@iconify/react";
 import Link from "next/link";
 import ParkCard, { ParkData } from "@/components/parks/ParkCard";
-
+import ParkDetailHero from "@/components/parks/ParkDetailHero";
+import DistrictsGrid from "@/components/parks/DistrictsGrid";
+import LogisticsPanel from "@/components/parks/LogisticsPanel";
+import ActivityList from "@/components/parks/ActivityList";
 // ============================================================
 // DATA
 // ============================================================
@@ -58,7 +61,7 @@ const waterParksData: ParkData[] = [
     id: "tl",
     name: "Typhoon Lagoon",
     slogan: "Paraíso tropical con olas gigantes y toboganes para toda la familia.",
-    image: "/images/tl.jpg",
+    image: "/images/typhoon_lagoon.webp",
     temp: 31,
     stats: { attractions: 11, shows: 0 },
     schedule: { early: "N/A", regular: "10:00 - 17:00" },
@@ -68,7 +71,7 @@ const waterParksData: ParkData[] = [
     id: "bb",
     name: "Blizzard Beach",
     slogan: "Diversión helada bajo el sol de Florida. Temática de estación de ski.",
-    image: "/images/bb.jpg",
+    image: "/images/blizzard_beach.webp",
     temp: -2,
     stats: { attractions: 12, shows: 0 },
     schedule: { early: "N/A", regular: "CERRADO" },
@@ -254,6 +257,13 @@ export default function ParksPage() {
             );
           })}
         </motion.div>
+
+        <div id="active-view">
+            <ParkDetailHero />
+            <DistrictsGrid />
+            <LogisticsPanel />
+            <ActivityList />
+        </div>
 
         {/* ============ GLOSSARY (simplified) ============ */}
         <motion.div

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Icon } from '@iconify/react';
 import Link from 'next/link';
@@ -20,6 +20,102 @@ type CategoryOption = 'attractions' | 'dining' | 'shows' | 'characters';
 // VARIANTES DE ANIMACIÓN
 const containerVariants = { hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.1 } } };
 const itemVariants = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.8 } } };
+
+// ============================================================
+// HERO SLIDES
+// ============================================================
+
+const HERO_SLIDES = [
+  "/images/mk_att_heroslide_1.jpg.webp",
+  "/images/mk_att_heroslide_2.jpg",
+  "/images/mk_att_heroslide_3.webp",
+  "/images/mk_att_heroslide_4.jpg",
+  "/images/mk_att_heroslide_5.jpg",
+  "/images/mk_att_heroslide_6.jpg",
+  "/images/mk_att_heroslide_7.jpg",
+  "/images/mk_att_heroslide_8.jpg",
+  "/images/mk_att_heroslide_9.jpg",
+];
+
+const SLIDE_DURATION = 5000; // ms per slide
+
+// ============================================================
+// HERO CAROUSEL COMPONENT
+// ============================================================
+
+function HeroCarousel() {
+  const [current, setCurrent] = useState(0);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  const startAutoplay = useCallback(() => {
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    intervalRef.current = setInterval(() => {
+      setCurrent((prev) => (prev + 1) % HERO_SLIDES.length);
+    }, SLIDE_DURATION);
+  }, []);
+
+  useEffect(() => {
+    startAutoplay();
+    return () => { if (intervalRef.current) clearInterval(intervalRef.current); };
+  }, [startAutoplay]);
+
+  const goTo = (index: number) => {
+    setCurrent(index);
+    startAutoplay();
+  };
+
+  return (
+    <div className="absolute right-0 top-0 bottom-0 w-[75%] h-full pointer-events-none select-none">
+      <div
+        className="relative w-full h-full overflow-hidden"
+        style={{
+          maskImage: 'linear-gradient(to right, transparent 5%, black 40%)',
+          WebkitMaskImage: 'linear-gradient(to right, transparent 5%, black 40%)',
+        }}
+      >
+        <AnimatePresence mode="wait">
+          <motion.img
+            key={current}
+            src={HERO_SLIDES[current]}
+            alt={`Magic Kingdom ${current + 1}`}
+            initial={{ opacity: 0, scale: 1.08 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{
+              opacity: { duration: 0.8, ease: "easeOut" },
+              scale: { duration: 8, ease: "linear" },
+            }}
+            className="absolute inset-0 w-full h-full object-cover object-center"
+          />
+        </AnimatePresence>
+      </div>
+
+      {/* Slide indicators */}
+      <div className="absolute bottom-6 right-8 flex items-center gap-2 pointer-events-auto z-30">
+        {HERO_SLIDES.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => goTo(i)}
+            className={`relative h-1 rounded-full transition-all duration-500 overflow-hidden ${
+              i === current ? 'w-8 bg-white/30' : 'w-2 bg-white/20 hover:bg-white/40'
+            }`}
+            aria-label={`Slide ${i + 1}`}
+          >
+            {i === current && (
+              <motion.div
+                className="absolute inset-0 bg-sunset rounded-full origin-left"
+                initial={{ scaleX: 0 }}
+                animate={{ scaleX: 1 }}
+                transition={{ duration: SLIDE_DURATION / 1000, ease: "linear" }}
+                key={`progress-${current}`}
+              />
+            )}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 // ============================================================
 // CONFIGURACIÓN DE FILTROS
@@ -112,17 +208,14 @@ export default function MagicKingdomPage() {
   const [currentVibe, setCurrentVibe] = useState('all');
   const [sortBy, setSortBy] = useState<SortOption>('land');
 
-  // Reset sub-filter al cambiar categoría
   useEffect(() => { setCurrentVibe('all'); }, [category]);
 
-  // Alertas (solo atracciones cerradas/en refurbishment)
   const activeAlerts = MK_ATTRACTIONS.filter(
     (a) => a.status === 'closed' || a.status === 'refurbishment' || a.status === 'down'
   );
   const [alertIndex, setAlertIndex] = useState(0);
   const nextAlert = () => setAlertIndex((prev) => (prev + 1) % activeAlerts.length);
 
-  // Selección de base de datos
   const getSourceData = (): ParkItem[] => {
     switch (category) {
       case 'attractions': return MK_ATTRACTIONS;
@@ -133,7 +226,6 @@ export default function MagicKingdomPage() {
     }
   };
 
-  // Filtrado: LL filters buscan en campo 'access', el resto en 'vibes'
   const LL_FILTERS = ['LL Multi Pass', 'LL Single Pass', 'Virtual Queue'];
   const filtered = getSourceData().filter((item) => {
     if (currentVibe === 'all') return true;
@@ -143,7 +235,6 @@ export default function MagicKingdomPage() {
     return item.vibes.includes(currentVibe);
   });
 
-  // Ordenamiento
   const sortedItems = [...filtered].sort((a, b) => {
     switch (sortBy) {
       case 'name': return a.name.localeCompare(b.name);
@@ -158,14 +249,12 @@ export default function MagicKingdomPage() {
       <motion.div initial="hidden" animate="visible" variants={containerVariants}>
 
         {/* ============================================================ */}
-        {/* 1. HERO */}
+        {/* 1. HERO WITH CAROUSEL */}
         {/* ============================================================ */}
         <motion.div variants={itemVariants} className="relative w-full h-[550px] bg-bone flex items-center overflow-hidden px-6 md:px-12 lg:px-24">
-          <div className="absolute right-0 top-0 bottom-0 w-[75%] h-full pointer-events-none select-none">
-            <div className="relative w-full h-full" style={{ maskImage: 'linear-gradient(to right, transparent 5%, black 40%)', WebkitMaskImage: 'linear-gradient(to right, transparent 5%, black 40%)' }}>
-              <img src="/images/tron_mk.jpg" alt="Tron Lightcycle Run" className="w-full h-full object-cover object-center" />
-            </div>
-          </div>
+          
+          <HeroCarousel />
+
           <div className="relative z-20 w-full max-w-[1200px] mx-auto">
             <div className="max-w-[55%] flex flex-col justify-center">
               <div className="flex items-center gap-3 mb-5"><div className="h-px w-10 bg-gunmetal/20" /><h2 className="text-[10px] font-bold tracking-[0.25em] uppercase text-gunmetal/40">DONDE LA FANTASIA REINA</h2></div>
@@ -183,28 +272,23 @@ export default function MagicKingdomPage() {
         </motion.div>
 
         {/* ============================================================ */}
-        {/* 2. CONTEXTO + MÉTRICAS */}
+        {/* 2. CONTEXTO */}
         {/* ============================================================ */}
         <div className="max-w-[1200px] mx-auto px-6 md:px-12 lg:px-24">
           <motion.div variants={itemVariants} className="py-12 border-b border-gunmetal/5">
             <ContextualIntro />
           </motion.div>
-
-
         </div>
 
         {/* ============================================================ */}
         {/* 3. BARRA DE FILTROS PREMIUM (STICKY) */}
         {/* ============================================================ */}
         <div className="sticky top-0 z-40 transition-all">
-          {/* Fondo con blur para legibilidad */}
           <div className="absolute inset-0 bg-bone/95 backdrop-blur-xl border-b border-gunmetal/5" />
 
           <div className="relative z-10 max-w-[1200px] mx-auto px-6 md:px-12 lg:px-24 py-4 flex flex-col gap-4">
 
-            {/* NIVEL 1: CATEGORÍAS + SORT */}
             <div className="flex flex-col xl:flex-row items-center justify-between gap-4">
-              {/* Category Tabs */}
               <div className="flex items-center gap-1 bg-white p-1.5 rounded-2xl shadow-sm border border-gunmetal/8 w-full md:w-auto overflow-x-auto no-scrollbar">
                 {CATEGORY_TABS.map((tab) => {
                   const isActive = category === tab.id;
@@ -233,7 +317,6 @@ export default function MagicKingdomPage() {
                 })}
               </div>
 
-              {/* Sort Selector */}
               <div className="flex items-center bg-white border border-gunmetal/8 p-1 rounded-xl shadow-sm shrink-0 ml-auto">
                 <span className="hidden md:flex items-center gap-2 text-[9px] font-bold text-gunmetal/35 uppercase tracking-widest px-3 border-r border-gunmetal/8 mr-1">
                   <Icon icon="solar:sort-vertical-linear" className="text-sm" /> Ordenar
@@ -259,7 +342,6 @@ export default function MagicKingdomPage() {
               </div>
             </div>
 
-            {/* NIVEL 2: SUB-FILTROS (VIBES) */}
             <div className="w-full overflow-x-auto no-scrollbar">
               <div className="flex items-center gap-2 w-max">
                 {FILTER_OPTIONS[category]?.map((filter) => {
@@ -298,7 +380,6 @@ export default function MagicKingdomPage() {
         {/* ============================================================ */}
         <main className="max-w-[1200px] mx-auto px-6 md:px-12 lg:px-24 pt-8">
 
-          {/* Alertas */}
           {activeAlerts.length > 0 && category === 'attractions' && (
             <motion.div
               initial={{ opacity: 0, y: -20 }}
@@ -358,7 +439,6 @@ export default function MagicKingdomPage() {
             </motion.div>
           )}
 
-          {/* Grid de Cards */}
           <motion.div
             layout
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 auto-rows-auto pb-20"
