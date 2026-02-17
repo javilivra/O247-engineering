@@ -131,6 +131,8 @@
 │   │   ├── fonts
 │   │   ├── globals.css
 │   │   ├── layout.tsx
+│   │   ├── mapping
+│   │   │   └── page.tsx
 │   │   ├── not-found.tsx
 │   │   ├── page.tsx
 │   │   ├── planning
@@ -146,6 +148,7 @@
 │   │       └── parks
 │   │           └── page.tsx
 │   ├── components
+│   │   ├── AnnualMapping.tsx
 │   │   ├── CookieConsent.tsx
 │   │   ├── CustomCursor.tsx
 │   │   ├── Differentiators.tsx
@@ -180,6 +183,7 @@
 │   ├── context
 │   │   └── ModalContext.tsx
 │   ├── data
+│   │   ├── annual-mapping.ts
 │   │   ├── mk-attractions-data.ts
 │   │   ├── mk-characters-data.ts
 │   │   ├── mk-data.ts
@@ -188,6 +192,8 @@
 │   │   ├── mk-shows-data.ts
 │   │   ├── shoppinear-data.ts
 │   │   └── types.ts
-│   └── lib
+│   ├── lib
+│   └── services
+│       └── weather.ts
 ├── tailwind.config.ts
 └── tsconfig.json

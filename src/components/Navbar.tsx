@@ -1,11 +1,10 @@
-// @STATUS: REFACTORED V6.0 -- MOBILE-FIRST + A11Y
+// @STATUS: REFACTORED V6.1 -- ADDED MAPPING ANUAL SECTION
 "use client";
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-// Auth removed in Phase 1
 
 // --- ICONOS SVG (Inline, zero-dependency) ---
 const IconHamburger = () => (
@@ -44,7 +43,7 @@ const IconArrow = () => (
 interface NavItem {
   id: string;
   label: string;
-  href?: string;          // Link directo (FAQ, News)
+  href?: string;          // Link directo (FAQ, News, Mapping)
   sections?: NavSection[]; // Mega menu sections
   spotlight?: {
     tag: string;
@@ -149,13 +148,17 @@ const NAV_ITEMS: NavItem[] = [
       },
     ],
   },
-  { id: 'news', label: 'News247', href: '/news' },
+  // --- ACTUALIZACIÓN: MAPPING ANUAL ---
+  { 
+    id: 'mapping', 
+    label: 'Mapping Anual', 
+    href: '/mapping' 
+  },
   { id: 'faq', label: 'FAQ', href: '/#faq' },
 ];
 
 // --- COMPONENTE PRINCIPAL ---
 export default function Navbar() {
-  // Modal context no longer needed for auth
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
   const [desktopMenu, setDesktopMenu] = useState<string | null>(null);
