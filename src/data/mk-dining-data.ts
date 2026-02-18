@@ -11,7 +11,7 @@ export const MK_DINING: ParkItem[] = [
     waitTime: 'Mobile Order',
     type: 'Dining',
     vibes: ['quick', 'snack'],
-    image: 'https://cdn1.parksmedia.wdpromedia.com/media/resort/1/18185_header_caseys_corner.jpg',
+    image: '/images/dinning/mk/caseys-corner.webp',
     description: 'Los famosos hot dogs y corn dogs de Main Street con pianista en vivo.',
   },
   {
@@ -23,7 +23,7 @@ export const MK_DINING: ParkItem[] = [
     waitTime: 'Reservas',
     type: 'Dining',
     vibes: ['table', 'indoor'],
-    image: 'https://cdn1.parksmedia.wdpromedia.com/media/resort/1/18196_header_be_our_guest.jpg',
+    image: '/images/dinning/mk/be-our-guest-restaurant-beauty-b.webp ',
     description: 'Cena dentro del castillo de la Bestia. Una experiencia inmersiva francesa.',
   },
   {
@@ -35,7 +35,7 @@ export const MK_DINING: ParkItem[] = [
     waitTime: 'Mobile Order',
     type: 'Dining',
     vibes: ['quick', 'indoor', 'ac'],
-    image: 'https://cdn1.parksmedia.wdpromedia.com/media/resort/1/18190_header_cosmic_rays.jpg',
+    image: '/images/dinning/mk/cosmic-rays-starlight-cafe.webp',
     description: 'Hamburguesas y pollo con el alienígena Sonny Eclipse tocando el piano.',
   },
   {
@@ -47,7 +47,7 @@ export const MK_DINING: ParkItem[] = [
     waitTime: 'Mobile Order',
     type: 'Dining',
     vibes: ['snack', 'chill'],
-    image: 'https://cdn1.parksmedia.wdpromedia.com/media/resort/1/18206_header_aloha_isle.jpg',
+    image: '/images/dinning/mk/aloha_isle.webp',
     description: 'El hogar del legendario Dole Whip. Un clásico imperdible.',
   },
   {
@@ -59,7 +59,7 @@ export const MK_DINING: ParkItem[] = [
     waitTime: '15 min',
     type: 'Dining',
     vibes: ['coffee', 'snack'],
-    image: 'https://cdn1.parksmedia.wdpromedia.com/media/resort/1/18182_header_main_street_bakery.jpg',
+    image: '/images/dinning/mk/main-street-bakery.webp',
     description: 'Tu parada obligatoria para café Starbucks y treats de Disney.',
   },
   {
@@ -71,7 +71,7 @@ export const MK_DINING: ParkItem[] = [
     waitTime: 'Reservas',
     type: 'Dining',
     vibes: ['table', 'indoor', 'chill'],
-    image: 'https://cdn1.parksmedia.wdpromedia.com/media/resort/1/18203_header_skipper_canteen.jpg',
+    image: '/images/dinning/mk/Jungle_Navigation_Co_1.webp',
     description: 'Cocina exótica servida por los bromistas skippers del Jungle Cruise.',
   },
 ];

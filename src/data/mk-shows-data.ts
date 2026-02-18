@@ -11,7 +11,7 @@ export const MK_SHOWS: ParkItem[] = [
     waitTime: '20:00 HS',
     type: 'Show',
     vibes: ['fireworks', 'stage'],
-    image: 'https://cdn1.parksmedia.wdpromedia.com/media/resort/1/18240_header_happily_ever_after.jpg',
+    image: '/images/shows/mk/Happily_Ever_After.webp',
     description: 'El espectáculo de fuegos artificiales y proyecciones más emotivo.',
   },
   {
@@ -23,7 +23,7 @@ export const MK_SHOWS: ParkItem[] = [
     waitTime: '15:00 HS',
     type: 'Show',
     vibes: ['parade'],
-    image: 'https://cdn1.parksmedia.wdpromedia.com/media/resort/1/18242_header_festival_fantasy.jpg',
+    image: '/images/shows/mk/Disney_Festival_of_Fantasy_Parade.webp',
     description: 'Desfile diurno con carrozas espectaculares y el dragón Maléfica.',
   },
   {
@@ -35,7 +35,7 @@ export const MK_SHOWS: ParkItem[] = [
     waitTime: 'Varios',
     type: 'Show',
     vibes: ['stage', 'kids'],
-    image: 'https://cdn1.parksmedia.wdpromedia.com/media/resort/1/18245_header_friendship_faire.jpg',
+    image: '/images/shows/mk/Mickey_Magical_Friendship_Fair.webp',
     description: 'Show en el escenario del castillo con Mickey, Tiana, Rapunzel y Elsa.',
   },
 ];

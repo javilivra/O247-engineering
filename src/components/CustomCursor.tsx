@@ -5,212 +5,170 @@ import { useEffect, useRef } from "react";
 export default function CustomCursor() {
   const dotRef = useRef<HTMLDivElement>(null);
   const followerRef = useRef<HTMLDivElement>(null);
-  const rafRef = useRef<number>(0);
-
-  const mouse = useRef({ x: -100, y: -100 });
+  const requestRef = useRef<number>(0);
+  const mousePos = useRef({ x: -100, y: -100 });
+  const dotPos = useRef({ x: -100, y: -100 });
   const followerPos = useRef({ x: -100, y: -100 });
-  const scale = useRef({ current: 1, target: 1 });
-  const dotOpacity = useRef({ current: 1, target: 1 });
-  const visible = useRef(false);
-  const isDark = useRef(false); // true = cursor should be white (dark bg)
-  const colorLerp = useRef(0); // 0 = gunmetal, 1 = white
+  const followerScale = useRef(1);
+  const targetScale = useRef(1);
+  const isVisible = useRef(false);
+  const styleRef = useRef<HTMLStyleElement | null>(null);
+  const isActive = useRef(false);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-    if ("ontouchstart" in window || navigator.maxTouchPoints > 0) return;
+
+    // No custom cursor on touch devices
+    const isTouchDevice = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+    if (isTouchDevice) return;
 
     const dot = dotRef.current;
-    const fol = followerRef.current;
-    if (!dot || !fol) return;
+    const follower = followerRef.current;
+    if (!dot || !follower) return;
 
-    // Ocultar cursor nativo
-    const style = document.createElement("style");
-    style.id = "o247-cursor-hide";
-    style.textContent = "*, *::before, *::after { cursor: none !important; } html { cursor: none !important; }";
-    document.head.appendChild(style);
+    const LG_BREAKPOINT = 1024;
 
-    // ---- LUMINOSITY DETECTION ----
-    // Muestrear el color del elemento bajo el cursor cada ~100ms
-    let lastBgCheck = 0;
+    // ---- Activate / Deactivate based on screen width ----
+    const activate = () => {
+      if (isActive.current) return;
+      isActive.current = true;
 
-    const checkBackground = (x: number, y: number, now: number) => {
-      if (now - lastBgCheck < 100) return;
-      lastBgCheck = now;
+      // Hide native cursor via injected style
+      const style = document.createElement("style");
+      style.textContent = "*, *::before, *::after { cursor: none !important; }";
+      document.head.appendChild(style);
+      styleRef.current = style;
 
-      // Obtener el elemento real bajo el cursor (ignorando nuestros propios divs)
-      dot.style.pointerEvents = "none";
-      fol.style.pointerEvents = "none";
+      dot.style.display = "block";
+      follower.style.display = "block";
+    };
 
-      const el = document.elementFromPoint(x, y);
-      if (!el) return;
+    const deactivate = () => {
+      if (!isActive.current) return;
+      isActive.current = false;
 
-      // Recorrer hacia arriba hasta encontrar un fondo con color definido
-      let target: Element | null = el;
-      let bgColor = "";
-
-      while (target && target !== document.documentElement) {
-        const computed = window.getComputedStyle(target);
-        const bg = computed.backgroundColor;
-
-        // Saltar transparentes
-        if (bg && bg !== "rgba(0, 0, 0, 0)" && bg !== "transparent") {
-          bgColor = bg;
-          break;
-        }
-        target = target.parentElement;
+      // Restore native cursor
+      if (styleRef.current) {
+        try { document.head.removeChild(styleRef.current); } catch {}
+        styleRef.current = null;
       }
 
-      if (!bgColor) {
-        // Fallback: asumir bone (claro)
-        isDark.current = false;
-        return;
-      }
+      dot.style.display = "none";
+      follower.style.display = "none";
+      dot.style.opacity = "0";
+      follower.style.opacity = "0";
+      isVisible.current = false;
+    };
 
-      // Parsear RGB y calcular luminosidad
-      const match = bgColor.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
-      if (match) {
-        const r = parseInt(match[1]);
-        const g = parseInt(match[2]);
-        const b = parseInt(match[3]);
-        // Luminosidad relativa (fórmula simplificada)
-        const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-        isDark.current = luminance < 0.45;
+    const checkSize = () => {
+      if (window.innerWidth >= LG_BREAKPOINT) activate();
+      else deactivate();
+    };
+
+    // ---- Mouse handlers ----
+    const onMouseMove = (e: MouseEvent) => {
+      if (!isActive.current) return;
+      mousePos.current = { x: e.clientX, y: e.clientY };
+      if (!isVisible.current) {
+        isVisible.current = true;
+        dot.style.opacity = "1";
+        follower.style.opacity = "1";
       }
     };
 
-    // ---- EVENTS ----
-    const onMove = (e: MouseEvent) => {
-      mouse.current.x = e.clientX;
-      mouse.current.y = e.clientY;
-      if (!visible.current) {
-        visible.current = true;
-        followerPos.current.x = e.clientX;
-        followerPos.current.y = e.clientY;
-      }
+    const onMouseDown = () => { if (isActive.current) targetScale.current = 0.7; };
+    const onMouseUp = () => { if (isActive.current) targetScale.current = 1; };
+
+    const onMouseEnterInteractive = () => {
+      if (!isActive.current) return;
+      targetScale.current = 2.5;
+      dot.style.opacity = "0";
     };
 
-    const onDown = () => { scale.current.target = 0.6; };
-    const onUp = () => { scale.current.target = 1; };
-
-    const onOver = (e: MouseEvent) => {
-      const t = e.target as HTMLElement;
-      if (t.closest("a") || t.closest("button") || t.closest("[data-cursor-hover]") || t.closest("input") || t.closest("textarea")) {
-        scale.current.target = 2.5;
-        dotOpacity.current.target = 0;
-      }
-    };
-    const onOut = (e: MouseEvent) => {
-      const t = e.target as HTMLElement;
-      if (t.closest("a") || t.closest("button") || t.closest("[data-cursor-hover]") || t.closest("input") || t.closest("textarea")) {
-        scale.current.target = 1;
-        dotOpacity.current.target = 1;
-      }
+    const onMouseLeaveInteractive = () => {
+      if (!isActive.current) return;
+      targetScale.current = 1;
+      dot.style.opacity = "1";
     };
 
-    const onLeave = () => { visible.current = false; };
+    const onMouseLeaveWindow = () => {
+      if (!isActive.current) return;
+      isVisible.current = false;
+      dot.style.opacity = "0";
+      follower.style.opacity = "0";
+    };
 
-    // ---- RENDER ----
-    const lerp = (a: number, b: number, n: number) => a + (b - a) * n;
-
+    // ---- Render loop ----
     const render = () => {
-      const now = performance.now();
+      if (isActive.current) {
+        dotPos.current.x += (mousePos.current.x - dotPos.current.x) * 0.15;
+        dotPos.current.y += (mousePos.current.y - dotPos.current.y) * 0.15;
+        followerPos.current.x += (mousePos.current.x - followerPos.current.x) * 0.08;
+        followerPos.current.y += (mousePos.current.y - followerPos.current.y) * 0.08;
+        followerScale.current += (targetScale.current - followerScale.current) * 0.12;
 
-      if (!visible.current) {
-        dot.style.opacity = "0";
-        fol.style.opacity = "0";
-        rafRef.current = requestAnimationFrame(render);
-        return;
+        dot.style.transform = `translate(${dotPos.current.x - 4}px, ${dotPos.current.y - 4}px)`;
+        follower.style.transform = `translate(${followerPos.current.x - 20}px, ${followerPos.current.y - 20}px) scale(${followerScale.current})`;
       }
-
-      // Background check
-      checkBackground(mouse.current.x, mouse.current.y, now);
-
-      // Color lerp (0 = gunmetal/dark, 1 = white/light bg detected = dark cursor)
-      const targetColor = isDark.current ? 1 : 0;
-      colorLerp.current = lerp(colorLerp.current, targetColor, 0.12);
-
-      // Colores interpolados
-      const r = Math.round(lerp(37, 255, colorLerp.current));   // 37 = gunmetal R, 255 = white
-      const g = Math.round(lerp(52, 255, colorLerp.current));   // 52 = gunmetal G
-      const b = Math.round(lerp(63, 255, colorLerp.current));   // 63 = gunmetal B
-      const color = `rgb(${r}, ${g}, ${b})`;
-
-      // Dot: instantáneo
-      dot.style.opacity = String(dotOpacity.current.current);
-      dot.style.transform = `translate3d(${mouse.current.x - 4}px, ${mouse.current.y - 4}px, 0)`;
-      dot.style.backgroundColor = color;
-
-      // Follower: trailing
-      followerPos.current.x = lerp(followerPos.current.x, mouse.current.x, 0.15);
-      followerPos.current.y = lerp(followerPos.current.y, mouse.current.y, 0.15);
-
-      scale.current.current = lerp(scale.current.current, scale.current.target, 0.18);
-      dotOpacity.current.current = lerp(dotOpacity.current.current, dotOpacity.current.target, 0.2);
-
-      fol.style.opacity = "1";
-      fol.style.transform = `translate3d(${followerPos.current.x - 20}px, ${followerPos.current.y - 20}px, 0) scale(${scale.current.current})`;
-      fol.style.borderColor = color.replace("rgb", "rgba").replace(")", ", 0.5)");
-
-      rafRef.current = requestAnimationFrame(render);
+      requestRef.current = requestAnimationFrame(render);
     };
 
-    // Bind
-    window.addEventListener("mousemove", onMove, { passive: true });
-    window.addEventListener("mousedown", onDown);
-    window.addEventListener("mouseup", onUp);
-    document.addEventListener("mouseleave", onLeave);
-    document.addEventListener("mouseover", onOver, { passive: true });
-    document.addEventListener("mouseout", onOut, { passive: true });
+    // ---- Delegated hover detection ----
+    const onMouseOver = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (target.closest("a") || target.closest("button") || target.closest("[data-cursor-hover]")) {
+        onMouseEnterInteractive();
+      }
+    };
+    const onMouseOut = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (target.closest("a") || target.closest("button") || target.closest("[data-cursor-hover]")) {
+        onMouseLeaveInteractive();
+      }
+    };
 
-    rafRef.current = requestAnimationFrame(render);
+    // ---- Setup ----
+    checkSize();
+    window.addEventListener("resize", checkSize);
+    window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("mousedown", onMouseDown);
+    window.addEventListener("mouseup", onMouseUp);
+    document.addEventListener("mouseleave", onMouseLeaveWindow);
+    document.addEventListener("mouseover", onMouseOver);
+    document.addEventListener("mouseout", onMouseOut);
+    requestRef.current = requestAnimationFrame(render);
 
     return () => {
-      cancelAnimationFrame(rafRef.current);
-      window.removeEventListener("mousemove", onMove);
-      window.removeEventListener("mousedown", onDown);
-      window.removeEventListener("mouseup", onUp);
-      document.removeEventListener("mouseleave", onLeave);
-      document.removeEventListener("mouseover", onOver);
-      document.removeEventListener("mouseout", onOut);
-      const el = document.getElementById("o247-cursor-hide");
-      if (el) document.head.removeChild(el);
+      cancelAnimationFrame(requestRef.current);
+      window.removeEventListener("resize", checkSize);
+      window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("mousedown", onMouseDown);
+      window.removeEventListener("mouseup", onMouseUp);
+      document.removeEventListener("mouseleave", onMouseLeaveWindow);
+      document.removeEventListener("mouseover", onMouseOver);
+      document.removeEventListener("mouseout", onMouseOut);
+      // Restore native cursor
+      if (styleRef.current) {
+        try { document.head.removeChild(styleRef.current); } catch {}
+        styleRef.current = null;
+      }
     };
   }, []);
 
   return (
-    <div className="hidden lg:block" aria-hidden="true">
+    <>
+      {/* Dot: centro */}
       <div
         ref={dotRef}
-        style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          width: 8,
-          height: 8,
-          borderRadius: "50%",
-          backgroundColor: "#25343F",
-          zIndex: 9999,
-          pointerEvents: "none",
-          opacity: 0,
-          willChange: "transform",
-        }}
+        className="fixed top-0 left-0 w-2 h-2 rounded-full bg-gunmetal z-[9999] pointer-events-none"
+        style={{ opacity: 0, display: "none", transition: "opacity 0.3s ease" }}
       />
+      {/* Follower: círculo blend */}
       <div
         ref={followerRef}
-        style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          width: 40,
-          height: 40,
-          borderRadius: "50%",
-          border: "1.5px solid rgba(37, 52, 63, 0.5)",
-          zIndex: 9998,
-          pointerEvents: "none",
-          opacity: 0,
-          willChange: "transform",
-        }}
+        className="fixed top-0 left-0 w-10 h-10 rounded-full border-2 border-gunmetal/60 z-[9998] pointer-events-none mix-blend-difference"
+        style={{ opacity: 0, display: "none", transition: "opacity 0.3s ease" }}
       />
-    </div>
+    </>
   );
 }

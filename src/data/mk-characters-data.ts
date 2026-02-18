@@ -11,7 +11,7 @@ export const MK_CHARACTERS: ParkItem[] = [
     waitTime: '25 min',
     type: 'Character',
     vibes: ['mickey', 'indoor', 'ac'],
-    image: 'https://cdn1.parksmedia.wdpromedia.com/media/resort/1/18260_header_meet_mickey.jpg',
+    image: '/images/Personajes/mk/Meet-Mickey-at-Town-Square-Theater.webp',
     description: 'Conoce al jefe en su traje de mago. ¡Habla con él!',
   },
   {
@@ -23,7 +23,7 @@ export const MK_CHARACTERS: ParkItem[] = [
     waitTime: '35 min',
     type: 'Character',
     vibes: ['princess', 'indoor', 'ac'],
-    image: 'https://cdn1.parksmedia.wdpromedia.com/media/resort/1/18265_header_princess_hall.jpg',
+    image: '/images/Personajes/mk/cinderella_castlehero.webp',
     description: 'Encuentro real con Cenicienta, Elena, Tiana o Rapunzel.',
   },
   {
@@ -35,7 +35,7 @@ export const MK_CHARACTERS: ParkItem[] = [
     waitTime: 'Intermitente',
     type: 'Character',
     vibes: ['pixar', 'kids'],
-    image: 'https://cdn1.parksmedia.wdpromedia.com/media/resort/1/18268_header_buzz.jpg',
+    image: '/images/Personajes/mk/Meet-Buzz-Lightyear.webp',
     description: 'Al infinito y más allá en el Rocket Tower Plaza.',
   },
 ];

@@ -1,7 +1,8 @@
-// @STATUS: V4.0 - HOME REDESIGN + CUSTOM CURSOR
+// @STATUS: GOLDEN MASTER V4 — CustomCursor + Iconify Fix
 import type { Metadata, Viewport } from "next";
 import { JetBrains_Mono } from "next/font/google"; 
 import "./globals.css";
+import Script from "next/script";
 
 // COMPONENTES GLOBALES
 import CookieConsent from "@/components/CookieConsent";
@@ -19,17 +20,17 @@ const monoFont = JetBrains_Mono({
   display: "swap",
 });
 
-// 2. METADATA SEO (Alineada a brand voice O247 — sin jerga técnica)
+// 2. METADATA SEO
 export const metadata: Metadata = {
   title: {
     template: "%s | O247",
-    default: "O247 | Planificá tu viaje a Orlando con claridad",
+    default: "O247 | Tu Viaje a Orlando, Estructurado",
   },
-  description: "La guía estructurada en español para Disney World y Universal Studios. Menos caos, mejores decisiones, más tiempo para disfrutar.",
+  description: "Plataforma de planificación estructurada para Disney World y Universal Studios Orlando. Información clara, organizada y sin ruido.",
   metadataBase: new URL("https://o247.com"),
   openGraph: {
-    title: "O247 | Planificá tu viaje a Orlando con claridad",
-    description: "Toda la información que necesitás para entender Orlando antes de reservar. Guías detalladas, criterio real y sin presión de venta.",
+    title: "O247 | Tu Viaje a Orlando, Estructurado",
+    description: "Planificá tu viaje a Orlando con la información correcta. Disney World y Universal en un solo lugar.",
     url: "https://o247.com",
     siteName: "O247",
     locale: "es_ES",
@@ -37,8 +38,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "O247 | Planificá tu viaje a Orlando con claridad",
-    description: "Guías estructuradas para Disney World y Universal Studios en español.",
+    title: "O247 | Tu Viaje a Orlando, Estructurado",
+    description: "Planificación estructurada para Disney World y Universal.",
   },
   robots: {
     index: true,
@@ -47,7 +48,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#1a1a1a",
+  themeColor: "#f7f7f5",
   width: "device-width",
   initialScale: 1,
 };
@@ -60,21 +61,23 @@ export default function RootLayout({
   return (
     <html lang="es" className={`${monoFont.variable}`}>
       <head>
+        {/* Google Sans Flex */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link 
           href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,1..1000&display=swap" 
           rel="stylesheet" 
         />
+        {/* Iconify — preconnect to API for faster icon loading */}
+        <link rel="preconnect" href="https://api.iconify.design" />
       </head>
       
       <body 
         className="antialiased min-h-screen bg-bone text-gunmetal font-sans selection:bg-sunset selection:text-white"
       >
         <ModalProvider>
-          {/* Custom Cursor — solo desktop, oculto en touch devices */}
+          {/* Custom cursor (auto-disabled on mobile/tablet) */}
           <CustomCursor />
-          
           {/* UI SHELL GLOBAL */}
           <Navbar />
           <SmoothScroll>

@@ -7,7 +7,91 @@ import { Icon } from '@iconify/react';
 import { MonthData } from '@/data/annual-mapping'; 
 
 // ------------------------------------------------------------------
-// 1. DEFINICIÓN DEL COMPONENTE MONTHCARD
+// 1. SUB-COMPONENTE: ONBOARDING HERO (NUEVO)
+// ------------------------------------------------------------------
+const MappingOnboarding = () => {
+  return (
+    <div className="relative pt-12 pb-16 px-6 md:px-8 max-w-[1400px] mx-auto">
+      {/* Background Decorativo Sutil */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-4xl bg-gradient-to-b from-white/50 to-transparent opacity-60 blur-3xl -z-10 pointer-events-none" />
+
+      <div className="flex flex-col md:flex-row items-end gap-12">
+        {/* COLUMNA IZQUIERDA: Texto Estratégico */}
+        <div className="flex-1 max-w-2xl">
+           <motion.div 
+             initial={{ opacity: 0, y: 10 }}
+             animate={{ opacity: 1, y: 0 }}
+             className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-bold uppercase tracking-widest mb-6"
+           >
+              <Icon icon="solar:radar-2-bold" />
+              <span>O247 Intelligence Layer</span>
+           </motion.div>
+           
+           <motion.h1 
+             initial={{ opacity: 0, y: 10 }}
+             animate={{ opacity: 1, y: 0 }}
+             transition={{ delay: 0.1 }}
+             className="text-5xl md:text-6xl font-black text-gunmetal tracking-tighter leading-[0.95] mb-6"
+           >
+             Mapeo Anual <br/>
+             <span className="text-transparent bg-clip-text bg-gradient-to-r from-gunmetal to-gunmetal/60">
+               Estratégico.
+             </span>
+           </motion.h1>
+           
+           <motion.p 
+             initial={{ opacity: 0, y: 10 }}
+             animate={{ opacity: 1, y: 0 }}
+             transition={{ delay: 0.2 }}
+             className="text-lg text-gunmetal/60 leading-relaxed font-medium max-w-xl"
+           >
+             No adivines tu fecha. Nuestra tecnología <strong>Atmo-Sync™</strong> cruza 5 años de data histórica para proyectar el escenario real de tu viaje.
+           </motion.p>
+        </div>
+
+        {/* COLUMNA DERECHA: Leyenda Visual (Educativa) */}
+        <motion.div 
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.3 }}
+          className="flex-1 w-full md:w-auto"
+        >
+          <div className="bg-white rounded-3xl p-6 shadow-sm border border-gunmetal/5 grid grid-cols-1 sm:grid-cols-3 gap-4">
+             {/* Variable 1: Clima */}
+             <div className="flex flex-col items-center text-center p-3 rounded-2xl hover:bg-gunmetal/5 transition-colors">
+                <div className="w-10 h-10 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center mb-3">
+                   <Icon icon="solar:sun-fog-bold-duotone" className="w-6 h-6" />
+                </div>
+                <span className="text-xs font-bold text-gunmetal mb-1">Clima Real</span>
+                <p className="text-[10px] text-gunmetal/50 leading-tight">Temp. promedio histórica (Máx/Mín)</p>
+             </div>
+
+             {/* Variable 2: Multitudes */}
+             <div className="flex flex-col items-center text-center p-3 rounded-2xl hover:bg-gunmetal/5 transition-colors">
+                <div className="w-10 h-10 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center mb-3">
+                   <Icon icon="solar:users-group-rounded-bold" className="w-6 h-6" />
+                </div>
+                <span className="text-xs font-bold text-gunmetal mb-1">Afluencia</span>
+                <p className="text-[10px] text-gunmetal/50 leading-tight">Densidad basada en eventos y feriados</p>
+             </div>
+
+             {/* Variable 3: Costo */}
+             <div className="flex flex-col items-center text-center p-3 rounded-2xl hover:bg-gunmetal/5 transition-colors">
+                <div className="w-10 h-10 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mb-3">
+                   <Icon icon="solar:wallet-money-bold-duotone" className="w-6 h-6" />
+                </div>
+                <span className="text-xs font-bold text-gunmetal mb-1">Inversión</span>
+                <p className="text-[10px] text-gunmetal/50 leading-tight">Escala de precios de tickets y hoteles</p>
+             </div>
+          </div>
+        </motion.div>
+      </div>
+    </div>
+  );
+};
+
+// ------------------------------------------------------------------
+// 2. COMPONENTE MONTHCARD (Sin cambios estructurales, solo props)
 // ------------------------------------------------------------------
 const MonthCard = ({ data }: { data: MonthData }) => {
   
@@ -61,22 +145,16 @@ const MonthCard = ({ data }: { data: MonthData }) => {
         </div>
       </div>
 
-      {/* METEOROLOGÍA & GEAR (VISUALIZACIÓN MÍN/MÁX) */}
+      {/* METEOROLOGÍA & GEAR */}
       <div className="relative z-10 px-8 grid grid-cols-2 gap-4 mt-4">
-         
-         {/* TARJETA 1: CLIMA (RANGO) */}
+         {/* TARJETA 1: CLIMA */}
          <div className="aspect-square bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl p-4 flex flex-col items-center justify-center text-center shadow-lg group-hover:bg-white/15 transition-colors relative overflow-hidden">
             <div className="absolute top-0 inset-x-0 h-1/2 bg-gradient-to-b from-white/10 to-transparent opacity-50 pointer-events-none"></div>
-            
             <Icon icon="solar:sun-fog-bold-duotone" className={`w-10 h-10 mb-2 drop-shadow-[0_0_15px_rgba(255,255,255,0.3)] ${theme.accent}`} />
-            
             <div className="flex flex-col items-center">
-                {/* ETIQUETA PROMEDIO */}
                 <span className="text-[8px] font-bold text-white/50 uppercase tracking-widest bg-black/20 px-2 py-0.5 rounded-full backdrop-blur-sm mb-1">
                     Promedio
                 </span>
-
-                {/* TEMPERATURAS: GRANDE (MAX) / CHICA (MIN) */}
                 <div className="flex items-baseline gap-1">
                     <span className="text-4xl font-black text-white leading-none tracking-tight">
                         {data.tempMax}
@@ -85,7 +163,6 @@ const MonthCard = ({ data }: { data: MonthData }) => {
                         / {data.tempMin}
                     </span>
                 </div>
-
                 <span className="text-[9px] font-bold text-white/90 uppercase tracking-widest mt-1">
                     Máx / Mín
                 </span>
@@ -95,15 +172,12 @@ const MonthCard = ({ data }: { data: MonthData }) => {
          {/* TARJETA 2: ROPA / GEAR */}
          <div className="aspect-square bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl p-4 flex flex-col items-center justify-center text-center shadow-lg group-hover:bg-white/15 transition-colors relative overflow-hidden">
              <div className="absolute top-0 inset-x-0 h-1/2 bg-gradient-to-b from-white/10 to-transparent opacity-50 pointer-events-none"></div>
-
             <Icon icon={data.gearIcon} className="w-12 h-12 mb-3 text-white/90 drop-shadow-md" />
-            
             <div className="flex flex-col items-center">
                 <span className="text-lg font-bold text-white leading-tight mb-1">{data.gearLabel}</span>
                 <span className="text-[9px] font-bold text-white/80 uppercase tracking-widest">Recomendado</span>
             </div>
          </div>
-
       </div>
 
       {/* FOOTER: MULTITUDES & INSIGHT */}
@@ -116,7 +190,6 @@ const MonthCard = ({ data }: { data: MonthData }) => {
                </div>
                <span className={`text-xs font-bold ${theme.accent}`}>{data.crowdLabel}</span>
             </div>
-            
             <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden mb-4">
                <motion.div 
                  initial={{ width: 0 }}
@@ -125,12 +198,10 @@ const MonthCard = ({ data }: { data: MonthData }) => {
                  className={`h-full rounded-full ${theme.bg} shadow-[0_0_12px_currentColor]`}
                />
             </div>
-
             <p className="text-[13px] leading-relaxed text-white/95 font-medium line-clamp-2">
                {data.insight}
             </p>
          </div>
-
          <button className="w-full py-3.5 bg-primary text-white font-bold tracking-tight rounded-xl shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 border border-white/10 group/btn">
             <span>Ver Estrategia</span>
             <Icon icon="solar:arrow-right-bold" className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
@@ -141,7 +212,7 @@ const MonthCard = ({ data }: { data: MonthData }) => {
 };
 
 // ------------------------------------------------------------------
-// 2. COMPONENTE PRINCIPAL
+// 3. COMPONENTE PRINCIPAL (Layout)
 // ------------------------------------------------------------------
 interface AnnualMappingProps {
   initialData: MonthData[];
@@ -155,20 +226,10 @@ export default function AnnualMapping({ initialData }: AnnualMappingProps) {
 
   return (
     <section className="bg-bone min-h-screen pb-24">
-      
-      {/* 1. HERO SECTION */}
-      <div className="relative pt-16 pb-12 px-6 md:px-8 max-w-[1400px] mx-auto">
-         <div className="max-w-3xl">
-            <h2 className="text-4xl md:text-5xl font-black text-gunmetal tracking-tight mb-4">
-               Comparativa Estratégica
-            </h2>
-            <p className="text-gunmetal/60 text-lg md:text-xl leading-relaxed">
-               Nuestra tecnología <strong className="text-gunmetal">Atmo-Sync™</strong> conecta con bases de datos históricas de Orlando para mostrarte promedios reales de temperatura (Mínima y Máxima) y probabilidad de lluvia.
-            </p>
-         </div>
-      </div>
+      {/* 1. ONBOARDING HERO (Reemplaza al anterior) */}
+      <MappingOnboarding />
 
-      {/* 2. GRID DE CARDS (Sin Selector) */}
+      {/* 2. GRID DE CARDS */}
       <div className="max-w-[1400px] mx-auto px-6 md:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-24">
             {initialData.map((month) => (
@@ -205,7 +266,6 @@ export default function AnnualMapping({ initialData }: AnnualMappingProps) {
                 </p>
             </div>
         </div>
-
       </div>
     </section>
   );

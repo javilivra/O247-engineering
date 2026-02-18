@@ -5,13 +5,17 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Icon } from "@iconify/react";
 import Link from "next/link";
 import ParkCard, { ParkData } from "@/components/parks/ParkCard";
-import ParkDetailHero from "@/components/parks/ParkDetailHero";
-import DistrictsGrid from "@/components/parks/DistrictsGrid";
-import LogisticsPanel from "@/components/parks/LogisticsPanel";
-import ActivityList from "@/components/parks/ActivityList";
+
 // ============================================================
 // DATA
 // ============================================================
+
+const PARK_ROUTES: Record<string, string> = {
+  mk: "/disney/mk",
+  epcot: "/disney/epcot",
+  hs: "/disney/hs",
+  ak: "/disney/ak",
+};
 
 const parksData: ParkData[] = [
   {
@@ -48,7 +52,7 @@ const parksData: ParkData[] = [
     id: "ak",
     name: "Animal Kingdom",
     slogan: "Naturaleza indómita. Safaris, Pandora y un enfoque único en la vida salvaje.",
-    image: "/images/ak.jpg",
+    image: "/images/cinderellacastlehero.jpg", // TODO: reemplazar con imagen real de AK
     temp: 26,
     stats: { attractions: 12, shows: 3 },
     schedule: { early: "07:30 AM", regular: "08:00 - 18:00" },
@@ -71,7 +75,7 @@ const waterParksData: ParkData[] = [
     id: "bb",
     name: "Blizzard Beach",
     slogan: "Diversión helada bajo el sol de Florida. Temática de estación de ski.",
-    image: "/images/blizzard_beach.webp",
+    image: "/images/cinderellacastlehero.jpg", // TODO: reemplazar
     temp: -2,
     stats: { attractions: 12, shows: 0 },
     schedule: { early: "N/A", regular: "CERRADO" },
@@ -116,7 +120,6 @@ export default function ParksPage() {
             Panel de Parques
           </motion.h1>
 
-          {/* Intro colapsable */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -175,50 +178,31 @@ export default function ParksPage() {
         >
           {parksData.map((park) => {
             const isExpanded = expandedPark === park.id;
-            const card = (
-              <ParkCard
-                key={park.id}
-                data={park}
-                isExpanded={isExpanded}
-                onClick={() => handleParkClick(park.id)}
-              />
-            );
+            const route = PARK_ROUTES[park.id];
 
-            // MK links to its page
-            if (park.id === "mk" && isExpanded) {
-              return (
-                <motion.div
-                  key={park.id}
-                  layout
-                  className="relative flex-[4] min-w-0 h-full"
-                  transition={{ duration: 0.7, ease: [0.25, 1, 0.5, 1] }}
-                >
-                  <ParkCard
-                    data={park}
-                    isExpanded={isExpanded}
-                    onClick={() => handleParkClick(park.id)}
-                  />
-                  {/* Overlay link button */}
+            return (
+              <motion.div
+                key={park.id}
+                layout
+                className={`relative min-w-0 h-full ${isExpanded ? "flex-[4]" : "flex-[1]"}`}
+                transition={{ duration: 0.7, ease: [0.25, 1, 0.5, 1] }}
+              >
+                <ParkCard
+                  data={park}
+                  isExpanded={isExpanded}
+                  onClick={() => handleParkClick(park.id)}
+                />
+                {/* Explorar parque button — visible when expanded */}
+                {isExpanded && route && (
                   <Link
-                    href="/disney/mk"
+                    href={route}
                     className="absolute bottom-8 right-20 z-30 px-6 py-3 bg-sunset text-white rounded-full font-bold text-xs uppercase tracking-widest hover:brightness-110 transition-all shadow-lg hover:shadow-sunset/30 active:scale-[0.97] flex items-center gap-2"
                     onClick={(e) => e.stopPropagation()}
                   >
                     Explorar parque
                     <Icon icon="solar:arrow-right-linear" width={14} />
                   </Link>
-                </motion.div>
-              );
-            }
-
-            return (
-              <motion.div
-                key={park.id}
-                layout
-                className={`min-w-0 h-full ${isExpanded ? "flex-[4]" : "flex-[1]"}`}
-                transition={{ duration: 0.7, ease: [0.25, 1, 0.5, 1] }}
-              >
-                {card}
+                )}
               </motion.div>
             );
           })}
@@ -258,14 +242,7 @@ export default function ParksPage() {
           })}
         </motion.div>
 
-        <div id="active-view">
-            <ParkDetailHero />
-            <DistrictsGrid />
-            <LogisticsPanel />
-            <ActivityList />
-        </div>
-
-        {/* ============ GLOSSARY (simplified) ============ */}
+        {/* ============ GLOSSARY ============ */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
