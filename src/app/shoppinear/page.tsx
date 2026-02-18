@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
-import { Icon } from '@iconify/react';
+import { Icon } from '@/components/Icon';
 
 import {
     SHOPPING_CRITERIA,

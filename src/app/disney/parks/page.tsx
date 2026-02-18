@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Icon } from "@iconify/react";
+import { Icon } from "@/components/Icon";
 import Link from "next/link";
 import ParkCard, { ParkData } from "@/components/parks/ParkCard";
 

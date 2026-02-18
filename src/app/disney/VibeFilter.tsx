@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Icon } from "@iconify/react";
+import { Icon } from "@/components/Icon";
 import { MK_VIBES } from "@/data/mk-attractions-data";
 
 interface VibeFilterProps {

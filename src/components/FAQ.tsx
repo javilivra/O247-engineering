@@ -3,7 +3,8 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ScrollReveal } from "./ScrollReveal";
-import { Icon } from "@iconify/react";
+// DESPUÉS (O247 Icon System — LOCAL, FUNCIONA SIEMPRE)
+import { Icon } from "@/components/Icon";
 import TextReveal from "./TextReveal";
 
 const faqs = [

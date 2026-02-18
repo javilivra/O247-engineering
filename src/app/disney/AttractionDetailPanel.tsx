@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Icon } from '@iconify/react';
+import { Icon } from '@/components/Icon';
 import Image from 'next/image';
 
 // Interfaz extendida para manejar datos más profundos en el futuro

@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { Icon } from "@iconify/react";
+// DESPUÉS (O247 Icon System — LOCAL, FUNCIONA SIEMPRE)
+import { Icon } from "@/components/Icon";
 
 // ----------------------------------------------------------------------
 // 🔴 CONFIGURACIÓN DE REDES SOCIALES

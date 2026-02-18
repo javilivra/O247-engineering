@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Icon } from '@iconify/react';
+// DESPUÉS (O247 Icon System — LOCAL, FUNCIONA SIEMPRE)
+import { Icon } from "@/components/Icon";
 
 // IMPORTACIONES DE DATOS NORMALIZADOS
 import type { ParkItem } from '@/data/types';

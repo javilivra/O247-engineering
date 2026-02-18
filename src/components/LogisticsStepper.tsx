@@ -2,7 +2,8 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { Icon } from "@iconify/react";
+// DESPUÉS (O247 Icon System — LOCAL, FUNCIONA SIEMPRE)
+import { Icon } from "@/components/Icon";
 
 // Definimos la estructura exacta de cada paso para evitar errores de TypeScript
 export type LogisticsStep = {

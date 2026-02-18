@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Icon } from "@iconify/react";
+// DESPUÉS (O247 Icon System — LOCAL, FUNCIONA SIEMPRE)
+import { Icon } from "@/components/Icon";
 import Image from "next/image"; // Asegúrate de tener una foto tuya en public/images/founder.jpg
 import { ScrollReveal } from "./ScrollReveal";
 

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Icon } from "@iconify/react";
+import { Icon } from "@/components/Icon";
 import Link from "next/link";
 // Asegúrate de que este componente exista en esta ruta (es el mismo que usas para Disney)
 import ParkCard, { ParkData } from "@/components/parks/ParkCard";

@@ -3,7 +3,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
-import { Icon } from '@iconify/react';
+// DESPUÉS (O247 Icon System — LOCAL, FUNCIONA SIEMPRE)
+import { Icon } from "@/components/Icon";
 
 // DATA EXTERNA
 import { GLOSSARY_DB, LANDS_DATA, BUCKET_ITEMS, BUCKET_LEVELS } from '@/data/mk-data';

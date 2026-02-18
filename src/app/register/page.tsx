@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Icon } from "@iconify/react";
+import { Icon } from "@/components/Icon";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Image from "next/image";

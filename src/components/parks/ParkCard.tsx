@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
-import { Icon } from "@iconify/react";
+// DESPUÉS (O247 Icon System — LOCAL, FUNCIONA SIEMPRE)
+import { Icon } from "@/components/Icon";
 import Image from "next/image";
 import { motion, useSpring, useTransform, animate } from "framer-motion";
 

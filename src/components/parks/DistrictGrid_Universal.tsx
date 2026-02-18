@@ -1,6 +1,7 @@
 "use client";
 
-import { Icon } from "@iconify/react";
+// DESPUÉS (O247 Icon System — LOCAL, FUNCIONA SIEMPRE)
+import { Icon } from "@/components/Icon";
 import { motion } from "framer-motion";
 
 const districts = [

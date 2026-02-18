@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Icon } from '@iconify/react';
+import { Icon } from '@/components/Icon';
 import Image from 'next/image';
 import Link from 'next/link';
 import type { ParkItem } from '@/data/types';
