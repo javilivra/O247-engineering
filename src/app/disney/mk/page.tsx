@@ -133,12 +133,12 @@ export default function MagicKingdomPage() {
         mapPdfUrl: "/images/maps/mk_0216_sp_mapa.pdf",
 
         introShort: (
-          <p>Magic Kingdom no es solo un parque tematico; es una <strong className="text-gunmetal font-black">referencia global</strong> en <strong className="text-gunmetal font-black">diseno de fantasia aplicada</strong>.</p>
+<p>Magic Kingdom no es solo un parque temático, es una <strong>inversión</strong> a la <strong>fantasía</strong>.</p>
         ),
         introExpanded: (
           <>
-            <p>Para quien llega por primera vez, el impacto es inmediato: el <strong className="text-gunmetal">Castillo de Cenicienta</strong> ordena la mirada y establece el tono del recorrido. Pero detras de esa primera impresion hay algo mas complejo. El parque esta construido como una <strong className="text-gunmetal">ciudad escenica en capas</strong>: mientras el visitante camina por calles perfectamente coreografiadas, la operacion real sucede en un nivel inferior invisible, los <strong className="text-gunmetal">Utilidors</strong>, pensados para que la logistica nunca interfiera con la narrativa.</p>
-            <p>Esa logica atraviesa todo el parque. Conviven la <strong className="text-gunmetal">nostalgia fundacional</strong> de 1971 con atracciones disenadas bajo <strong className="text-gunmetal">estandares tecnologicos</strong> actuales, sin que una anule a la otra. No se trata unicamente de subir a juegos, sino de moverse entre lenguajes distintos: del ritmo pausado de Main Street al pulso futurista de Tomorrowland.</p>
+            <p>La magia clásica de Disney cobra vida. Es el parque más icónico, hogar del imponente Castillo de Cenicienta y de las historias que marcaron generaciones. </p>
+            <p>Entre desfiles, fuegos artificiales y atracciones inolvidables, cada rincón invita a volver a creer en los sueños.</p>
             <div className="pl-4 border-l-2 border-sunset">
               <p className="italic text-gunmetal">&quot;Magic Kingdom funciona porque <strong className="text-gunmetal">nada esta librado al azar</strong>. La ilusion no es espontanea: esta disenada, mantenida y repetida todos los dias.&quot;</p>
             </div>

@@ -16,14 +16,14 @@ export default function HollywoodStudiosPage() {
         heroSlideDuration: 5000,
 
         introShort: (
-          <p>Hollywood Studios es el parque de las <strong className="text-gunmetal font-black">franquicias inmersivas</strong>: Star Wars, Toy Story y Rock &apos;n&apos; Roller Coaster conviven en un espacio disenado para hacerte <strong className="text-gunmetal font-black">sentir dentro de la pelicula</strong>.</p>
+          <p>Es el parque donde de las historias <strong className="text-gunmetal font-black">dejan la pantalla y viven a tu alrededor</strong>: Desde mundos épicos como Star Wars y Toy Story, hasta clásicos llenos de adrenalina. <strong className="text-gunmetal font-black"> Cada atracción te convierte en parte de la acción</strong>.</p>
         ),
         introExpanded: (
           <>
-            <p><strong className="text-gunmetal">Star Wars: Galaxy&apos;s Edge</strong> no es una seccion tematica — es un planeta. Batuu existe con su propia economia, idioma y reglas sociales. Rise of the Resistance es considerada la atraccion mas ambiciosa jamas construida por Disney, combinando multiples sistemas de vehiculos en una narrativa continua de 18 minutos.</p>
-            <p><strong className="text-gunmetal">Toy Story Land</strong> te encoge al tamano de un juguete en el patio trasero de Andy. <strong className="text-gunmetal">Tower of Terror</strong> sigue siendo una de las experiencias mas intensas de todo Disney World. Y <strong className="text-gunmetal">Fantasmic!</strong> cierra las noches con un espectaculo de agua, fuego y proyecciones que es dificil de superar.</p>
+            <p><strong className="text-gunmetal">Star Wars: Galaxy&apos;s Edge</strong> no es una seccion tematica — es un mundo que respira. Batuu existe con su propia economia, idioma y reglas sociales. Rise of the Resistance es considerada la atraccion mas ambiciosa jamas construida por Disney.</p>
+            <p><strong className="text-gunmetal">Toy Story Land</strong> te encoge al tamano de un juguete en el patio trasero de Andy. <strong className="text-gunmetal">Tower of Terror</strong> sigue siendo una de las experiencias más intensas y <strong className="text-gunmetal">Fantasmic!</strong> cierra las noches con un espectaculo de agua, fuego y proyecciones que es dificil de superar.</p>
             <div className="pl-4 border-l-2 border-sunset">
-              <p className="italic text-gunmetal">&quot;Hollywood Studios es el parque donde <strong className="text-gunmetal">menos caminas y mas intensamente vives</strong>. Es compacto, pero cada metro cuadrado esta cargado de narrativa.&quot;</p>
+              <p className="italic text-gunmetal">&quot;Hollywood Studios es el parque donde <strong className="text-gunmetal">menos caminas y más intensamente vives</strong>. Es compacto, pero cada metro te teletransporta a la pantalla grande.&quot;</p>
             </div>
           </>
         ),

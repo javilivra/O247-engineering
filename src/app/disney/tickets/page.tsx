@@ -156,30 +156,57 @@ export default function DisneyTicketsPage() {
       <Navbar />
 
       {/* --- HERO: MANIFIESTO ESTRATÉGICO --- */}
-      <section className="pt-40 pb-24 px-6 border-b border-gunmetal/5 bg-white relative overflow-hidden">
+      <section className="pt-40 pb-24 px-6 bg-bone relative overflow-hidden">
         <motion.div 
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1.5 }}
             className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-celeste/5 rounded-full blur-[120px] pointer-events-none" 
         />
         
-        <div className="max-w-4xl mx-auto text-center relative z-10">
-          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: "easeOut" }}>
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gunmetal/5 border border-gunmetal/10 mb-8 backdrop-blur-sm">
-                <span className="w-1.5 h-1.5 rounded-full bg-sunset animate-pulse shadow-[0_0_8px_#FF7043]"></span>
-                <span className="type-tech text-[10px] text-gunmetal uppercase tracking-widest font-bold">
-                  Ingeniería de Acceso v3.2
-                </span>
-            </div>
-            <h1 className="type-display text-5xl md:text-7xl text-gunmetal mb-8 leading-[0.9] tracking-tight">
-                No compres acceso.<br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-sunset to-celeste animate-gradient-x">
-                Compra estrategia.
-                </span>
-            </h1>
-            <p className="type-body text-xl text-gunmetal/60 max-w-2xl mx-auto leading-relaxed">
-                El error #1 es ignorar la ventana de vigencia. Usa nuestras herramientas para sincronizar tus tickets con tu itinerario real.
-            </p>
-          </motion.div>
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-5 gap-12 items-center relative z-10">
+            {/* Col 1: Text */}
+            <motion.div 
+                initial={{ opacity: 0, x: -30 }} 
+                animate={{ opacity: 1, x: 0 }} 
+                transition={{ duration: 0.8, ease: "easeOut" }} 
+                className="text-left md:col-span-3"
+            >
+                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gunmetal/5 border border-gunmetal/10 mb-8 backdrop-blur-sm">
+                    <span className="w-1.5 h-1.5 rounded-full bg-sunset animate-pulse shadow-[0_0_8px_#FF7043]"></span>
+                    <span className="type-tech text-[10px] text-gunmetal uppercase tracking-widest font-bold">
+                    Ingeniería de Acceso v3.2
+                    </span>
+                </div>
+                <h1 className="type-display text-5xl md:text-7xl text-gunmetal mb-6 leading-tight">
+                    No compres acceso.<br />
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-sunset to-celeste animate-gradient-x">
+                        Compra estrategia.
+                    </span>
+                </h1>
+                <p className="type-body text-lg md:text-[19px] text-gunmetal/70 max-w-xl leading-relaxed">
+                    <strong className="text-gunmetal">El error #1</strong> es ignorar la ventana de vigencia. Usa nuestras herramientas para sincronizar tus tickets con tu itinerario real.
+                </p>
+            </motion.div>
+
+            {/* Col 2: Video */}
+            <motion.div 
+                initial={{ opacity: 0, scale: 0.8 }} 
+                animate={{ opacity: 1, scale: 1.44 }} 
+                transition={{ duration: 0.8, ease: "backOut", delay: 0.2 }}
+                className="md:col-span-2"
+            >
+                <video
+                    width="1200"
+                    height="1200"
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    className="w-full h-auto"
+                >
+                  <source src="/videos/magicbandcard_video1.mov" type='video/quicktime; codecs="hvc1"' />
+                  <source src="/videos/magicbandcard_video1.webm" type="video/webm" />
+                </video>
+            </motion.div>
         </div>
       </section>
 

@@ -512,20 +512,20 @@ export default function ParkPageLayout({ config }: { config: ParkPageConfig }) {
           {/* Alerts */}
           {activeAlerts.length > 0 && category === defaultCategory && (
             <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}
-              className="mb-10 bg-gradient-to-r from-red-950 via-red-900 to-red-950 border-l-4 border-red-600 text-white p-6 rounded-2xl shadow-[0_0_30px_rgba(220,38,38,0.15)] relative overflow-hidden"
+              className="mb-10 bg-gradient-to-r from-red-950 via-red-900 to-red-950 border-l-4 border-red-600 text-white p-4 rounded-2xl shadow-[0_0_30px_rgba(220,38,38,0.15)] relative overflow-hidden"
             >
               <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none mix-blend-overlay" />
-              <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
+              <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-4">
                 <div className="flex items-start gap-5 w-full">
                   <div className="bg-red-500/20 p-3.5 rounded-full text-red-500 shrink-0 border border-red-500/20 shadow-inner mt-1">
-                    <Icon icon="solar:danger-triangle-bold" width={32} />
+                    <Icon icon="solar:danger-triangle-bold" width={28} />
                   </div>
                   <div className="flex flex-col flex-1">
                     <span className="text-[10px] font-black text-red-500 uppercase tracking-[0.2em] mb-2 flex items-center gap-2">
                       <span className="relative flex h-2 w-2"><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75" /><span className="relative inline-flex rounded-full h-2 w-2 bg-red-600" /></span>
                       AVISO ({alertIndex + 1}/{activeAlerts.length})
                     </span>
-                    <div className="h-12 md:h-10 relative overflow-hidden w-full">
+                    <div className="h-9 md:h-7 relative overflow-hidden w-full">
                       <AnimatePresence mode="wait">
                         <motion.div key={alertIndex} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.3 }} className="absolute inset-0">
                           <p className="text-sm md:text-base font-bold text-white leading-tight">

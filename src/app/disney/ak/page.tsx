@@ -12,18 +12,18 @@ export default function AnimalKingdomPage() {
         parkSubtitle: "Naturaleza Indómita",
         parkTagline: "DONDE LO SALVAJE TIENE VOZ",
 
-        heroSlides: ["/images/cinderellacastlehero.jpg"], // TODO: reemplazar con imagen real de AK
+        heroSlides: ["/images/ak_hero.webp"], // TODO: reemplazar con imagen real de AK
         heroSlideDuration: 5000,
 
         introShort: (
-          <p>Animal Kingdom es el parque mas <strong className="text-gunmetal font-black">grande en extension</strong> de Disney World y el unico donde <strong className="text-gunmetal font-black">la naturaleza real compite con la fantasia</strong>: safaris con animales vivos conviven con Pandora, el mundo de Avatar.</p>
+          <p>La <strong className="text-gunmetal font-black"> Fantasía</strong> se fusiona con la belleza del <strong className="text-gunmetal font-black"> Mundo Natural</strong>. Senderos que abren paso entre la selva exuberante, safaris y el místico mundo con Pandora, cada rincón te convierte en explorador, conecta tus sentidos y te sorprende.</p>
         ),
         introExpanded: (
           <>
-            <p><strong className="text-gunmetal">Pandora — The World of Avatar</strong> es la zona tematica mas inmersiva de todo Disney World. Flight of Passage simula volar sobre un banshee usando un sistema de vehiculos unico que sincroniza movimiento, viento, aromas y proyeccion 3D. Na&apos;vi River Journey es un recorrido en bote con el animatronico mas avanzado jamas construido.</p>
-            <p>El <strong className="text-gunmetal">Kilimanjaro Safaris</strong> es un recorrido de 22 minutos por una sabana de 45 hectareas con animales reales — jirafas, elefantes, leones, hipopotamos. Cada recorrido es diferente porque los animales se mueven libremente. La mejor hora es temprano en la manana cuando los animales estan activos.</p>
+            <p><strong className="text-gunmetal">Pandora — The World of Avatar</strong> con montanas suspendidas, vegetación que brilla al caer la noche y una atmósfera que te seduce a cada paso. En <strong className="text-gunmetal">Flight of Passage</strong> te elevás sobre un banshee y planeás entre montañas flotantes, con el viento rozando el rostro y la respiración del animal marcando el ritmo del vuelo. En <strong className="text-gunmetal">Na&apos;vi River Journey</strong> el recorrido se vuelve íntimo y casi ceremonial. A lo largo del río, la selva bioluminiscente conduce hasta la <strong className="text-gunmetal">Shaman of Songs</strong>, quien entona su canto en honor a <strong className="text-gunmetal">Eywa</strong>, la fuerza que conecta toda vida en Pandora.</p>
+            <p>El <strong className="text-gunmetal">Kilimanjaro Safaris</strong> atraviesa una extensa sabana habitada por animales reales — jirafas, elefantes, leones, hipopótamos. Cada recorrido cambia según su movimiento. Temprano por la mañana, cuando el aire aún es fresco, la actividad suele ser mayor y la experiencia más dinámica..</p>
             <div className="pl-4 border-l-2 border-sunset">
-              <p className="italic text-gunmetal">&quot;Animal Kingdom cierra mas temprano que los demas parques. <strong className="text-gunmetal">No es un parque de medio dia — pero tampoco necesitas hasta las 10 PM</strong>. La clave es llegar al rope drop.&quot;</p>
+              <p className="italic text-gunmetal">&quot;Animal Kingdom cierra más temprano que los demás parques. <strong className="text-gunmetal">No es un parque de medio día — pero tampoco necesitas hasta las 10 PM</strong>. La clave es llegar al Rope Drop.&quot;</p>
             </div>
           </>
         ),

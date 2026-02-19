@@ -1,6 +1,22 @@
+
 .
 ├── ARCHITECTURE.md
+├── GEMINI.md
+├── README.md
 ├── blueprint.md
+├── estructura.txt
+├── firebase-debug.log
+├── next.config.ts
+├── package-lock.json
+├── package.json
+├── postcss.config.mjs
+├── tailwind.config.ts
+├── tsconfig.json
+├── .idx
+│   ├── dev.nix
+│   └── mcp.json
+├── .vscode
+│   └── settings.json
 ├── data
 │   └── survey-events.json
 ├── docs
@@ -16,16 +32,46 @@
 │   ├── 09_platform_evolution.md
 │   ├── 10_ai_governance.md
 │   └── 11_frontend_design_enforcement.md
-├── estructura.txt
-├── firebase-debug.log
-├── GEMINI.md
-├── next.config.ts
-├── next-env.d.ts
-├── package.json
-├── package-lock.json
-├── postcss.config.mjs
 ├── public
 │   ├── images
+│   │   ├── ak.jpg
+│   │   ├── blizzard_beach.webp
+│   │   ├── bus_render.png
+│   │   ├── car_render.png
+│   │   ├── cinderellacastlehero.jpg
+│   │   ├── disneysprings.jpg
+│   │   ├── epcot.jpg
+│   │   ├── founder.jpg
+│   │   ├── founders.JPG
+│   │   ├── hs.jpg
+│   │   ├── mk.jpg
+│   │   ├── mk_att_heroslide_1.jpg.webp
+│   │   ├── mk_att_heroslide_2.jpg
+│   │   ├── mk_att_heroslide_3.webp
+│   │   ├── mk_att_heroslide_4.jpg
+│   │   ├── mk_att_heroslide_5.jpg
+│   │   ├── mk_att_heroslide_6.jpg
+│   │   ├── mk_att_heroslide_7.jpg
+│   │   ├── mk_att_heroslide_8.jpg
+│   │   ├── mk_att_heroslide_9.jpg
+│   │   ├── pexels-jmendezrf-12569701.jpg
+│   │   ├── studiolivix-logo.png
+│   │   ├── tron_mk.jpg
+│   │   ├── typhoon_lagoon.webp
+│   │   ├── uber_render.webp
+│   │   ├── uberlyft_render.png
+│   │   ├── universal_images
+│   │   │   ├── EpicUniverse_Entrance_Day.webp
+│   │   │   ├── EpicUniverse_Entrance_Night.webp
+│   │   │   ├── Universal_Studios_Entrance.webp
+│   │   │   ├── island_adventure.webp
+│   │   │   ├── universal_planeta_citywalk.webp
+│   │   │   └── volcano_bay_2.webp
+│   │   ├── Personajes
+│   │   │   └── mk
+│   │   │       ├── Meet-Buzz-Lightyear.webp
+│   │   │       ├── Meet-Mickey-at-Town-Square-Theater.webp
+│   │   │       └── cinderella_castlehero.webp
 │   │   ├── attractions
 │   │   │   └── mk
 │   │   │       ├── mk-astro-orbiter.webp
@@ -56,144 +102,130 @@
 │   │   │       ├── mk-space_mountain.webp
 │   │   │       ├── mk-swiss_family_treehouse.webp
 │   │   │       ├── mk-tiana_bayou_adventure.webp
-│   │   │       ├── mk-tomorrowland_speedway.webp
 │   │   │       ├── mk-tom_sawyer_island.webp
+│   │   │       ├── mk-tomorrowland_speedway.webp
 │   │   │       ├── mk-town_square_theater.webp
 │   │   │       ├── mk-tron.webp
 │   │   │       ├── mk-under_the_sea.webp
 │   │   │       ├── mk-walt_disney_carousel_progress.webp
 │   │   │       └── mk-walt_disney_railroad.webp
-│   │   ├── bus_render.png
-│   │   ├── car_render.png
-│   │   ├── cinderellacastlehero.jpg
-│   │   ├── disneysprings.jpg
-│   │   ├── epcot.jpg
-│   │   ├── founder.jpg
-│   │   ├── founders.JPG
-│   │   ├── hs.jpg
-│   │   ├── mk_att_heroslide_1.jpg.webp
-│   │   ├── mk_att_heroslide_2.jpg
-│   │   ├── mk_att_heroslide_3.webp
-│   │   ├── mk_att_heroslide_4.jpg
-│   │   ├── mk_att_heroslide_5.jpg
-│   │   ├── mk_att_heroslide_6.jpg
-│   │   ├── mk_att_heroslide_7.jpg
-│   │   ├── mk_att_heroslide_8.jpg
-│   │   ├── mk_att_heroslide_9.jpg
-│   │   ├── mk.jpg
-│   │   ├── pexels-jmendezrf-12569701.jpg
-│   │   ├── studiolivix-logo.png
-│   │   ├── tron_mk.jpg
-│   │   ├── typhoon_lagoon.webp
-│   │   ├── uberlyft_render.png
-│   │   ├── uber_render.webp
-│   │   └── universal_images
-│   │       ├── EpicUniverse_Entrance_Day.webp
-│   │       ├── EpicUniverse_Entrance_Night.webp
-│   │       ├── island_adventure.webp
-│   │       ├── universal_planeta_citywalk.webp
-│   │       ├── Universal_Studios_Entrance.webp
-│   │       └── volcano_bay_2.webp
+│   │   ├── dinning
+│   │   │   └── mk
+│   │   │       ├── Jungle_Navigation_Co_1.webp
+│   │   │       ├── aloha_isle.webp
+│   │   │       ├── be-our-guest-restaurant-beauty-b.webp
+│   │   │       ├── caseys-corner.webp
+│   │   │       ├── cosmic-rays-starlight-cafe.webp
+│   │   │       └── main-street-bakery.webp
+│   │   └── shows
+│   │       └── mk
+│   │           ├── Disney_Festival_of_Fantasy_Parade.webp
+│   │           ├── Happily_Ever_After.webp
+│   │           └── Mickey_Magical_Friendship_Fair.webp
 │   ├── maps
 │   │   └── MK_0126_SP_mapa.pdf
 │   └── videos
 │       └── 404-lost.mp4
-├── README.md
-├── src
-│   ├── app
-│   │   ├── about
-│   │   │   └── page.tsx
-│   │   ├── api
-│   │   │   ├── survey-events
-│   │   │   │   └── route.ts
-│   │   │   └── wait-times
-│   │   │       └── mk
-│   │   │           └── route.ts
-│   │   ├── disney
-│   │   │   ├── AttractionDetailPanel.tsx
-│   │   │   ├── BentoCard.tsx
-│   │   │   ├── mk
-│   │   │   │   ├── attractions
-│   │   │   │   │   └── page.tsx
-│   │   │   │   ├── guide
-│   │   │   │   │   └── guide=page.tsx
-│   │   │   │   ├── page.tsx
-│   │   │   │   ├── [slug]
-│   │   │   │   │   └── page.tsx
-│   │   │   │   └── tron
-│   │   │   │       └── page.tsx
-│   │   │   ├── parks
-│   │   │   │   └── page.tsx
-│   │   │   ├── tickets
-│   │   │   │   └── page.tsx
-│   │   │   └── VibeFilter.tsx
-│   │   ├── favicon.ico
-│   │   ├── fonts
-│   │   ├── globals.css
-│   │   ├── layout.tsx
-│   │   ├── mapping
-│   │   │   └── page.tsx
-│   │   ├── not-found.tsx
-│   │   ├── page.tsx
-│   │   ├── planning
-│   │   ├── privacy
-│   │   │   └── page.tsx
-│   │   ├── register
-│   │   │   └── page.tsx
-│   │   ├── shoppinear
-│   │   │   └── page.tsx
-│   │   ├── terms
-│   │   │   └── page.tsx
-│   │   └── universal
-│   │       └── parks
-│   │           └── page.tsx
-│   ├── components
-│   │   ├── AnnualMapping.tsx
-│   │   ├── CookieConsent.tsx
-│   │   ├── CustomCursor.tsx
-│   │   ├── Differentiators.tsx
-│   │   ├── FAQ.tsx
-│   │   ├── Footer.tsx
-│   │   ├── FounderStory.tsx
-│   │   ├── GlobalBreadcrumbs.tsx
-│   │   ├── HeroScrollWrapper.tsx
-│   │   ├── Hero.tsx
-│   │   ├── LogisticsStepper.tsx
-│   │   ├── MethodO247.tsx
-│   │   ├── MiniSurvey.tsx
-│   │   ├── Navbar.tsx
-│   │   ├── parks
-│   │   │   ├── ActivityList_Universal.tsx
-│   │   │   ├── ActivityList.tsx
-│   │   │   ├── DistrictGrid_Universal.tsx
-│   │   │   ├── DistrictsGrid.tsx
-│   │   │   ├── LogisticPanel_Universal.tsx
-│   │   │   ├── LogisticsPanel.tsx
-│   │   │   ├── ParkCard.tsx
-│   │   │   ├── ParkDetailHero_Universal.tsx
-│   │   │   └── ParkDetailHero.tsx
-│   │   ├── planning
-│   │   ├── ScrollReveal.tsx
-│   │   ├── SignUpModal.tsx
-│   │   ├── SmartAssistantDemo.tsx
-│   │   ├── SmoothScroll.tsx
-│   │   ├── StatsTicker.tsx
-│   │   ├── TextReveal.tsx
-│   │   └── VideoLite.tsx
-│   ├── context
-│   │   └── ModalContext.tsx
-│   ├── data
-│   │   ├── annual-mapping.ts
-│   │   ├── mk-attractions-data.ts
-│   │   ├── mk-characters-data.ts
-│   │   ├── mk-data.ts
-│   │   ├── mk-dining-data.ts
-│   │   ├── mk-logistics.ts
-│   │   ├── mk-shows-data.ts
-│   │   ├── shoppinear-data.ts
-│   │   └── types.ts
-│   ├── lib
-│   └── services
-│       └── weather.ts
-├── tailwind.config.ts
-└── tsconfig.json
+└── src
+    ├── app
+    │   ├── favicon.ico
+    │   ├── globals.css
+    │   ├── layout.tsx
+    │   ├── not-found.tsx
+    │   ├── page.tsx
+    │   ├── about
+    │   │   └── page.tsx
+    │   ├── mapping
+    │   │   └── page.tsx
+    │   ├── disney
+    │   │   ├── AttractionDetailPanel.tsx
+    │   │   ├── BentoCard.tsx
+    │   │   ├── VibeFilter.tsx
+    │   │   ├── ak
+    │   │   │   └── page.tsx
+    │   │   ├── epcot
+    │   │   │   └── page.tsx
+    │   │   ├── hs
+    │   │   │   └── page.tsx
+    │   │   ├── mk
+    │   │   │   ├── page.tsx
+    │   │   │   ├── attractions
+    │   │   │   │   └── page.tsx
+    │   │   │   ├── guide
+    │   │   │   │   └── guide=page.tsx
+    │   │   │   └── tron
+    │   │   │       └── page.tsx
+    │   │   ├── parks
+    │   │   │   └── page.tsx
+    │   │   └── tickets
+    │   │       └── page.tsx
+    │   ├── privacy
+    │   │   └── page.tsx
+    │   ├── register
+    │   │   └── page.tsx
+    │   ├── shoppinear
+    │   │   └── page.tsx
+    │   ├── terms
+    │   │   └── page.tsx
+    │   ├── universal
+    │   │   └── parks
+    │   │       └── page.tsx
+    │   └── api
+    │       ├── survey-events
+    │       │   └── route.ts
+    │       └── wait-times
+    │           └── mk
+    │               └── route.ts
+    ├── components
+    │   ├── AnnualMapping.tsx
+    │   ├── CookieConsent.tsx
+    │   ├── CustomCursor.tsx
+    │   ├── Differentiators.tsx
+    │   ├── FAQ.tsx
+    │   ├── Footer.tsx
+    │   ├── FounderStory.tsx
+    │   ├── GlobalBreadcrumbs.tsx
+    │   ├── Hero.tsx
+    │   ├── HeroScrollWrapper.tsx
+    │   ├── Icon.tsx
+    │   ├── LogisticsStepper.tsx
+    │   ├── MethodO247.tsx
+    │   ├── MiniSurvey.tsx
+    │   ├── Navbar.tsx
+    │   ├── ScrollReveal.tsx
+    │   ├── SignUpModal.tsx
+    │   ├── SmartAssistantDemo.tsx
+    │   ├── SmoothScroll.tsx
+    │   ├── StatsTicker.tsx
+    │   ├── TextReveal.tsx
+    │   ├── VideoLite.tsx
+    │   └── parks
+    │       ├── ActivityList.tsx
+    │       ├── ActivityList_Universal.tsx
+    │       ├── DistrictGrid_Universal.tsx
+    │       ├── DistrictsGrid.tsx
+    │       ├── FilterModal.tsx
+    │       ├── HeroCarousel.tsx
+    │       ├── LogisticPanel_Universal.tsx
+    │       ├── LogisticsPanel.tsx
+    │       ├── ParkCard.tsx
+    │       ├── ParkDetailHero.tsx
+    │       ├── ParkDetailHero_Universal.tsx
+    │       └── ParkPageLayout.tsx
+    ├── context
+    │   └── ModalContext.tsx
+    ├── data
+    │   ├── ak-data.ts
+    │   ├── annual-mapping.ts
+    │   ├── epcot-data.ts
+    │   ├── hs-data.ts
+    │   ├── mk-attractions-data.ts
+    │   ├── mk-characters-data.ts
+    │   ├── mk-data.ts
+    │   ├── mk-dining-data.ts
+    │   ├── mk-logistics.ts
+    │   ├── mk-shows-data.ts
+    │   ├── shoppinear-data.ts
+    │   └── types.ts
+    └── services
+        └── weather.ts

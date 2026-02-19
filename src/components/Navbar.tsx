@@ -1,4 +1,4 @@
-// @STATUS: REFACTORED V6.1 -- ADDED MAPPING ANUAL SECTION
+// @STATUS: REFACTORED V7.0 -- NEW IA STRUCTURE FOR "PLANIFICAR ORLANDO"
 "use client";
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
@@ -58,6 +58,51 @@ interface NavSection {
 }
 
 const NAV_ITEMS: NavItem[] = [
+  // 1. PLANIFICAR ORLANDO (Nuevo orden y estructura)
+  {
+    id: 'planning',
+    label: 'Orlando',
+    spotlight: { tag: 'HERRAMIENTA', title: 'Calculadora de Presupuesto', desc: 'Estima el costo real de tu viaje en 2 minutos.' },
+    sections: [
+      {
+        title: 'ESTRATEGIA TEMPORAL',
+        links: [
+          { href: '/planning/dates', label: 'El Algoritmo de Fechas' },
+          { href: '/planning/duration', label: 'Calculadora de Duración' },
+          { href: '/planning/budget', label: 'Presupuesto y Costos' },
+          { href: '/planning/weather', label: 'Clima y Multitudes' },
+        ],
+      },
+      {
+        title: 'INFRAESTRUCTURA',
+        links: [
+          { href: '/planning/hotels', label: 'Matriz de Alojamiento' },
+          { href: '/planning/transport', label: 'Auto vs. Uber' },
+          { href: '/planning/airport', label: 'Traslados Aeropuerto (MCO)' },
+          { href: '/planning/brightline', label: 'Conexión Miami (Brightline)' },
+        ],
+      },
+      {
+        title: 'ACCESO TÁCTICO',
+        links: [
+          { href: '/planning/tickets-guide', label: 'Ingeniería de Tickets' },
+          { href: '/disney/tickets', label: 'Tickets Disney: Base vs. Hopper' },
+          { href: '/universal/tickets', label: 'Tickets Universal: Park-to-Park' },
+          { href: '/planning/map', label: 'Mapa General de Parques' },
+        ],
+      },
+      {
+        title: 'FACTOR HUMANO',
+        links: [
+          { href: '/planning/kids', label: 'Protocolo Infantil' },
+          { href: '/planning/rider-switch', label: 'Rider Switch & Strollers' },
+          { href: '/planning/dining', label: 'Gastronomía: Tipos de Comida' },
+          { href: '/shoppinear', label: 'Compras: Outlets & Malls' },
+        ],
+      },
+    ],
+  },
+  // 2. DISNEY WORLD
   {
     id: 'disney',
     label: 'Disney World',
@@ -91,6 +136,7 @@ const NAV_ITEMS: NavItem[] = [
       },
     ],
   },
+  // 3. UNIVERSAL
   {
     id: 'universal',
     label: 'Universal',
@@ -115,6 +161,7 @@ const NAV_ITEMS: NavItem[] = [
       },
     ],
   },
+  // 4. SHOPPINEAR
   {
     id: 'shoppinear',
     label: 'Shoppinear',
@@ -148,12 +195,13 @@ const NAV_ITEMS: NavItem[] = [
       },
     ],
   },
-  // --- ACTUALIZACIÓN: MAPPING ANUAL ---
+  // 5. MAPPING ANUAL
   { 
     id: 'mapping', 
     label: 'Mapping Anual', 
     href: '/mapping' 
   },
+  // 6. FAQ
   { id: 'faq', label: 'FAQ', href: '/#faq' },
 ];
 

@@ -174,7 +174,7 @@ export default function ParksPage() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="flex flex-col lg:flex-row gap-3 w-full h-auto lg:h-[520px] mb-8"
+          className="flex flex-col lg:flex-row gap-4 w-full lg:h-[520px] mb-8"
         >
           {parksData.map((park) => {
             const isExpanded = expandedPark === park.id;
@@ -184,25 +184,15 @@ export default function ParksPage() {
               <motion.div
                 key={park.id}
                 layout
-                className={`relative min-w-0 h-full ${isExpanded ? "flex-[4]" : "flex-[1]"}`}
+                className={`relative min-w-0 h-auto lg:h-full ${isExpanded ? "lg:flex-[4]" : "lg:flex-[1]"}`}
                 transition={{ duration: 0.7, ease: [0.25, 1, 0.5, 1] }}
               >
                 <ParkCard
                   data={park}
                   isExpanded={isExpanded}
                   onClick={() => handleParkClick(park.id)}
+                  route={route}
                 />
-                {/* Explorar parque button — visible when expanded */}
-                {isExpanded && route && (
-                  <Link
-                    href={route}
-                    className="absolute bottom-8 right-20 z-30 px-6 py-3 bg-sunset text-white rounded-full font-bold text-xs uppercase tracking-widest hover:brightness-110 transition-all shadow-lg hover:shadow-sunset/30 active:scale-[0.97] flex items-center gap-2"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    Explorar parque
-                    <Icon icon="solar:arrow-right-linear" width={14} />
-                  </Link>
-                )}
               </motion.div>
             );
           })}
@@ -221,7 +211,7 @@ export default function ParksPage() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="flex flex-col lg:flex-row gap-3 w-full h-auto lg:h-[420px] mb-12"
+          className="flex flex-col lg:flex-row gap-4 w-full lg:h-[420px] mb-12"
         >
           {waterParksData.map((park) => {
             const isExpanded = expandedWater === park.id;
@@ -229,7 +219,7 @@ export default function ParksPage() {
               <motion.div
                 key={park.id}
                 layout
-                className={`min-w-0 h-full ${isExpanded ? "flex-[4]" : "flex-[1]"}`}
+                className={`relative min-w-0 h-auto lg:h-full ${isExpanded ? "lg:flex-[4]" : "lg:flex-[1]"}`}
                 transition={{ duration: 0.7, ease: [0.25, 1, 0.5, 1] }}
               >
                 <ParkCard
