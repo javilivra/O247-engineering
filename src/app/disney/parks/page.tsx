@@ -1,20 +1,23 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Icon } from "@/components/Icon";
-import Link from "next/link";
-import ParkCard, { ParkData } from "@/components/parks/ParkCard";
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Icon } from '@/components/Icon';
+import Link from 'next/link';
+import ParkCard, { ParkData } from '@/components/parks/ParkCard';
+
+// Importar el componente reutilizable
+import ContextualIntro from '@/components/parks/ContextualIntro';
 
 // ============================================================
 // DATA
 // ============================================================
 
 const PARK_ROUTES: Record<string, string> = {
-  mk: "/disney/mk",
-  epcot: "/disney/epcot",
-  hs: "/disney/hs",
-  ak: "/disney/ak",
+  mk: '/disney/mk',
+  epcot: '/disney/epcot',
+  hs: '/disney/hs',
+  ak: '/disney/ak',
 };
 
 const parksData: ParkData[] = [
@@ -83,11 +86,6 @@ const waterParksData: ParkData[] = [
   },
 ];
 
-const INTRO_TEXT = {
-  short: "Disney World tiene 4 parques temáticos principales y 2 parques acuáticos. Cada uno ofrece una experiencia completamente distinta, con su propio ritmo, horarios y tipo de atracciones.",
-  full: "Elegir qué parques visitar y en qué orden es una de las decisiones más importantes del viaje. No todos los parques necesitan la misma cantidad de tiempo: Magic Kingdom suele necesitar un día completo, mientras que Animal Kingdom se puede cubrir en medio día. Los horarios de apertura anticipada (Early Entry) cambian según tu hotel, y los shows nocturnos definen a qué hora conviene terminar el día. Acá podés explorar cada parque en detalle antes de tomar esa decisión.",
-};
-
 // ============================================================
 // PAGE
 // ============================================================
@@ -95,7 +93,6 @@ const INTRO_TEXT = {
 export default function ParksPage() {
   const [expandedPark, setExpandedPark] = useState<string | null>("mk");
   const [expandedWater, setExpandedWater] = useState<string | null>(null);
-  const [showFullIntro, setShowFullIntro] = useState(false);
 
   const handleParkClick = (id: string) => {
     setExpandedPark((prev) => (prev === id ? null : id));
@@ -104,6 +101,19 @@ export default function ParksPage() {
   const handleWaterClick = (id: string) => {
     setExpandedWater((prev) => (prev === id ? null : id));
   };
+
+  const introShort = (
+    <p>Disney World tiene <strong>4 parques temáticos</strong> principales y <strong>2 parques acuáticos</strong>. Cada uno ofrece una experiencia completamente distinta, con su propio ritmo, horarios y tipo de atracciones.</p>
+  );
+
+  const introExpanded = (
+    <>
+        <p>Elegir qué parques visitar y en qué orden es una de las decisiones más importantes del viaje. No todos los parques necesitan la misma cantidad de tiempo: Magic Kingdom suele necesitar un día completo, mientras que Animal Kingdom se puede cubrir en medio día.</p>
+        <div className="pl-4 border-l-2 border-sunset">
+            <p className="italic text-gunmetal">Los horarios de apertura anticipada (Early Entry) cambian según tu hotel, y los shows nocturnos definen a qué hora conviene terminar el día. Acá podés explorar cada parque en detalle antes de tomar esa decisión.</p>
+        </div>
+    </>
+  );
 
   return (
     <main className="min-h-screen bg-bone pt-10 pb-20">
@@ -125,39 +135,7 @@ export default function ParksPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.15 }}
           >
-            <p
-              className="type-body text-base text-gunmetal/60 max-w-3xl leading-relaxed"
-              style={{ overflowWrap: "break-word" }}
-            >
-              {INTRO_TEXT.short}
-            </p>
-
-            <AnimatePresence>
-              {showFullIntro && (
-                <motion.p
-                  initial={{ height: 0, opacity: 0, marginTop: 0 }}
-                  animate={{ height: "auto", opacity: 1, marginTop: 12 }}
-                  exit={{ height: 0, opacity: 0, marginTop: 0 }}
-                  transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
-                  className="type-body text-base text-gunmetal/50 max-w-3xl leading-relaxed overflow-hidden"
-                  style={{ overflowWrap: "break-word" }}
-                >
-                  {INTRO_TEXT.full}
-                </motion.p>
-              )}
-            </AnimatePresence>
-
-            <button
-              onClick={() => setShowFullIntro(!showFullIntro)}
-              className="mt-3 flex items-center gap-1.5 text-xs text-sunset hover:text-sunset/80 font-bold uppercase tracking-widest transition-colors"
-            >
-              <Icon
-                icon="solar:alt-arrow-down-linear"
-                width={14}
-                className={`transition-transform duration-300 ${showFullIntro ? "rotate-180" : ""}`}
-              />
-              {showFullIntro ? "Menos detalles" : "Más detalles"}
-            </button>
+             <ContextualIntro short={introShort} expanded={introExpanded} />
           </motion.div>
         </div>
 
