@@ -170,27 +170,27 @@ const NAV_ITEMS: NavItem[] = [
       {
         title: 'PROTOCOLO DE COMPRAS',
         links: [
-          { href: '/shoppinear#protocolo', label: 'Matriz de Decision' },
-          { href: '/shoppinear#protocolo', label: 'Ropa y Calzado' },
-          { href: '/shoppinear#protocolo', label: 'Tecnologia' },
-          { href: '/shoppinear#protocolo', label: 'Souvenirs y Merch' },
+          { href: '/shoppinear#protocolo-matriz', label: 'Matriz de Decision' },
+          { href: '/shoppinear#protocolo-ropa', label: 'Ropa y Calzado' },
+          { href: '/shoppinear#protocolo-tecnologia', label: 'Tecnologia' },
+          { href: '/shoppinear#protocolo-souvenirs', label: 'Souvenirs y Merch' },
         ],
       },
       {
         title: 'DONDE COMPRAR',
         links: [
-          { href: '/shoppinear#zonas', label: 'Premium Outlets' },
-          { href: '/shoppinear#zonas', label: 'Disney Springs' },
-          { href: '/shoppinear#zonas', label: 'Walmart & Target' },
-          { href: '/shoppinear#zonas', label: 'Ver Todas las Zonas', highlight: true },
+          { href: '/shoppinear#zonas-outlets', label: 'Premium Outlets' },
+          { href: '/shoppinear#zonas-springs', label: 'Disney Springs' },
+          { href: '/shoppinear#zonas-walmart', label: 'Walmart & Target' },
+          { href: '/shoppinear#zonas-todas', label: 'Ver Todas las Zonas', highlight: true },
         ],
       },
       {
         title: 'HERRAMIENTAS',
         links: [
           { href: '/shoppinear#calculadora', label: 'Calculadora de Compras', highlight: true },
-          { href: '/shoppinear#tips', label: 'Tips de Ahorro' },
-          { href: '/shoppinear#tips', label: 'Guia Tax-Free' },
+          { href: '/shoppinear#tips-ahorro', label: 'Tips de Ahorro' },
+          { href: '/shoppinear#tips-tax', label: 'Guia Tax-Free' },
         ],
       },
     ],

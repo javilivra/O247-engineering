@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
@@ -7,6 +7,7 @@ import { motion } from 'framer-motion';
 // 🗺️ DICCIONARIO DE MARCA
 const PATH_MAP: Record<string, string> = {
     "disney": "Disney World",
+    "parks": "Parques", // Añadido para que no se muestre en el breadcrumb
     "mk": "Magic Kingdom",
     "epcot": "EPCOT",
     "hs": "Hollywood Studios",
@@ -33,18 +34,14 @@ export default function GlobalBreadcrumbs() {
 
     if (pathname === '/') return null;
 
-    const pathSegments = pathname.split('/').filter(segment => segment !== '');
+    const pathSegments = pathname.split('/').filter(segment => segment !== '' && segment !== 'parks');
     const isDarkMode = pathSegments.some(seg => DARK_HERO_PATHS.includes(seg));
     
-    // Clases dinámicas de Color
     const textColor = isDarkMode ? "text-white/60 hover:text-white" : "text-gunmetal/60 hover:text-gunmetal";
     const separatorColor = isDarkMode ? "text-white/20" : "text-gunmetal/20";
     const activeColor = "text-celeste"; 
     const ellipsisColor = isDarkMode ? "text-white/30" : "text-gunmetal/30";
 
-    // LÓGICA DE POSICIONAMIENTO OPTIMIZADA (Sin espacios muertos)
-    // Absolute: top-[90px] -> Justo debajo del navbar transparente.
-    // Relative: mt-20 -> (80px) Compensa exactamente la altura del navbar fijo, sin gap extra.
     const positionClass = isDarkMode 
         ? "absolute top-[90px] left-0 z-30" 
         : "relative mt-20 mb-2 z-30";
@@ -55,19 +52,35 @@ export default function GlobalBreadcrumbs() {
 
     const getName = (segment: string) => PATH_MAP[segment] || segment.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
 
+    const generateHref = (segments: string[], index: number) => {
+        const currentPath = segments.slice(0, index + 1);
+        if (currentPath[0] === 'disney' && currentPath.length === 1) {
+            return '/disney/parks';
+        }
+         if (currentPath[0] === 'universal' && currentPath.length === 1) {
+            return '/universal/parks';
+        }
+        // Re-insert 'parks' for correct URL generation where needed
+        if ((currentPath[0] === 'disney' || currentPath[0] === 'universal') && currentPath.length > 1) {
+            return `/${currentPath[0]}/parks/${currentPath.slice(1).join('/')}`;
+        }
+        return `/${currentPath.join('/')}`;
+    };
+
     if (pathSegments.length > TRIGGER_COMPRESSION_AT) {
+        const hiddenCount = pathSegments.length - SHOW_LAST_N;
         visibleSegments = [
             { name: "...", href: null, isEllipsis: true },
             ...pathSegments.slice(-SHOW_LAST_N).map((seg, i) => ({
                 name: getName(seg),
-                href: `/${pathSegments.slice(0, pathSegments.length - SHOW_LAST_N + i + 1).join('/')}`,
+                href: generateHref(pathSegments, hiddenCount + i),
                 isEllipsis: false
             }))
         ];
     } else {
         visibleSegments = pathSegments.map((seg, i) => ({
             name: getName(seg),
-            href: `/${pathSegments.slice(0, i + 1).join('/')}`,
+            href: generateHref(pathSegments, i),
             isEllipsis: false
         }));
     }

@@ -1,11 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { Icon } from "@/components/Icon";
 import Link from "next/link";
-// Asegúrate de que este componente exista en esta ruta (es el mismo que usas para Disney)
 import ParkCard, { ParkData } from "@/components/parks/ParkCard";
+import ContextualIntro from "@/components/parks/ContextualIntro";
 import ParkDetailHero_Universal from "@/components/parks/ParkDetailHero_Universal";
 import DistrictsGrid_Universal from "@/components/parks/DistrictGrid_Universal";
 import LogisticsPanel_Universal from "@/components/parks/LogisticPanel_Universal";
@@ -20,7 +20,7 @@ const universalData: ParkData[] = [
     id: "epic",
     name: "Epic Universe",
     slogan: "El futuro es ahora. Cinco mundos inmersivos, desde Nintendo hasta Monstruos Clásicos.",
-    image: "/images/universal_images/EpicUniverse_Entrance_Night.webp", // Asegúrate de tener esta imagen o usa un placeholder
+    image: "/images/universal_images/EpicUniverse_Entrance_Night.webp",
     temp: 26,
     stats: { attractions: 12, shows: 4 },
     schedule: { early: "08:00 AM", regular: "09:00 - 22:00", show: "21:30 (Helios)" },
@@ -34,7 +34,7 @@ const universalData: ParkData[] = [
     temp: 28,
     stats: { attractions: 18, shows: 3 },
     schedule: { early: "08:00 AM", regular: "09:00 - 21:00", show: "Dusk (Hogwarts)" },
-    weatherType: "cloudy",
+    weatherType: "cloud",
   },
   {
     id: "usf",
@@ -59,30 +59,48 @@ const universalData: ParkData[] = [
 ];
 
 export default function UniversalParksPage() {
-  // Estado para la expansión de tarjetas (Efecto Acordeón)
-  const [expandedId, setExpandedId] = useState<string | null>("epic"); // Epic abierto por defecto
+  const [expandedId, setExpandedId] = useState<string | null>("epic");
 
   const handleCardClick = (id: string) => {
     setExpandedId(expandedId === id ? null : id);
   };
 
+  const introShort = (
+    <p>La nueva era de Universal ya está aquí. El resort ahora cuenta con <strong>3 parques temáticos</strong>, incluyendo el revolucionario <strong>Epic Universe</strong>, y el parque acuático <strong>Volcano Bay</strong>.</p>
+  );
+
+  const introExpanded = (
+    <>
+      <p>La inauguración de <strong>Epic Universe</strong> ha transformado a Universal en un destino de varios días, compitiendo directamente con la escala de Disney. La estrategia de visita ahora se divide en dos frentes: el campus original y el nuevo mundo.</p>
+      <div className="pl-4 border-l-2 border-celeste my-4 space-y-3">
+          <p className="italic text-gunmetal">El complejo original, con <strong>Universal Studios Florida</strong> e <strong>Islands of Adventure</strong>, sigue siendo un tándem perfecto y conectado. El ticket <strong>2-Park Park-to-Park</strong> es clave para usar el Hogwarts Express.</p>
+          <p className="italic text-gunmetal font-medium"><strong>Epic Universe</strong>, en cambio, es una entidad masiva y separada. Requiere su propio día completo y una logística de transporte dedicada, haciendo del ticket <strong>3-Park</strong> la nueva norma para una visita completa.</p>
+      </div>
+      <p>Esta nueva estructura exige una planificación más detallada, especialmente en la asignación de días y la elección de tickets, para poder exprimir al máximo cada experiencia.</p>
+    </>
+  );
+
   return (
-    <main className="min-h-screen bg-bone pt-0 pb-20 px-6 md:px-12 lg:px-24 font-sans text-gunmetal">
+    <main className="min-h-screen bg-bone pt-10 pb-20 px-6 md:px-12 lg:px-24 font-sans text-gunmetal">
       
       <div className="w-full max-w-[1440px] mx-auto">
         
         {/* HEADER */}
-        <div className="flex flex-col gap-4 mb-8 pt-4">
+        <div className="mb-12">
             <motion.h1 
                 initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 4, y: 0 }}
-                className="font-display text-4xl md:text-5xl font-bold text-gunmetal tracking-tight"
+                animate={{ opacity: 1, y: 0 }}
+                className="font-display text-4xl md:text-5xl font-bold text-gunmetal tracking-tight mb-6"
             >
                 Universo de Acción
             </motion.h1>
-            <p className="type-body text-gunmetal/60 max-w-2xl">
-                Tres parques temáticos increíbles y un parque acuático. Desde la magia de Harry Potter hasta la adrenalina de Jurassic World.
-            </p>
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.15 }}
+            >
+              <ContextualIntro short={introShort} expanded={introExpanded} />
+            </motion.div>
         </div>
 
         {/* PARKS GRID (ACORDEÓN) */}

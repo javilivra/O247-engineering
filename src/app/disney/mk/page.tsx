@@ -13,7 +13,7 @@ import type { FilterSection, FilterChip } from '@/components/parks/FilterModal';
 // HERO SLIDES
 // ============================================================
 const HERO_SLIDES = [
-  "/images/mk_att_heroslide_1.jpg.webp",
+  "/images/mk_att_heroslide_1.webp",
   "/images/mk_att_heroslide_2.jpg",
   "/images/mk_att_heroslide_3.webp",
   "/images/mk_att_heroslide_4.jpg",
