@@ -73,7 +73,7 @@ export default function ParkCard({ data, isExpanded, onClick, route }: ParkCardP
   return (
     <motion.div
       layout
-      className={`relative rounded-3xl overflow-hidden border border-white/5 bg-gunmetal shadow-xl select-none w-full ${isExpanded ? 'h-[420px] lg:h-full' : 'h-[120px] lg:h-full'}`}
+      className={`relative rounded-3xl overflow-hidden bg-gunmetal shadow-xl select-none w-full ${isExpanded ? 'h-[420px] lg:h-full' : 'h-[120px] lg:h-full'}`}
       transition={{ duration: 0.7, ease: [0.25, 1, 0.5, 1] }}
     >
       {/* ============ BACKGROUND IMAGE ============ */}

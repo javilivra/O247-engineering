@@ -11,6 +11,7 @@ import Navbar from "@/components/Navbar";
 import GlobalBreadcrumbs from "@/components/GlobalBreadcrumbs";
 import Footer from "@/components/Footer";
 import CustomCursor from "@/components/CustomCursor";
+import BackButton from "@/components/BackButton"; // Importar el nuevo componente
 import { ModalProvider } from "@/context/ModalContext";
 
 // 1. CONFIGURACIÓN DE FUENTES
@@ -78,6 +79,8 @@ export default function RootLayout({
         <ModalProvider>
           {/* Custom cursor (auto-disabled on mobile/tablet) */}
           <CustomCursor />
+          {/* Botón global para volver atrás */}
+          <BackButton />
           {/* UI SHELL GLOBAL */}
           <Navbar />
           <SmoothScroll>

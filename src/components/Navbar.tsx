@@ -312,8 +312,8 @@ export default function Navbar() {
       : 'bg-transparent border-transparent';
 
   const textClass = useDarkText
-    ? 'text-gunmetal hover:text-gunmetal/70'
-    : 'text-white hover:text-white/80';
+    ? 'text-gunmetal'
+    : 'text-white';
 
   const logoClass = useDarkText ? 'text-gunmetal' : 'text-white';
 
@@ -356,26 +356,26 @@ export default function Navbar() {
             {NAV_ITEMS.map((item) => (
               <div
                 key={item.id}
-                className="h-full flex items-center"
+                className="h-full flex items-center group"
                 onMouseEnter={() => !item.href && setDesktopMenu(item.id)}
               >
                 {item.href ? (
                   <Link
                     href={item.href}
-                    className={`px-4 py-2 text-[14px] tracking-wide antialiased font-sans font-medium transition-colors duration-300 ${textClass}`}
+                    className={`px-4 py-2 text-[14px] tracking-wide antialiased font-sans font-medium transition-colors duration-300 ${useDarkText ? 'text-gunmetal group-hover:text-sunset' : 'text-white group-hover:text-sunset'}`}
                   >
                     {item.label}
                   </Link>
                 ) : (
                   <button
                     className={`px-4 py-2 flex items-center gap-1.5 text-[14px] tracking-wide outline-none cursor-default antialiased font-sans font-medium transition-colors duration-300 ${
-                      desktopMenu === item.id ? 'text-white font-bold' : textClass
+                      desktopMenu === item.id ? 'text-white font-bold' : (useDarkText ? 'text-gunmetal group-hover:text-sunset' : 'text-white group-hover:text-sunset')
                     }`}
                     aria-expanded={desktopMenu === item.id}
                     aria-haspopup="true"
                   >
                     {item.label}
-                    <span className={desktopMenu === item.id ? 'text-sunset' : useDarkText ? 'text-gunmetal/40' : 'text-white/40'}>
+                    <span className={`transition-colors duration-300 ${desktopMenu === item.id ? 'text-sunset' : useDarkText ? 'text-gunmetal/40 group-hover:text-sunset' : 'text-white/40 group-hover:text-sunset'}`}>
                       {desktopMenu === item.id ? <IconMinus /> : <IconPlus />}
                     </span>
                   </button>

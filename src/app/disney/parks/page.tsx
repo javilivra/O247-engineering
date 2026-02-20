@@ -55,7 +55,7 @@ const parksData: ParkData[] = [
     id: "ak",
     name: "Animal Kingdom",
     slogan: "Naturaleza indómita. Safaris, Pandora y un enfoque único en la vida salvaje.",
-    image: "/images/cinderellacastlehero.jpg", // TODO: reemplazar con imagen real de AK
+    image: "/images/ak.jpg", 
     temp: 26,
     stats: { attractions: 12, shows: 3 },
     schedule: { early: "07:30 AM", regular: "08:00 - 18:00" },
@@ -78,7 +78,7 @@ const waterParksData: ParkData[] = [
     id: "bb",
     name: "Blizzard Beach",
     slogan: "Diversión helada bajo el sol de Florida. Temática de estación de ski.",
-    image: "/images/cinderellacastlehero.jpg", // TODO: reemplazar
+    image: "/images/blizzard_beach.webp",
     temp: -2,
     stats: { attractions: 12, shows: 0 },
     schedule: { early: "N/A", regular: "CERRADO" },
