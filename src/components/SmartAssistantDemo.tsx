@@ -93,7 +93,7 @@ export default function SmartAssistantDemo() {
         >
             <div className="bg-gunmetal/90 backdrop-blur-xl border border-white/20 px-4 py-4 rounded-2xl flex items-center gap-3 shadow-2xl">
                 <div className="bg-sunset/20 p-2 rounded-full text-sunset">
-                    <Icon icon={currentScenario.icon} width="20" />
+                    <Icon icon={currentScenario.icon} width={20} />
                 </div>
                 <div>
                     {/* F33: Aumentado de 10px a 11px */}

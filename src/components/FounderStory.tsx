@@ -70,9 +70,9 @@ export default function FounderStory() {
                     <h3 className="font-display font-bold text-gunmetal text-lg">Javier & Carolina</h3>
                     <p className="type-tech text-[10px] text-gunmetal/50 uppercase tracking-widest mb-2">Creative Founders, ORLANDO 247</p>
                     <div className="flex gap-4">
-                        <a href="#" className="text-gunmetal/40 hover:text-sunset transition-colors"><Icon icon="solar:camera-bold" width="20" /></a>
-                        <a href="#" className="text-gunmetal/40 hover:text-sunset transition-colors"><Icon icon="logos:twitter" width="18" className="grayscale hover:grayscale-0 transition-all" /></a>
-                        <a href="#" className="text-gunmetal/40 hover:text-sunset transition-colors"><Icon icon="logos:linkedin-icon" width="18" className="grayscale hover:grayscale-0 transition-all" /></a>
+                        <a href="#" className="text-gunmetal/40 hover:text-sunset transition-colors"><Icon icon="solar:camera-bold" width={20} /></a>
+                        <a href="#" className="text-gunmetal/40 hover:text-sunset transition-colors"><Icon icon="logos:twitter" width={18} className="grayscale hover:grayscale-0 transition-all" /></a>
+                        <a href="#" className="text-gunmetal/40 hover:text-sunset transition-colors"><Icon icon="logos:linkedin-icon" width={18} className="grayscale hover:grayscale-0 transition-all" /></a>
                     </div>
                 </div>
               </div>
@@ -95,7 +95,7 @@ export default function FounderStory() {
                     className="absolute z-10 text-center px-6"
                 >
                     <div className="mb-4 inline-flex items-center justify-center w-16 h-16 rounded-full bg-[#a7e26e]/20 text-[#a7e26e] shadow-lg shadow-[#a7e26e]/20">
-                        <Icon icon="solar:check-circle-bold" width="32" />
+                        <Icon icon="solar:check-circle-bold" width={32} />
                     </div>
                     <h3 className="type-display text-3xl text-gunmetal mb-2">Respira.</h3>
                     <p className="type-body text-gunmetal/60">O247 se encarga del ruido.<br/>Vos encargate de disfrutar.</p>
@@ -131,7 +131,7 @@ export default function FounderStory() {
                                 >
                                     {/* Icono de alerta pequeño */}
                                     <div className="absolute -top-2 -right-2 w-6 h-6 bg-red-50 text-red-500 rounded-full flex items-center justify-center border border-white shadow-sm">
-                                        <Icon icon="solar:bell-bing-bold-duotone" width="12" />
+                                        <Icon icon="solar:bell-bing-bold-duotone" width={12} />
                                     </div>
                                     <p className="type-body text-xs font-bold text-gunmetal leading-tight">
                                         "{point.text}"

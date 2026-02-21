@@ -46,7 +46,7 @@ export default function VideoLite({ videoId, title, coverImage }: VideoLiteProps
                     whileTap={{ scale: 0.9 }}
                     className="drop-shadow-[0_5px_15px_rgba(0,0,0,0.5)]" 
                 >
-                    <Icon icon="logos:youtube-icon" width={90} height={90} />
+                    <Icon icon="logos:youtube-icon" width={90} />
                 </motion.div>
             </div>
 

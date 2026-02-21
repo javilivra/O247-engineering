@@ -209,7 +209,7 @@ export default function RegisterPage() {
                     <div className="flex -space-x-3">
                         {[1,2,3].map((i) => (
                             <div key={i} className="w-8 h-8 rounded-full bg-bone border-2 border-gunmetal overflow-hidden relative">
-                                <Image src={`/images/avatar-${i}.jpg`} alt="User" width={32} height={32} className="object-cover bg-gray-300" />
+                                <Image src={`/images/avatar-${i}.jpg`} alt="User" width={32} className="object-cover bg-gray-300" />
                             </div>
                         ))}
                     </div>

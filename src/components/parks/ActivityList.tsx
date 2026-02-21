@@ -120,7 +120,7 @@ export default function ActivityList() {
                             
                             {/* ICONO */}
                             <div className={`hidden md:flex w-12 h-12 rounded-xl items-center justify-center transition-colors ${isOpen ? 'bg-sunset/10 text-sunset' : 'bg-gunmetal/5 text-gunmetal/40 group-hover:text-sunset'}`}>
-                                <Icon icon={item.icon} width="24" />
+                                <Icon icon={item.icon} width={24} />
                             </div>
 
                             {/* TEXTO */}
@@ -147,7 +147,7 @@ export default function ActivityList() {
                             transition={{ duration: 0.3 }}
                             className="text-gunmetal/30 group-hover:text-sunset"
                         >
-                            <Icon icon="solar:alt-arrow-down-bold" width="20" />
+                            <Icon icon="solar:alt-arrow-down-bold" width={20} />
                         </motion.div>
                     </button>
 

@@ -50,7 +50,7 @@ export default function LogisticsStepper({ steps }: LogisticsStepperProps) {
                     ${isActive ? "text-gunmetal shadow-md shadow-sunset/10" : "text-gray-300"}
                   `}
                 >
-                  <Icon icon={step.icon} width="20" height="20" />
+                  <Icon icon={step.icon} width={20} />
                 </motion.div>
                 
                 {/* Etiqueta del Nodo (Hotel, Entrada, etc) */}
@@ -91,7 +91,7 @@ export default function LogisticsStepper({ steps }: LogisticsStepperProps) {
                     >
                         <Icon 
                             icon={step.connectionType === 'walk' ? "solar:walking-round-bold" : "solar:bus-bold"} 
-                            width="14" 
+                            width={14} 
                         />
                     </motion.div>
                   </div>

@@ -55,7 +55,7 @@ export default function NotFound() {
                 <span className="type-display text-sm text-white tracking-wider">TERMINAL DESCONOCIDA</span>
             </div>
             <div className="absolute bottom-4 right-6 z-20">
-                <Icon icon="solar:videocamera-record-bold" className="text-red-500 animate-pulse" width="16" />
+                <Icon icon="solar:videocamera-record-bold" className="text-red-500 animate-pulse" width={16} />
             </div>
         </motion.div>
 
@@ -85,7 +85,7 @@ export default function NotFound() {
                         className="type-tech w-full md:w-auto bg-sunset text-gunmetal px-8 py-4 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-white transition-all duration-300 shadow-[0_0_20px_rgba(255,112,67,0.3)] hover:scale-105 flex items-center justify-center gap-2"
                     >
                         {/* Icono Home Claro */}
-                        <Icon icon="solar:home-2-bold" width="18" />
+                        <Icon icon="solar:home-2-bold" width={18} />
                         Regresar a la Pista
                     </Link>
 
@@ -94,7 +94,7 @@ export default function NotFound() {
                         href="/contact" 
                         className="type-tech w-full md:w-auto px-8 py-4 rounded-full border border-white/20 text-white font-bold text-xs uppercase tracking-wider hover:bg-white hover:text-gunmetal transition-all duration-300 flex items-center justify-center gap-2"
                     >
-                        <Icon icon="solar:headset-mic-bold" width="16" />
+                        <Icon icon="solar:headset-mic-bold" width={16} />
                         Soporte
                     </Link>
                 </div>
@@ -104,7 +104,7 @@ export default function NotFound() {
                     onClick={() => router.back()}
                     className="type-tech text-white/40 hover:text-white text-[10px] uppercase tracking-widest flex items-center justify-center gap-2 mt-2 transition-colors duration-300 py-2"
                 >
-                    <Icon icon="solar:arrow-left-linear" width="14" />
+                    <Icon icon="solar:arrow-left-linear" width={14} />
                     Volver a la página anterior
                 </button>
 

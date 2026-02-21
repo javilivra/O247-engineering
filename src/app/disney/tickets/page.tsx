@@ -195,8 +195,8 @@ export default function DisneyTicketsPage() {
                 className="md:col-span-2"
             >
                 <video
-                    width="1200"
-                    height="1200"
+                    width={1200}
+                   
                     autoPlay
                     loop
                     muted
