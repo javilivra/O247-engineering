@@ -5,6 +5,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Icon } from '@/components/Icon';
 import Link from 'next/link';
 import ParkCard, { ParkData } from '@/components/parks/ParkCard';
+import ParkDetailHero from "@/components/parks/ParkDetailHero";
+import DistrictsGrid from "@/components/parks/DistrictsGrid";
+import LogisticsPanel from "@/components/parks/LogisticsPanel";
+import ActivityList from "@/components/parks/ActivityList";
 
 // Importar el componente reutilizable
 import ContextualIntro from '@/components/parks/ContextualIntro';
@@ -102,15 +106,36 @@ export default function ParksPage() {
     setExpandedWater((prev) => (prev === id ? null : id));
   };
 
-  const introShort = (
+  // Text for the main Parks Panel intro
+  const panelIntroShort = (
     <p>Disney World tiene <strong>4 parques temáticos</strong> principales y <strong>2 parques acuáticos</strong>. Cada uno ofrece una experiencia completamente distinta, con su propio ritmo, horarios y tipo de atracciones.</p>
   );
 
-  const introExpanded = (
+  const panelIntroExpanded = (
     <>
         <p>Elegir qué parques visitar y en qué orden es una de las decisiones más importantes del viaje. No todos los parques necesitan la misma cantidad de tiempo: Magic Kingdom suele necesitar un día completo, mientras que Animal Kingdom se puede cubrir en medio día.</p>
         <div className="pl-4 border-l-2 border-sunset">
             <p className="italic text-gunmetal">Los horarios de apertura anticipada (Early Entry) cambian según tu hotel, y los shows nocturnos definen a qué hora conviene terminar el día. Acá podés explorar cada parque en detalle antes de tomar esa decisión.</p>
+        </div>
+    </>
+  );
+
+  // Text for the Disney Springs section intro
+  const springsIntroShort = (
+    <p>Un distrito al aire libre donde el paseo es parte del viaje — desde el bellísimo<strong className="text-gunmetal"> Coca-Cola Store</strong>, degustando lo sabores del mundo, hasta volar a 120mts de altura con <strong className="text-gunmetal">Aerophile Balloon Flight</strong>.</p>
+  );
+
+  const springsIntroExpanded = (
+    <>
+        <p>Disney Springs no es un parque. Es un espacio pensado para recorrer sin reloj, donde la experiencia no depende de una atracción sino del entorno.</p>
+        <p>Aquí conviven <strong className="text-gunmetal">restaurantes de autor, marcas globales y tiendas exclusivas de Disney</strong> en un circuito que se siente más cercano a un barrio creativo que a un complejo temático. La música en vivo aparece sin anunciarse, las terrazas miran al agua y cada sector tiene su propio ritmo.</p>
+        <p>No hay filas que organizar ni reservas que definan el día. <strong className="text-gunmetal">Hay elección</strong>.
+Elegís cenar frente al lago. Elegís entrar en una tienda que solo existe acá. Elegís quedarte un rato más cuando el atardecer cambia el tono del lugar.
+Disney Springs no busca impactar con volumen. Funciona por atmósfera.
+Por detalles. Por esa sensación de estar en un lugar que <strong className="text-gunmetal">combina entretenimiento, diseño y movimiento constante</strong> sin límites.</p>
+        <div className="pl-4 border-l-2 border-sunset">
+            <p className="italic text-gunmetal">Disney Springs no se recorre para marcar pendientes.
+            Se explora cuando querés que el viaje respire.</p>
         </div>
     </>
   );
@@ -135,7 +160,7 @@ export default function ParksPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.15 }}
           >
-             <ContextualIntro short={introShort} expanded={introExpanded} />
+             <ContextualIntro short={panelIntroShort} expanded={panelIntroExpanded} />
           </motion.div>
         </div>
 
@@ -209,6 +234,16 @@ export default function ParksPage() {
             );
           })}
         </motion.div>
+
+        <div id="active-view">
+        <ParkDetailHero />
+        <div className="py-12">
+        <ContextualIntro short={springsIntroShort} expanded={springsIntroExpanded} />
+        </div>
+            <DistrictsGrid />
+            <LogisticsPanel />
+            <ActivityList />
+        </div>
 
         {/* ============ GLOSSARY ============ */}
         <motion.div

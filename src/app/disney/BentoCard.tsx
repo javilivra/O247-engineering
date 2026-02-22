@@ -201,9 +201,11 @@ export default function BentoCard({ data }: { data: ParkItem }) {
 
   // Attractions -> Link to detail page (NO flip)
   if (data.type === 'Attraction') {
-    const slug = (data as any).slug || data.id.replace(/_/g, '-');
+    const attraction = data as any;
+    const slug = attraction.slug || data.id.replace(/_/g, '-');
+    const park = attraction.park || 'mk';
     return (
-      <Link href={`/disney/mk/${slug}`} className="block group">
+      <Link href={`/disney/${park}/${slug}`} className="block group">
         <motion.div
           whileHover={{ y: -5, scale: 1.01 }}
           className="relative h-64 md:h-72 w-full rounded-3xl overflow-hidden cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-300 bg-gunmetal"

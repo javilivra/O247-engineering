@@ -177,4 +177,64 @@ export interface Attraction extends ParkItem {
 
     // --- Fotografia ---
     photoPolicy: PhotoPolicy;
+
+    // ===================================================
+    // CAMPOS EXTENDIDOS -- Template de atracción [park]/[slug]
+    // Todos opcionales. Si no existen, el template omite
+    // la sección correspondiente automáticamente.
+    // ===================================================
+
+    /** Imagen grande para el hero (distinta a la card).
+     *  Si no existe, el template usa `image`. */
+    heroImage?: string;
+
+    /** Pasos de abordaje específicos de la atracción (ej: TRON).
+     *  Si no existe, la columna muestra "Acceso y Logística" en su lugar. */
+    boardingSteps?: BoardingStep[];
+
+    /** Tips estratégicos editoriales (máx 4 recomendados).
+     *  Si no existen, el template usa `bestTime` + `accessExplained`. */
+    strategyTips?: AttractionStrategyTip[];
+
+    /** Reviews de la comunidad O247.
+     *  Si no existen, el template muestra `secretTip` como insight. */
+    reviews?: AttractionReview[];
+
+    /** Score de satisfacción de la comunidad (ej: 9.8) */
+    communityScore?: number;
+
+    /** Total de auditorías / valoraciones (ej: 14208) */
+    communityTotal?: number;
+}
+
+// ===================================================
+// TIPOS EXTENDIDOS -- Usados en los campos opcionales
+// ===================================================
+
+/** Paso de abordaje con instrucción específica */
+export interface BoardingStep {
+    step: number;
+    title: string;
+    description: string;
+    /** Color de acento del paso. Default: celeste */
+    accentColor?: 'celeste' | 'sunset';
+    /** Ícono Solar (ej: 'solar:scanner-bold') */
+    icon: string;
+}
+
+/** Tip estratégico editorial */
+export interface AttractionStrategyTip {
+    title: string;
+    description: string;
+}
+
+/** Review de la comunidad O247 */
+export interface AttractionReview {
+    /** Identificador visible (ej: 'TR-01') */
+    id: string;
+    text: string;
+    /** 1-5 estrellas. Solo se muestra si `highlight` es true. */
+    rating?: number;
+    /** true = review destacada con estrellas y color celeste */
+    highlight?: boolean;
 }
