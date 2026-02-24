@@ -23,15 +23,22 @@ const DW = { motionSickness: false, darkness: false, heights: false, drops: fals
 const NL = { required: false, location: 'N/A', cost: 'N/A' };
 const DP = { camerasAllowed: true, phonesAllowed: true, flashAllowed: false, goProAllowed: false, hasOnRidePhoto: false, photoPassIncluded: false };
 
-function gf(base: number, p: 'mp' | 'ap' | 'fl' | 'ep'): { hour: number; wait: number }[] {
+function gf(base: number, p: 'mp' | 'ap' | 'fl' | 'ep'): import('./types').WaitForecastSlot[] {
     const h = [8,9,10,11,12,13,14,15,16,17,18,19,20,21];
+    const labels = ['8am','9am','10am','11am','12pm','1pm','2pm','3pm','4pm','5pm','6pm','7pm','8pm','9pm'];
     const ps: Record<string, number[]> = {
         mp: [.4,.7,1,.9,.8,.7,.6,.5,.5,.6,.7,.8,.6,.4],
         ap: [.3,.5,.7,.8,1,1,.9,.8,.7,.6,.5,.6,.5,.3],
         fl: [.5,.6,.7,.7,.7,.7,.6,.6,.6,.6,.6,.5,.5,.4],
         ep: [.3,.4,.5,.6,.7,.7,.8,.9,1,1,.9,.8,.7,.5],
     };
-    return h.map((hr, i) => ({ hour: hr, wait: Math.round(base * (ps[p]?.[i] || .5)) }));
+    const max = Math.max(...ps[p]);
+    return h.map((hr, i) => {
+        const waitMin = Math.round(base * (ps[p]?.[i] || .5));
+        const pct = ps[p]?.[i] || .5;
+        const tag = pct <= 0.5 ? 'low' : pct >= max * 0.9 ? 'peak' : undefined;
+        return { hour: hr, wait: waitMin, label: labels[i], waitMin, tag };
+    });
 }
 
 function gm(base: number): Record<number, number> {

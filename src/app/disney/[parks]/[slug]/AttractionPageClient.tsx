@@ -27,7 +27,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import AddButton from "@/components/AddButton";
-import type { Attraction } from "@/data/types";
+import type { Attraction, WaitForecastSlot } from "@/data/types";
 
 type ExtendedAttraction = Attraction & {
   heroImage?: string;
@@ -201,7 +201,6 @@ function ReliabilityGauge({ score }: { score: number }) {
 }
 
 // ── FORECAST BAR ──────────────────────────────────────────────
-type WaitForecastSlot = { label: string; waitMin: number; tag?: string };
 function ForecastBar({ slots }: { slots: WaitForecastSlot[] }) {
   const max = Math.max(...slots.map(s => s.waitMin), 1);
   return (
@@ -421,7 +420,7 @@ export default function AttractionPageClient({ attraction }: { attraction: Attra
   const tierColor = a.tier === "Tier 1" ? T.sunset : a.tier === "Tier 2" ? T.celeste : "rgba(255,255,255,0.4)";
   const waitVal = a.status === "closed" ? "Cerrada" : (a.waitTime || "N/A");
   const steps = a.boardingSteps || getDefaultSteps(a.access, a.accessExplained);
-  const forecast: WaitForecastSlot[] = a.forecastToday?.map((f: { label: string; waitMin: number; tag?: string }) => f) || [];
+  const forecast: WaitForecastSlot[] = (a.forecastToday as unknown as WaitForecastSlot[]) ?? [];
 
   return (
     <div style={{ background: T.carbon, color: T.text, fontFamily: "var(--font-primary)", minHeight: "100vh", overflowX: "hidden" }}>

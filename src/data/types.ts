@@ -110,8 +110,11 @@ export interface PhotoPolicy {
 
 /** Franja horaria de espera estimada (forecast) */
 export interface WaitForecastSlot {
-    hour: number;     // 8 = 8:00 AM, 13 = 1:00 PM, etc.
-    wait: number;     // Minutos estimados
+    hour?: number;    // 8 = 8:00 AM, 13 = 1:00 PM, etc.
+    wait?: number;    // Minutos estimados (campo original)
+    label: string;    // Etiqueta legible: "8am", "mediodía", etc.
+    waitMin: number;  // Minutos de espera estimados
+    tag?: string;     // Etiqueta especial: "low", "peak", etc.
 }
 
 /** Espera promedio por mes (datos historicos) */
