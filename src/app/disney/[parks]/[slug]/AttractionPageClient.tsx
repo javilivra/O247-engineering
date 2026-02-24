@@ -28,6 +28,7 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import AddButton from "@/components/AddButton";
 import type { Attraction, WaitForecastSlot } from "@/data/types";
+import { useAttractionLive } from "@/hooks/useAttractionLive";
 
 type ExtendedAttraction = Attraction & {
   heroImage?: string;
@@ -418,7 +419,42 @@ export default function AttractionPageClient({ attraction }: { attraction: Attra
   const heroImage = a.heroImage || a.image;
   const name = toTitleCase(a.name);
   const tierColor = a.tier === "Tier 1" ? T.sunset : a.tier === "Tier 2" ? T.celeste : "rgba(255,255,255,0.4)";
-  const waitVal = a.status === "closed" ? "Cerrada" : (a.waitTime || "N/A");
+
+  // ── LIVE DATA — ThemeParks.wiki ──────────────────────────────
+  const live = useAttractionLive(a.park, a.name);
+
+  // Espera: live > fallback editorial > N/A
+  const waitVal = live.status === "CLOSED"
+    ? "Cerrada"
+    : live.waitTime != null
+      ? String(live.waitTime)
+      : a.status === "closed"
+        ? "Cerrada"
+        : (a.waitTime ? String(a.waitTime) : "—");
+
+  const waitUnit = waitVal !== "Cerrada" && waitVal !== "—" ? "min" : undefined;
+
+  // Estado visual del dot en el HUD
+  const liveStatusColor = live.status === "OPERATING"
+    ? T.green
+    : live.status === "CLOSED"
+      ? "rgba(255,80,80,0.9)"
+      : live.status === "DOWN"
+        ? T.amber
+        : "rgba(255,255,255,0.3)";
+
+  // Acceso: si live detecta LL o VQ, actualizamos el label
+  const accessLabel = live.hasVirtualQueue
+    ? "Virtual Queue"
+    : live.hasLightningLane
+      ? a.access.replace("LL ", "").replace(" Pass", "")
+      : a.access.replace("LL ", "").replace(" Pass", "");
+
+  const accessAccent = live.hasVirtualQueue
+    ? T.celeste
+    : a.access.includes("LL")
+      ? T.sunset
+      : undefined;
   const steps = a.boardingSteps || getDefaultSteps(a.access, a.accessExplained);
   const forecast: WaitForecastSlot[] = (a.forecastToday as unknown as WaitForecastSlot[]) ?? [];
 
@@ -529,8 +565,19 @@ export default function AttractionPageClient({ attraction }: { attraction: Attra
               maxWidth: "680px",
             }}
           >
-            <HudStat icon={Icons.clock} label="Espera" value={waitVal} unit={waitVal !== "Cerrada" && waitVal !== "N/A" ? "" : undefined}/>
-            <HudStat icon={Icons.bolt} label="Acceso" value={a.access.replace("LL ", "").replace(" Pass", "")} accent={a.access.includes("LL") ? T.sunset : undefined}/>
+            <HudStat
+              icon={Icons.clock}
+              label="Espera"
+              value={live.isLoading ? "…" : waitVal}
+              unit={waitUnit}
+              accent={liveStatusColor}
+            />
+            <HudStat
+              icon={Icons.bolt}
+              label="Acceso"
+              value={accessLabel}
+              accent={accessAccent}
+            />
             <HudStat icon={Icons.clock} label="Duración" value={a.duration > 0 ? String(a.duration) : "—"} unit={a.duration > 0 ? "min" : undefined}/>
             <HudStat icon={Icons.ruler} label={a.heightReq > 0 ? "Alt. mín." : "Altura"} value={a.heightReq > 0 ? String(a.heightReq) : "Libre"} unit={a.heightReq > 0 ? "cm" : undefined}/>
           </motion.div>
