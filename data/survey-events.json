@@ -369,5 +369,13 @@
     "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
     "ip": "127.0.0.1",
     "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_section_viewed",
+    "timestamp": "2026-02-23T15:12:08.397Z",
+    "sessionId": "s_1771859531828_4stnv5b",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
   }
 ]

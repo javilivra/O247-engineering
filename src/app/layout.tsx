@@ -1,8 +1,7 @@
-// @STATUS: GOLDEN MASTER V4 — CustomCursor + Iconify Fix
+// @STATUS: GOLDEN MASTER V5 — Hide Navbar/Footer on attraction pages
 import type { Metadata, Viewport } from "next";
 import { JetBrains_Mono } from "next/font/google"; 
 import "./globals.css";
-import Script from "next/script";
 
 // COMPONENTES GLOBALES
 import CookieConsent from "@/components/CookieConsent";
@@ -11,17 +10,16 @@ import Navbar from "@/components/Navbar";
 import GlobalBreadcrumbs from "@/components/GlobalBreadcrumbs";
 import Footer from "@/components/Footer";
 import CustomCursor from "@/components/CustomCursor";
-import BackButton from "@/components/BackButton"; // Importar el nuevo componente
+import BackButton from "@/components/BackButton";
 import { ModalProvider } from "@/context/ModalContext";
+import ShellWrapper from "@/components/ShellWrapper";
 
-// 1. CONFIGURACIÓN DE FUENTES
 const monoFont = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-mono",
   display: "swap",
 });
 
-// 2. METADATA SEO
 export const metadata: Metadata = {
   title: {
     template: "%s | O247",
@@ -42,10 +40,7 @@ export const metadata: Metadata = {
     title: "O247 | Tu Viaje a Orlando, Estructurado",
     description: "Planificación estructurada para Disney World y Universal.",
   },
-  robots: {
-    index: true,
-    follow: true,
-  },
+  robots: { index: true, follow: true },
 };
 
 export const viewport: Viewport = {
@@ -56,39 +51,27 @@ export const viewport: Viewport = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="es" className={`${monoFont.variable}`}>
       <head>
-        {/* Google Sans Flex */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link 
           href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,1..1000&display=swap" 
           rel="stylesheet" 
         />
-        {/* Iconify — preconnect to API for faster icon loading */}
         <link rel="preconnect" href="https://api.iconify.design" />
       </head>
       
-      <body 
-        className="antialiased min-h-screen bg-bone text-gunmetal font-sans selection:bg-sunset selection:text-white"
-      >
+      <body className="antialiased min-h-screen bg-bone text-gunmetal font-sans selection:bg-sunset selection:text-white">
         <ModalProvider>
-          {/* Custom cursor (auto-disabled on mobile/tablet) */}
           <CustomCursor />
-          {/* Botón global para volver atrás */}
-          <BackButton />
-          {/* UI SHELL GLOBAL */}
-          <Navbar />
-          <SmoothScroll>
-             <GlobalBreadcrumbs />
-             {children}
-          </SmoothScroll>
+          {/* ShellWrapper decide qué mostrar según la ruta */}
+          <ShellWrapper>
+            {children}
+          </ShellWrapper>
           <CookieConsent />
-          <Footer />
         </ModalProvider>
       </body>
     </html>

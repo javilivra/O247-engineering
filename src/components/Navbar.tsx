@@ -1,4 +1,4 @@
-// @STATUS: REFACTORED V7.0 -- NEW IA STRUCTURE FOR "PLANIFICAR ORLANDO"
+// @STATUS: REFACTORED V7.1 -- Fix navbar text color on attraction pages
 "use client";
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
@@ -6,7 +6,6 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 
-// --- ICONOS SVG (Inline, zero-dependency) ---
 const IconHamburger = () => (
   <svg width={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M4 6h16M4 12h16M4 18h16" />
@@ -39,26 +38,19 @@ const IconArrow = () => (
   </svg>
 );
 
-// --- DATA ---
 interface NavItem {
   id: string;
   label: string;
-  href?: string;          // Link directo (FAQ, News, Mapping)
-  sections?: NavSection[]; // Mega menu sections
-  spotlight?: {
-    tag: string;
-    title: string;
-    desc: string;
-  };
+  href?: string;
+  sections?: NavSection[];
+  spotlight?: { tag: string; title: string; desc: string; };
 }
-
 interface NavSection {
   title: string;
   links: { href: string; label: string; badge?: string; highlight?: boolean }[];
 }
 
 const NAV_ITEMS: NavItem[] = [
-  // 1. PLANIFICAR ORLANDO (Nuevo orden y estructura)
   {
     id: 'planning',
     label: 'Orlando',
@@ -102,7 +94,6 @@ const NAV_ITEMS: NavItem[] = [
       },
     ],
   },
-  // 2. DISNEY WORLD
   {
     id: 'disney',
     label: 'Disney World',
@@ -136,7 +127,6 @@ const NAV_ITEMS: NavItem[] = [
       },
     ],
   },
-  // 3. UNIVERSAL
   {
     id: 'universal',
     label: 'Universal',
@@ -161,7 +151,6 @@ const NAV_ITEMS: NavItem[] = [
       },
     ],
   },
-  // 4. SHOPPINEAR
   {
     id: 'shoppinear',
     label: 'Shoppinear',
@@ -195,17 +184,10 @@ const NAV_ITEMS: NavItem[] = [
       },
     ],
   },
-  // 5. MAPPING ANUAL
-  { 
-    id: 'mapping', 
-    label: 'Mapping Anual', 
-    href: '/mapping' 
-  },
-  // 6. FAQ
+  { id: 'mapping', label: 'Mapping Anual', href: '/mapping' },
   { id: 'faq', label: 'FAQ', href: '/#faq' },
 ];
 
-// --- COMPONENTE PRINCIPAL ---
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
@@ -215,13 +197,33 @@ export default function Navbar() {
   const navRef = useRef<HTMLElement>(null);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
 
-  // -- Detección de páginas con hero oscuro --
+  // ── Rutas con hero oscuro (navbar transparente con texto blanco) ──
+  // Incluye: home, y cualquier ruta de atracción /disney/[park]/[slug]
+  // o /universal/[park]/[slug]. Se detecta por profundidad de segmentos.
   const isHome = pathname === '/';
-  const IMMERSIVE_PATHS = ['tron', 'space', 'velocicoaster'];
-  const isImmersive = IMMERSIVE_PATHS.some((p) => pathname.includes(p));
-  const isTransparentHero = isHome || isImmersive;
 
-  // -- Scroll detection (throttled via rAF) --
+  const isAttractionPage = (() => {
+    const segments = pathname.split('/').filter(Boolean);
+    // /disney/mk/space-mountain → 3 segmentos = página de atracción
+    // /universal/us/velocicoaster → 3 segmentos = página de atracción
+    return (
+      segments.length >= 3 &&
+      (segments[0] === 'disney' || segments[0] === 'universal')
+    );
+  })();
+
+  // Páginas de parque también tienen hero oscuro
+  const isParkPage = (() => {
+    const segments = pathname.split('/').filter(Boolean);
+    return (
+      segments.length === 2 &&
+      (segments[0] === 'disney' || segments[0] === 'universal')
+    );
+  })();
+
+  const isTransparentHero = isHome || isAttractionPage || isParkPage;
+
+  // Scroll detection (throttled via rAF)
   useEffect(() => {
     let ticking = false;
     const onScroll = () => {
@@ -237,24 +239,17 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // -- Cerrar menú mobile al navegar --
   useEffect(() => {
     setMobileOpen(false);
     setMobileExpanded(null);
     setDesktopMenu(null);
   }, [pathname]);
 
-  // -- Scroll lock cuando menú mobile está abierto --
   useEffect(() => {
-    if (mobileOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
+    document.body.style.overflow = mobileOpen ? 'hidden' : '';
     return () => { document.body.style.overflow = ''; };
   }, [mobileOpen]);
 
-  // -- Escape handler --
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -266,41 +261,30 @@ export default function Navbar() {
     return () => document.removeEventListener('keydown', onKeyDown);
   }, [mobileOpen, desktopMenu]);
 
-  // -- Focus trap para menú mobile --
   useEffect(() => {
     if (!mobileOpen || !mobileMenuRef.current) return;
-
     const menu = mobileMenuRef.current;
-    const focusableSelector = 'a[href], button, [tabindex]:not([tabindex="-1"])';
-    const focusableEls = menu.querySelectorAll<HTMLElement>(focusableSelector);
+    const focusableEls = menu.querySelectorAll<HTMLElement>('a[href], button, [tabindex]:not([tabindex="-1"])');
     const firstEl = focusableEls[0];
     const lastEl = focusableEls[focusableEls.length - 1];
-
-    // Focus al primer elemento al abrir
     firstEl?.focus();
-
     const trapFocus = (e: KeyboardEvent) => {
       if (e.key !== 'Tab') return;
       if (e.shiftKey) {
-        if (document.activeElement === firstEl) {
-          e.preventDefault();
-          lastEl?.focus();
-        }
+        if (document.activeElement === firstEl) { e.preventDefault(); lastEl?.focus(); }
       } else {
-        if (document.activeElement === lastEl) {
-          e.preventDefault();
-          firstEl?.focus();
-        }
+        if (document.activeElement === lastEl) { e.preventDefault(); firstEl?.focus(); }
       }
     };
-
     document.addEventListener('keydown', trapFocus);
     return () => document.removeEventListener('keydown', trapFocus);
   }, [mobileOpen]);
 
-  // -- Lógica visual --
   const isDesktopMenuOpen = !!desktopMenu;
 
+  // ── Lógica de color del texto ──
+  // En páginas con hero: blanco cuando no scrolleó, gunmetal cuando scrolleó
+  // En páginas sin hero: siempre gunmetal
   const useDarkText = !isDesktopMenuOpen && (
     (isTransparentHero && isScrolled) || !isTransparentHero
   );
@@ -308,23 +292,22 @@ export default function Navbar() {
   const navBg = isDesktopMenuOpen
     ? 'bg-transparent border-transparent'
     : isScrolled
-      ? 'bg-white/80 backdrop-blur-md border-b border-gunmetal/5 shadow-sm'
-      : 'bg-transparent border-transparent';
+      ? 'bg-white/85 backdrop-blur-md border-b border-gunmetal/6 shadow-sm'
+      : isTransparentHero
+        ? 'bg-transparent border-transparent'
+        // Páginas sin hero: siempre bg bone con borde
+        : 'bg-bone/95 backdrop-blur-sm border-b border-gunmetal/8';
 
-  const textClass = useDarkText
-    ? 'text-gunmetal'
-    : 'text-white';
-
+  const textClass = useDarkText ? 'text-gunmetal' : 'text-white';
   const logoClass = useDarkText ? 'text-gunmetal' : 'text-white';
 
-  // -- Toggle mobile sub-menu --
   const toggleMobileSection = useCallback((id: string) => {
     setMobileExpanded((prev) => (prev === id ? null : id));
   }, []);
 
   return (
     <>
-      {/* == BACKDROP MEGA MENU (Desktop) == */}
+      {/* BACKDROP MEGA MENU */}
       <AnimatePresence>
         {desktopMenu && (
           <motion.div
@@ -336,7 +319,7 @@ export default function Navbar() {
         )}
       </AnimatePresence>
 
-      {/* == HEADER == */}
+      {/* HEADER */}
       <header
         ref={navRef}
         className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ease-in-out ${navBg}`}
@@ -345,8 +328,8 @@ export default function Navbar() {
         <div className="max-w-[1400px] mx-auto px-6 md:px-8 h-[72px] md:h-[80px] flex items-center justify-between relative z-50">
 
           {/* LOGO */}
-          <Link href="/" className="flex items-center gap-2 group" aria-label="O247 -- Ir al inicio">
-            <span className={`text-2xl font-bold tracking-tight antialiased font-display ${logoClass}`}>
+          <Link href="/" className="flex items-center gap-2 group" aria-label="O247 — Ir al inicio">
+            <span className={`text-2xl font-bold tracking-tight antialiased font-display transition-colors duration-300 ${logoClass}`}>
               O247
             </span>
           </Link>
@@ -362,20 +345,30 @@ export default function Navbar() {
                 {item.href ? (
                   <Link
                     href={item.href}
-                    className={`px-4 py-2 text-[14px] tracking-wide antialiased font-sans font-medium transition-colors duration-300 ${useDarkText ? 'text-gunmetal group-hover:text-sunset' : 'text-white group-hover:text-sunset'}`}
+                    className={`px-4 py-2 text-[14px] tracking-wide antialiased font-sans font-medium transition-colors duration-300 ${useDarkText ? 'text-gunmetal hover:text-sunset' : 'text-white hover:text-sunset'}`}
                   >
                     {item.label}
                   </Link>
                 ) : (
                   <button
                     className={`px-4 py-2 flex items-center gap-1.5 text-[14px] tracking-wide outline-none cursor-default antialiased font-sans font-medium transition-colors duration-300 ${
-                      desktopMenu === item.id ? 'text-white font-bold' : (useDarkText ? 'text-gunmetal group-hover:text-sunset' : 'text-white group-hover:text-sunset')
+                      desktopMenu === item.id
+                        ? 'text-white font-bold'
+                        : useDarkText
+                          ? 'text-gunmetal hover:text-sunset'
+                          : 'text-white hover:text-sunset'
                     }`}
                     aria-expanded={desktopMenu === item.id}
                     aria-haspopup="true"
                   >
                     {item.label}
-                    <span className={`transition-colors duration-300 ${desktopMenu === item.id ? 'text-sunset' : useDarkText ? 'text-gunmetal/40 group-hover:text-sunset' : 'text-white/40 group-hover:text-sunset'}`}>
+                    <span className={`transition-colors duration-300 ${
+                      desktopMenu === item.id
+                        ? 'text-sunset'
+                        : useDarkText
+                          ? 'text-gunmetal/40 group-hover:text-sunset'
+                          : 'text-white/40 group-hover:text-sunset'
+                    }`}>
                       {desktopMenu === item.id ? <IconMinus /> : <IconPlus />}
                     </span>
                   </button>
@@ -384,9 +377,9 @@ export default function Navbar() {
             ))}
           </nav>
 
-          {/* HAMBURGER (Mobile) */}
+          {/* HAMBURGER */}
           <button
-            className={`xl:hidden p-3 min-w-[48px] min-h-[48px] flex items-center justify-center ${useDarkText ? 'text-gunmetal' : 'text-white'} transition-colors duration-300`}
+            className={`xl:hidden p-3 min-w-[48px] min-h-[48px] flex items-center justify-center transition-colors duration-300 ${useDarkText ? 'text-gunmetal' : 'text-white'}`}
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label={mobileOpen ? 'Cerrar menú' : 'Abrir menú'}
             aria-expanded={mobileOpen}
@@ -396,7 +389,7 @@ export default function Navbar() {
           </button>
         </div>
 
-        {/* == MEGA MENU DESKTOP == */}
+        {/* MEGA MENU DESKTOP */}
         <AnimatePresence>
           {desktopMenu && (() => {
             const item = NAV_ITEMS.find((i) => i.id === desktopMenu);
@@ -413,9 +406,7 @@ export default function Navbar() {
               >
                 <div className="max-w-[1400px] mx-auto px-8 pb-16 pt-0">
                   <div className="w-full h-px bg-white/10 mb-10" />
-
                   <div className="flex gap-12">
-                    {/* COLUMNAS DE LINKS */}
                     <div className="flex gap-10 flex-1">
                       {item.sections.map((section) => (
                         <div key={section.title} className="min-w-[180px]">
@@ -453,8 +444,6 @@ export default function Navbar() {
                         </div>
                       ))}
                     </div>
-
-                    {/* SPOTLIGHT */}
                     {item.spotlight && (
                       <div className="w-[280px] border-l border-white/10 pl-10">
                         <div className="flex items-center gap-2 mb-4 text-white/40">
@@ -476,7 +465,7 @@ export default function Navbar() {
         </AnimatePresence>
       </header>
 
-      {/* == MENÚ MOBILE (Full-screen overlay) == */}
+      {/* MENÚ MOBILE */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
@@ -491,7 +480,6 @@ export default function Navbar() {
             transition={{ type: 'spring', damping: 30, stiffness: 300 }}
             className="fixed inset-0 bg-gunmetal z-[60] flex flex-col overflow-y-auto"
           >
-            {/* Header del menú mobile */}
             <div className="flex items-center justify-between px-6 h-[72px] border-b border-white/10 shrink-0">
               <Link href="/" className="text-2xl font-bold text-white font-display tracking-tight" onClick={() => setMobileOpen(false)}>
                 O247
@@ -505,12 +493,10 @@ export default function Navbar() {
               </button>
             </div>
 
-            {/* Items de navegación */}
             <nav className="flex-1 px-6 pt-6 pb-8" aria-label="Navegación móvil">
               <div className="flex flex-col gap-2">
                 {NAV_ITEMS.map((item) => {
                   if (item.href) {
-                    // Link directo
                     return (
                       <Link
                         key={item.id}
@@ -523,8 +509,6 @@ export default function Navbar() {
                       </Link>
                     );
                   }
-
-                  // Sección expandible
                   const isExpanded = mobileExpanded === item.id;
                   return (
                     <div key={item.id}>
@@ -538,7 +522,6 @@ export default function Navbar() {
                         <span>{item.label}</span>
                         <IconChevron open={isExpanded} />
                       </button>
-
                       <AnimatePresence>
                         {isExpanded && item.sections && (
                           <motion.div
@@ -561,9 +544,7 @@ export default function Navbar() {
                                       onClick={() => setMobileOpen(false)}
                                       className="flex items-center gap-3 py-3 px-4 rounded-lg hover:bg-white/5 transition-colors min-h-[44px]"
                                     >
-                                      <span className={`text-sm font-medium ${
-                                        link.highlight ? 'text-sunset' : 'text-white/80'
-                                      }`}>
+                                      <span className={`text-sm font-medium ${link.highlight ? 'text-sunset' : 'text-white/80'}`}>
                                         {link.label}
                                       </span>
                                       {link.badge && (
@@ -584,7 +565,6 @@ export default function Navbar() {
                 })}
               </div>
             </nav>
-
           </motion.div>
         )}
       </AnimatePresence>
