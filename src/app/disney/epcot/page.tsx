@@ -9,21 +9,21 @@ export default function EpcotPage() {
     <ParkPageLayout
       config={{
         parkName: "Epcot",
-        parkSubtitle: "Innovación Humana y Cultura",
-        parkTagline: "DONDE EL FUTURO SE ENCUENTRA CON EL MUNDO",
+        parkSubtitle: "Unión de cultura e innovación",
+        parkTagline: "EL FUTURO QUE SOÑO WALT DISNEY",
 
         heroSlides: ["/images/epcot_hero.webp","/images/epcot_hero2.webp"],
         heroSlideDuration: 5000,
 
         introShort: (
-          <p>Es el parque más <strong className="text-gunmetal font-black">ambicioso conceptualmente</strong> de Disney World. Identificado con su iconica esféra plateada <strong className="text-gunmetal font-black">"Spaceship Earth"</strong>, invita a recorrer dos universos en un mismo día:<strong className="text-gunmetal font-black"> la innovación y diversidad del mundo</strong>.</p>
+          <p>Es el parque donde la <strong className="text-gunmetal font-black">curiosidad toma forma</strong>. Bajo la icónica <strong className="text-gunmetal font-black">Spaceship Earth</strong>, invita a recorrer en un mismo día <strong className="text-gunmetal font-black">ideas, culturas y mundos distintos</strong>.</p>
         ),
         introExpanded: (
           <>
-            <p>Dividido en cuatro regiones — <strong className="text-gunmetal">World Celebration</strong>, <strong className="text-gunmetal">World Discovery</strong>, <strong className="text-gunmetal">World Nature</strong> y <strong className="text-gunmetal">World Showcase</strong> — el parque funciona como dos experiencias en una. La parte frontal alberga atracciones de tecnologia como Guardians of the Galaxy: Cosmic Rewind y Test Track. La parte posterior es un recorrido por 11 pabellones de paises con arquitectura real, gastronomia auténtica y artistas locales.</p>
-            <p>Epcot requiere una estrategia diferente a Magic Kingdom. El ritmo es más pausado, la caminata es significativamente mayor (el World Showcase tiene 2 km de circunferencia), y la experiencia gastronomica es central — especialmente durante los festivales estacionales que transforman el parque por completo.</p>
+            <p>Organizado en cuatro regiones — <strong className="text-gunmetal">World Celebration</strong>, <strong className="text-gunmetal">World Discovery</strong>, <strong className="text-gunmetal">World Nature</strong> y <strong className="text-gunmetal">World Showcase</strong> — EPCOT propone dos energías complementarias. En la parte frontal predominan experiencias dinámicas como <strong className="text-gunmetal">Guardians of the Galaxy: Cosmic Rewind</strong> y <strong className="text-gunmetal">Test Track</strong>. Hacia el lago, once pabellones representan países con arquitectura detallada, gastronomía propia y artistas culturales.</p>
+            <p>Es el parque que más se disfruta sin prisa. El recorrido completo del World Showcase supera los 2 km, y la experiencia gastronómica adquiere un rol central, especialmente durante los festivales estacionales que transforman el ambiente y amplían la oferta culinaria.</p>
             <div className="pl-4 border-l-2 border-sunset">
-              <p className="italic text-gunmetal">&quot;Epcot no compite con Magic Kingdom. <strong className="text-gunmetal">Compite con tu capacidad de absorber experiencias</strong> en un solo dia.&quot;</p>
+              <p className="italic text-gunmetal">&quot;EPCOT no se mide por cantidad de atracciones. Se mide por cuánto estás dispuesto a explorar en un solo día.&quot;</p>
             </div>
           </>
         ),

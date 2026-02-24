@@ -106,19 +106,20 @@ export default function ParksPage() {
     setExpandedWater((prev) => (prev === id ? null : id));
   };
 
-  // Text for the main Parks Panel intro
-  const panelIntroShort = (
-    <p>Disney World tiene <strong>4 parques temáticos</strong> principales y <strong>2 parques acuáticos</strong>. Cada uno ofrece una experiencia completamente distinta, con su propio ritmo, horarios y tipo de atracciones.</p>
-  );
+// Text for the main Parks Panel intro
+const panelIntroShort = (
+  <p>Walt Disney World está compuesto por <strong>4 parques temáticos</strong> y <strong>2 parques acuáticos</strong>, pero no funcionan como un solo destino dividido en partes. <strong>Cada parque tiene lógica propia</strong>, tiempos distintos y una energía diferente.</p>
+);
 
-  const panelIntroExpanded = (
-    <>
-        <p>Elegir qué parques visitar y en qué orden es una de las decisiones más importantes del viaje. No todos los parques necesitan la misma cantidad de tiempo: Magic Kingdom suele necesitar un día completo, mientras que Animal Kingdom se puede cubrir en medio día.</p>
-        <div className="pl-4 border-l-2 border-sunset">
-            <p className="italic text-gunmetal">Los horarios de apertura anticipada (Early Entry) cambian según tu hotel, y los shows nocturnos definen a qué hora conviene terminar el día. Acá podés explorar cada parque en detalle antes de tomar esa decisión.</p>
-        </div>
-    </>
-  );
+const panelIntroExpanded = (
+  <>
+      <p>Elegir qué parques visitar y en qué orden no es un detalle menor: define el ritmo completo del viaje. Algunos requieren un día entero para aprovecharlos con calma; otros permiten recorridos más concentrados si se planifican bien.</p>
+      <p>Los horarios de apertura anticipada (Early Entry), los espectáculos nocturnos y la distancia entre zonas influyen más de lo que parece. Entender esas diferencias antes de reservar cambia la experiencia por completo.</p>
+      <div className="pl-4 border-l-2 border-sunset">
+          <p className="italic text-gunmetal">Antes de elegir atracciones, elegí qué tipo de parque querés vivir. Acá podés explorar cada uno en detalle y decidir con criterio.</p>
+      </div>
+  </>
+);
 
   // Text for the Disney Springs section intro
   const springsIntroShort = (

@@ -124,23 +124,24 @@ export default function MagicKingdomPage() {
     <ParkPageLayout
       config={{
         parkName: "Magic Kingdom",
-        parkSubtitle: "El Corazon de la Magia",
-        parkTagline: "DONDE LA FANTASIA REINA",
+        parkSubtitle: "La Magia comienza aquí",
+        parkTagline: "EL REINO MÁGICO",
 
         heroSlides: HERO_SLIDES,
         heroSlideDuration: 5000,
 
         mapPdfUrl: "/images/maps/mk_0216_sp_mapa.pdf",
-
+        guidePath: "/disney/mk",
+        
         introShort: (
-<p>Magic Kingdom no es solo un parque temático, es una <strong>inversión</strong> a la <strong>fantasía</strong>.</p>
+          <p>Magic Kingdom es el parque donde la <strong>ilusión clásica</strong> toma forma y todo el recorrido comienza con un símbolo.</p>
         ),
         introExpanded: (
           <>
-            <p>La magia clásica de Disney cobra vida. Es el parque más icónico, hogar del imponente Castillo de Cenicienta y de las historias que marcaron generaciones. </p>
-            <p>Entre desfiles, fuegos artificiales y atracciones inolvidables, cada rincón invita a volver a creer en los sueños.</p>
+            <p>Es el parque más reconocible de Walt Disney World, organizado alrededor del <strong>Castillo de Cenicienta</strong> como punto central. Desde allí, las tierras temáticas se despliegan en forma radial, facilitando la orientación pero concentrando gran parte del movimiento diario.</p>
+            <p>Aquí conviven atracciones familiares, íconos históricos y espectáculos nocturnos que marcan el ritmo del día. Es el parque que mejor funciona para primeras visitas y también el que <strong>más temprano concentra multitudes</strong>, por lo que el horario de llegada cambia por completo la experiencia.</p>
             <div className="pl-4 border-l-2 border-sunset">
-              <p className="italic text-gunmetal">&quot;Magic Kingdom funciona porque <strong className="text-gunmetal">nada esta librado al azar</strong>. La ilusion no es espontanea: esta disenada, mantenida y repetida todos los dias.&quot;</p>
+              <p className="italic text-gunmetal">&quot;Magic Kingdom no se recorre por sectores. Se atraviesa como una historia que avanza escena por escena.&quot;</p>
             </div>
           </>
         ),

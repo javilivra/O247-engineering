@@ -11,6 +11,7 @@ import BentoCard from '@/app/disney/BentoCard';
 import HeroCarousel from '@/components/parks/HeroCarousel';
 import FilterModal from '@/components/parks/FilterModal';
 import type { FilterChip, FilterSection } from '@/components/parks/FilterModal';
+import ParkHubIsland from '@/components/parks/ParkHubIsland';
 
 // ============================================================
 // TYPES — Park page config
@@ -42,6 +43,9 @@ export interface ParkPageConfig {
 
   /** Map download */
   mapPdfUrl?: string;
+
+  /** Path base para el Hub Island (ej: "/disney/mk") */
+  guidePath?: string;
 
   /** Contextual intro */
   introShort: React.ReactNode;
@@ -157,6 +161,7 @@ export default function ParkPageLayout({ config }: { config: ParkPageConfig }) {
     parkName, parkSubtitle, parkTagline,
     heroSlides, heroSlideDuration,
     mapPdfUrl,
+    guidePath,
     introShort, introExpanded,
     categoryTabs, categories, defaultCategory,
     alerts = [],
@@ -273,46 +278,46 @@ export default function ParkPageLayout({ config }: { config: ParkPageConfig }) {
       <motion.div initial="hidden" animate="visible" variants={containerVariants}>
 
         {/* ============================================================ */}
+        {/* ============================================================ */}
         {/* HERO */}
         {/* ============================================================ */}
-        <motion.div variants={itemVariants} className="relative w-full h-[550px] bg-bone flex items-center overflow-hidden px-6 md:px-12 lg:px-24">
-          <HeroCarousel slides={heroSlides} duration={heroSlideDuration} />
-          <div className="relative z-20 w-full max-w-[1200px] mx-auto">
-            <div className="max-w-[55%] flex flex-col justify-center">
-              <div className="flex items-center gap-3 mb-5">
-                <div className="h-px w-10 bg-gunmetal/20" />
-                <h2 className="text-[10px] font-bold tracking-[0.25em] uppercase text-gunmetal/40">{parkTagline}</h2>
-              </div>
-              <h1 className="text-6xl md:text-8xl font-black text-gunmetal leading-[0.9] tracking-tighter mb-4">
-                {parkName.split(' ').map((word, i) => (
-                  <React.Fragment key={i}>{i > 0 && <br/>}{word}</React.Fragment>
-                ))}
-              </h1>
-              <h2 className="text-3xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-sunset to-celeste mb-8">{parkSubtitle}</h2>
-              <div className="flex items-center gap-3">
-                <div className="flex items-center gap-3 bg-gunmetal text-white px-5 py-2.5 rounded-full shadow-xl">
-                  <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-                  <span className="text-[10px] font-bold uppercase tracking-wider font-mono">HOY</span>
-                  <div className="w-px h-3 bg-white/20" />
-                  <span className="text-xs font-bold font-mono">28C</span>
+        <motion.div variants={itemVariants} className="w-full bg-bone pt-6 pb-0 px-6 md:px-12 lg:px-24">
+          <div className="max-w-[1200px] mx-auto">
+            <div className="relative w-full h-[480px] md:h-[540px] rounded-3xl overflow-hidden">
+              <HeroCarousel slides={heroSlides} duration={heroSlideDuration} />
+              <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/30 to-transparent z-10" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent z-10" />
+              <div className="absolute inset-0 z-20 flex items-end pb-8 px-8 md:px-12">
+                <div className="w-full">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="h-px w-8 bg-white/40" />
+                    <h2 className="text-[10px] font-bold tracking-[0.25em] uppercase text-white/60">{parkTagline}</h2>
+                  </div>
+                  <div className="mb-6">
+                    <h1 className="text-5xl md:text-7xl font-black text-white leading-[0.9] tracking-tighter mb-3 drop-shadow-2xl">
+                      {parkName.split(' ').map((word, i) => (
+                        <React.Fragment key={i}>{i > 0 && <br/>}{word}</React.Fragment>
+                      ))}
+                    </h1>
+                    <h2 className="text-xl md:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-sunset to-celeste drop-shadow-lg">
+                      {parkSubtitle}
+                    </h2>
+                  </div>
+                  {guidePath ? (
+                    <ParkHubIsland basePath={guidePath} />
+                  ) : (
+                    <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-3 bg-white/15 backdrop-blur-md text-white px-5 py-2.5 rounded-full border border-white/20 shadow-xl">
+                        <div className="w-2 h-2 rounded-full bg-red-400 animate-pulse" />
+                        <span className="text-[10px] font-bold uppercase tracking-wider font-mono">HOY</span>
+                      </div>
+                    </div>
+                  )}
                 </div>
-                {mapPdfUrl && (
-                  <a
-                    href={mapPdfUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2 bg-white/80 backdrop-blur-sm text-gunmetal px-5 py-2.5 rounded-full border border-gunmetal/10 shadow-sm hover:shadow-md hover:border-sunset/30 transition-all duration-300"
-                  >
-                    <Icon icon="solar:map-bold-duotone" width={16} className="text-sunset" />
-                    <span className="text-[10px] font-bold uppercase tracking-wider">Descargar Mapa</span>
-                  </a>
-                )}
               </div>
             </div>
           </div>
         </motion.div>
-
-        {/* ============================================================ */}
         {/* CONTEXTO */}
         {/* ============================================================ */}
         <div className="max-w-[1200px] mx-auto px-6 md:px-12 lg:px-24">

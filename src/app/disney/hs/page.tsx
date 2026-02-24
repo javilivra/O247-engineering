@@ -9,7 +9,7 @@ export default function HollywoodStudiosPage() {
     <ParkPageLayout
       config={{
         parkName: "Hollywood Studios",
-        parkSubtitle: "Donde el Cine Cobra Vida",
+        parkSubtitle: "El protagonista de la película sos vos",
         parkTagline: "LUCES, CÁMARA, AVENTURA",
 
         heroSlides: ["/images/hs.jpg"],

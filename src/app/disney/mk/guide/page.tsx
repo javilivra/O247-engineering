@@ -642,21 +642,37 @@ function BucketListContent() {
 // ============================================================
 
 const SECTION_LABELS = ['UNO', 'DOS', 'TRES', 'CUATRO'];
+const SECTION_ANCHORS = ['logistica', 'estrategia', 'tierras', 'bucket'];
 
 function TheCoreAccordion() {
     const [openSections, setOpenSections] = useState<number[]>([]);
+    const sectionRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+    // Detectar anchor en URL y abrir + scroll a esa sección
+    useEffect(() => {
+        const hash = window.location.hash.replace('#', '');
+        if (!hash) return;
+        const idx = SECTION_ANCHORS.indexOf(hash);
+        if (idx === -1) return;
+        setOpenSections([idx]);
+        // Esperar a que el DOM renderice el contenido expandido
+        setTimeout(() => {
+            sectionRefs.current[idx]?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 300);
+    }, []);
+
     const toggleSection = (index: number) => setOpenSections(prev => prev.includes(index) ? prev.filter(i => i !== index) : [...prev, index]);
     const sections = [
-        { id: 0, title: "Cómo Llegar al Parque", icon: "solar:map-point-bold-duotone", component: <LogisticsContent /> },
-        { id: 1, title: "Cuántos Días Dedicarle", icon: "solar:stopwatch-bold-duotone", component: <StrategyContent /> },
-        { id: 2, title: "Regiones del Reino", icon: "solar:layers-minimalistic-bold-duotone", component: <LandsContent /> },
-        { id: 3, title: "Experiencias Imperdibles", icon: "solar:clipboard-check-bold-duotone", component: <BucketListContent /> },
+        { id: 0, anchor: 'logistica', title: "Cómo Llegar al Parque", icon: "solar:map-point-bold-duotone", component: <LogisticsContent /> },
+        { id: 1, anchor: 'estrategia', title: "Cuántos Días Dedicarle", icon: "solar:stopwatch-bold-duotone", component: <StrategyContent /> },
+        { id: 2, anchor: 'tierras', title: "Regiones del Reino", icon: "solar:layers-minimalistic-bold-duotone", component: <LandsContent /> },
+        { id: 3, anchor: 'bucket', title: "Experiencias Imperdibles", icon: "solar:clipboard-check-bold-duotone", component: <BucketListContent /> },
     ];
 
     return (
         <div className="flex flex-col gap-6">
             {sections.map((section, idx) => (
-                <div key={section.id} className="group">
+                <div key={section.id} id={section.anchor} ref={el => { sectionRefs.current[idx] = el; }} className="group scroll-mt-24">
                     <div onClick={() => toggleSection(section.id)} className={`relative z-10 bg-white rounded-2xl p-4 pr-6 flex items-center justify-between shadow-sm border cursor-pointer transition-all ${openSections.includes(section.id) ? 'border-sunset ring-1 ring-sunset/20' : 'border-transparent'}`}>
                         <div className="flex items-center gap-5">
                             <div className={`w-12 h-12 rounded-full flex items-center justify-center transition-colors ${openSections.includes(section.id) ? 'bg-gunmetal text-white' : 'bg-bone text-gunmetal'}`}>

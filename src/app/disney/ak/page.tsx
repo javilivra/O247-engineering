@@ -9,21 +9,21 @@ export default function AnimalKingdomPage() {
     <ParkPageLayout
       config={{
         parkName: "Animal Kingdom",
-        parkSubtitle: "Naturaleza Indómita",
-        parkTagline: "DONDE LO SALVAJE TIENE VOZ",
+        parkSubtitle: "La Naturaleza en estado puro",
+        parkTagline: "DESPERTA TU SEXTO SENTIDO",
 
         heroSlides: ["/images/ak_hero.webp"], // TODO: reemplazar con imagen real de AK
         heroSlideDuration: 5000,
 
         introShort: (
-          <p>La <strong className="text-gunmetal font-black"> Fantasía</strong> se fusiona con la belleza del <strong className="text-gunmetal font-black"> Mundo Natural</strong>. Senderos que abren paso entre la selva exuberante, safaris y el místico mundo con Pandora, cada rincón te convierte en explorador, conecta tus sentidos y te sorprende.</p>
+          <p>La naturaleza marca el ritmo y lo extraordinario aparece entre senderos y sabanas abiertas. <strong className="text-gunmetal font-black">Animal Kingdom invita a explorar</strong>, a mirar con atención y a dejar que el entorno guíe la experiencia.</p>
         ),
         introExpanded: (
           <>
-            <p><strong className="text-gunmetal">Pandora — The World of Avatar</strong> con montanas suspendidas, vegetación que brilla al caer la noche y una atmósfera que te seduce a cada paso. En <strong className="text-gunmetal">Flight of Passage</strong> te elevás sobre un banshee y planeás entre montañas flotantes, con el viento rozando el rostro y la respiración del animal marcando el ritmo del vuelo. En <strong className="text-gunmetal">Na&apos;vi River Journey</strong> el recorrido se vuelve íntimo y casi ceremonial. A lo largo del río, la selva bioluminiscente conduce hasta la <strong className="text-gunmetal">Shaman of Songs</strong>, quien entona su canto en honor a <strong className="text-gunmetal">Eywa</strong>, la fuerza que conecta toda vida en Pandora.</p>
-            <p>El <strong className="text-gunmetal">Kilimanjaro Safaris</strong> atraviesa una extensa sabana habitada por animales reales — jirafas, elefantes, leones, hipopótamos. Cada recorrido cambia según su movimiento. Temprano por la mañana, cuando el aire aún es fresco, la actividad suele ser mayor y la experiencia más dinámica..</p>
+            <p><strong className="text-gunmetal">Pandora — The World of Avatar</strong> despliega montañas suspendidas y vegetación luminosa que transforma el paisaje al caer la tarde. En <strong className="text-gunmetal">Flight of Passage</strong> el vuelo sobre un banshee se siente corporal, con el viento acompañando cada giro. En <strong className="text-gunmetal">Na&apos;vi River Journey</strong>, la selva bioluminiscente conduce hasta la <strong className="text-gunmetal">Shaman of Songs</strong>, quien canta en honor a <strong className="text-gunmetal">Eywa</strong>, la fuerza que conecta toda vida en Pandora.</p>
+            <p>El <strong className="text-gunmetal">Kilimanjaro Safaris</strong> atraviesa una amplia sabana habitada por animales reales — jirafas, elefantes, leones, hipopótamos. Cada recorrido varía según su movimiento, y las primeras horas del día suelen ofrecer mayor actividad y mejores condiciones para observarlos.</p>
             <div className="pl-4 border-l-2 border-sunset">
-              <p className="italic text-gunmetal">&quot;Animal Kingdom cierra más temprano que los demás parques. <strong className="text-gunmetal">No es un parque de medio día — pero tampoco necesitas hasta las 10 PM</strong>. La clave es llegar al Rope Drop.&quot;</p>
+              <p className="italic text-gunmetal">&quot;Animal Kingdom funciona mejor temprano. Su extensión y su ritmo cambian por completo cuando el día avanza.&quot;</p>
             </div>
           </>
         ),
