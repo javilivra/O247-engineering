@@ -423,16 +423,19 @@ export default function AttractionPageClient({ attraction }: { attraction: Attra
   // ── LIVE DATA — ThemeParks.wiki ──────────────────────────────
   const live = useAttractionLive(a.park, a.name);
 
-  // Espera: live > fallback editorial > N/A
-  const waitVal = live.status === "CLOSED"
-    ? "Cerrada"
-    : live.waitTime != null
-      ? String(live.waitTime)
-      : a.status === "closed"
-        ? "Cerrada"
-        : (a.waitTime ? String(a.waitTime) : "—");
+  // Espera: si cerrada antes de apertura → "Abre 9:00 AM", si no → tiempo real
+  const isClosedBeforeOpen = live.status === "CLOSED" && live.openingTime != null;
+  const waitVal = isClosedBeforeOpen
+    ? `Abre ${live.openingTime}`
+    : live.status === "CLOSED"
+      ? "Cerrada"
+      : live.waitTime != null
+        ? String(live.waitTime)
+        : a.status === "closed"
+          ? "Cerrada"
+          : (a.waitTime ? String(a.waitTime) : "—");
 
-  const waitUnit = waitVal !== "Cerrada" && waitVal !== "—" ? "min" : undefined;
+  const waitUnit = (live.waitTime != null && live.status !== "CLOSED") ? "min" : undefined;
 
   // Estado visual del dot en el HUD
   const liveStatusColor = live.status === "OPERATING"

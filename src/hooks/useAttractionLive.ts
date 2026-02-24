@@ -13,6 +13,7 @@ interface UseAttractionLiveResult {
   lastUpdated: string | null;
   hasLightningLane: boolean;
   hasVirtualQueue: boolean;
+  openingTime: string | null;   // "9:00 AM" si el parque tiene horario hoy
   isLoading: boolean;
   isError: boolean;
   refetch: () => void;
@@ -39,12 +40,31 @@ export function useAttractionLive(
     lastUpdated: null,
     hasLightningLane: false,
     hasVirtualQueue: false,
+    openingTime: null,
     isLoading: true,
     isError: false,
     refetch: () => {},
   });
 
   const apiSlug = PARK_SLUG_MAP[parkSlug] ?? parkSlug;
+
+  // Obtiene la hora de apertura del parque para hoy
+  const fetchOpeningTime = useCallback(async (): Promise<string | null> => {
+    try {
+      const res = await fetch(`/api/park/${apiSlug}/schedule`);
+      if (!res.ok) return null;
+      const json = await res.json();
+      const today = new Date().toISOString().slice(0, 10);
+      const schedule = (json.schedule ?? json) as Array<{ date: string; openingTime?: string; type?: string }>;
+      const todayEntry = schedule.find((s) => s.date?.startsWith(today) && s.type === "OPERATING");
+      if (!todayEntry?.openingTime) return null;
+      // Convertir ISO a "9:00 AM"
+      const d = new Date(todayEntry.openingTime);
+      return d.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit", hour12: true, timeZone: "America/New_York" });
+    } catch {
+      return null;
+    }
+  }, [apiSlug]);
 
   const fetchLive = useCallback(async () => {
     try {
@@ -59,6 +79,8 @@ export function useAttractionLive(
         rides.find(r => r.name?.toLowerCase() === needle) ??
         rides.find(r => r.name?.toLowerCase().includes(needle));
 
+      const openingTime = await fetchOpeningTime();
+
       if (match) {
         setResult(prev => ({
           ...prev,
@@ -70,16 +92,17 @@ export function useAttractionLive(
             match.queue?.RETURN_TIME
           ),
           hasVirtualQueue: !!(match.queue?.BOARDING_GROUP),
+          openingTime,
           isLoading: false,
           isError: false,
         }));
       } else {
-        setResult(prev => ({ ...prev, isLoading: false }));
+        setResult(prev => ({ ...prev, openingTime, isLoading: false }));
       }
     } catch {
       setResult(prev => ({ ...prev, isLoading: false, isError: true }));
     }
-  }, [apiSlug, attractionName]);
+  }, [apiSlug, attractionName, fetchOpeningTime]);
 
   useEffect(() => {
     setResult(prev => ({ ...prev, refetch: fetchLive }));
