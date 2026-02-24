@@ -7,10 +7,10 @@
 // ─── IDs de entidades en ThemeParks.wiki ─────────────────────────────────────
 // Obtenidos de: GET https://api.themeparks.wiki/v1/destinations
 export const PARK_ENTITY_IDS: Record<string, string> = {
-  "magic-kingdom":     "75ea578a-adc8-4116-a54d-dff36a59c8b9",
-  "epcot":             "47f90d2c-e191-4239-a466-5892ef59a88f",
+  "magic-kingdom":     "75ea578a-adc8-4116-a54d-dccb60765ef9",
+  "epcot":             "47f90d2c-e191-4239-a466-5892ef59a88b",
   "hollywood-studios": "288747d1-8b4f-4a64-867e-ea7c9b27bad8",
-  "animal-kingdom":    "1c84a229-8862-4648-9c71-378dabb7d9b7",
+  "animal-kingdom":    "1c84a229-8862-4648-9c71-378ddd2c7693",
   "universal-studios": "eb3f4560-2383-4a36-9152-6b3e5ed6bc57",
   "islands-of-adventure": "267615cc-8943-4c2a-ae2c-5da728ca591f",
 };
