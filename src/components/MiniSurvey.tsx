@@ -2,7 +2,6 @@
 
 import React, { useState, useCallback, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-// DESPUÉS (O247 Icon System — LOCAL, FUNCIONA SIEMPRE)
 import { Icon } from "@/components/Icon";
 import { ScrollReveal } from "./ScrollReveal";
 import TextReveal from "./TextReveal";
@@ -61,6 +60,50 @@ const QUESTIONS = [
     ],
   },
   {
+    id: "travel_date",
+    question: "¿Cuándo pensás viajar?",
+    feedback: {
+      soon: "Pronto. Vamos a darte lo más relevante y urgente primero.",
+      this_year: "Tiempo suficiente para planificar bien. Ideal.",
+      next_year: "Con tiempo de sobra podés planificar sin presión.",
+      no_date: "Sin fecha definida. Vas a encontrar todo cuando lo necesites.",
+    },
+    options: [
+      { id: "soon", label: "En los próximos 3 meses", icon: "solar:rocket-bold-duotone", feedbackKey: "soon" },
+      { id: "this_year", label: "En los próximos 6 meses", icon: "solar:calendar-bold-duotone", feedbackKey: "this_year" },
+      { id: "next_year", label: "En más de 6 meses", icon: "solar:calendar-mark-bold-duotone", feedbackKey: "next_year" },
+      { id: "no_date", label: "Todavía no sé", icon: "solar:question-circle-bold-duotone", feedbackKey: "no_date" },
+    ],
+  },
+  {
+    id: "budget",
+    question: "¿Cómo describirías tu presupuesto para el viaje?",
+    feedback: {
+      tight: "Optimizar el presupuesto sin sacrificar experiencia. Se puede.",
+      balanced: "Equilibrio entre experiencia y costo. Hay muchas opciones.",
+      flexible: "Con presupuesto flexible, podés elegir lo mejor en cada momento.",
+    },
+    options: [
+      { id: "tight", label: "Ajustado, quiero maximizar cada peso", icon: "solar:wallet-bold-duotone", feedbackKey: "tight" },
+      { id: "balanced", label: "Equilibrado, sin excesos", icon: "solar:graph-new-bold-duotone", feedbackKey: "balanced" },
+      { id: "flexible", label: "Flexible, priorizo la experiencia", icon: "solar:stars-bold-duotone", feedbackKey: "flexible" },
+    ],
+  },
+  {
+    id: "visa",
+    question: "¿Tenés VISA de ingreso a Estados Unidos?",
+    feedback: {
+      yes: "Excelente. Un paso menos del que preocuparse.",
+      in_process: "Bien. Mientras se tramita, podés ir planificando todo lo demás.",
+      no: "Sin problema. Podés explorar toda la información y planificar antes de tramitarla.",
+    },
+    options: [
+      { id: "yes", label: "Sí, ya la tengo", icon: "solar:check-circle-bold-duotone", feedbackKey: "yes" },
+      { id: "in_process", label: "Estoy tramitándola", icon: "solar:clock-circle-bold-duotone", feedbackKey: "in_process" },
+      { id: "no", label: "Todavía no", icon: "solar:document-bold-duotone", feedbackKey: "no" },
+    ],
+  },
+  {
     id: "priority",
     question: "¿Qué te preocupa más al planificar?",
     feedback: {
@@ -99,20 +142,6 @@ const QUESTIONS = [
     ],
   },
   {
-    id: "visa",
-    question: "¿Tenés VISA de ingreso a Estados Unidos?",
-    feedback: {
-      yes: "Excelente. Un paso menos del que preocuparse.",
-      in_process: "Bien. Mientras se tramita, podés ir planificando todo lo demás.",
-      no: "Sin problema. Podés explorar toda la información y planificar antes de tramitarla.",
-    },
-    options: [
-      { id: "yes", label: "Sí, ya la tengo", icon: "solar:check-circle-bold-duotone", feedbackKey: "yes" },
-      { id: "in_process", label: "Estoy tramitándola", icon: "solar:clock-circle-bold-duotone", feedbackKey: "in_process" },
-      { id: "no", label: "Todavía no", icon: "solar:document-bold-duotone", feedbackKey: "no" },
-    ],
-  },
-  {
     id: "source",
     question: "¿Cómo llegaste a O247?",
     feedback: {
@@ -137,18 +166,36 @@ const QUESTIONS = [
 ];
 
 // ============================================================
+// SUMMARY LABELS — para el resumen visual antes del email
+// ============================================================
+
+const SUMMARY_LABELS: Record<string, Record<string, string>> = {
+  experience: { first: "Primera vez", returning: "Ya fui antes", expert: "Lo conozco bien" },
+  group: { family_kids: "Familia con niños", family_no_kids: "Familia sin niños", couple: "En pareja", friends: "Con amigos", group: "Grupo grande", solo: "Solo/a" },
+  duration: { short: "1-3 días", medium: "4-6 días", long: "7+ días" },
+  travel_date: { soon: "En 3 meses", this_year: "En 6 meses", next_year: "Más de 6 meses", no_date: "Sin fecha" },
+  budget: { tight: "Presupuesto ajustado", balanced: "Presupuesto equilibrado", flexible: "Presupuesto flexible" },
+  visa: { yes: "Con visa", in_process: "Tramitando visa", no: "Sin visa aún" },
+};
+
+const SUMMARY_ICONS: Record<string, string> = {
+  experience: "solar:star-bold-duotone",
+  group: "solar:users-group-rounded-bold-duotone",
+  duration: "solar:calendar-bold-duotone",
+  travel_date: "solar:rocket-bold-duotone",
+  budget: "solar:wallet-bold-duotone",
+  visa: "solar:document-bold-duotone",
+};
+
+// ============================================================
 // ANALYTICS
 // ============================================================
 
 function trackSurveyEvent(event: string, data?: Record<string, unknown>) {
   const payload = { event: `o247_survey_${event}`, timestamp: new Date().toISOString(), ...data };
-
-  // 1. GTM / GA4 dataLayer
   if (typeof window !== "undefined" && (window as any).dataLayer) {
     (window as any).dataLayer.push(payload);
   }
-
-  // 2. API endpoint propio (fire & forget)
   if (typeof navigator !== "undefined" && navigator.sendBeacon) {
     navigator.sendBeacon("/api/survey-events", JSON.stringify(payload));
   } else if (typeof fetch !== "undefined") {
@@ -159,15 +206,161 @@ function trackSurveyEvent(event: string, data?: Record<string, unknown>) {
       keepalive: true,
     }).catch(() => {});
   }
-
-  // 3. Dev log
   if (process.env.NODE_ENV === "development") {
     console.log(`[O247 Survey] ${event}`, data);
   }
 }
 
 // ============================================================
-// COMPONENT
+// SUB-COMPONENTS
+// ============================================================
+
+// Resumen visual de respuestas
+function SummaryCard({ answers }: { answers: Record<string, string> }) {
+  const items = Object.entries(SUMMARY_LABELS)
+    .map(([key, labels]) => {
+      const val = answers[key];
+      if (!val) return null;
+      return { key, icon: SUMMARY_ICONS[key], label: labels[val] };
+    })
+    .filter(Boolean) as { key: string; icon: string; label: string }[];
+
+  if (items.length === 0) return null;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
+      className="flex flex-wrap gap-2 mb-8"
+    >
+      {items.map((item, i) => (
+        <motion.div
+          key={item.key}
+          initial={{ opacity: 0, scale: 0.85 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: i * 0.06, duration: 0.3 }}
+          className="flex items-center gap-1.5 px-3 py-1.5 bg-white rounded-full border border-gunmetal/8 shadow-sm"
+        >
+          <Icon icon={item.icon} width={13} className="text-sunset shrink-0" />
+          <span className="text-[11px] font-semibold text-gunmetal/70">{item.label}</span>
+        </motion.div>
+      ))}
+    </motion.div>
+  );
+}
+
+// Pantalla de email
+function EmailStep({
+  answers,
+  onSubmit,
+  onSkip,
+}: {
+  answers: Record<string, string>;
+  onSubmit: (email: string) => void;
+  onSkip: () => void;
+}) {
+  const [email, setEmail] = useState("");
+  const [isValid, setIsValid] = useState(false);
+  const [isSending, setIsSending] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    setTimeout(() => inputRef.current?.focus(), 300);
+  }, []);
+
+  useEffect(() => {
+    setIsValid(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email));
+  }, [email]);
+
+  const handleSubmit = async () => {
+    if (!isValid) return;
+    setIsSending(true);
+    trackSurveyEvent("email_submitted", { answers });
+    await new Promise((r) => setTimeout(r, 600));
+    onSubmit(email);
+  };
+
+  return (
+    <motion.div
+      key="email-step"
+      initial={{ opacity: 0, x: 30 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -30 }}
+      transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
+    >
+      {/* Resumen */}
+      <SummaryCard answers={answers} />
+
+      {/* Título */}
+      <h3 className="type-display text-xl sm:text-2xl md:text-3xl text-gunmetal mb-3 leading-tight">
+        Armamos tu punto de partida personalizado.
+      </h3>
+      <p className="type-body text-sm sm:text-base text-gunmetal/50 mb-8 max-w-md leading-relaxed">
+        Basado en tus respuestas, te enviamos una guía con el camino más directo para planificar tu viaje.
+      </p>
+
+      {/* Input email */}
+      <div className="flex flex-col sm:flex-row gap-3 max-w-lg">
+        <div className="relative flex-1">
+          <Icon
+            icon="solar:letter-bold-duotone"
+            width={16}
+            className="absolute left-4 top-1/2 -translate-y-1/2 text-gunmetal/30 pointer-events-none"
+          />
+          <input
+            ref={inputRef}
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
+            placeholder="tu@email.com"
+            className="w-full pl-10 pr-4 py-3.5 rounded-2xl border-2 border-gunmetal/10 bg-white text-sm text-gunmetal placeholder:text-gunmetal/25 focus:outline-none focus:border-sunset/50 focus:shadow-[0_0_0_3px_rgba(255,112,67,0.08)] transition-all duration-300"
+          />
+        </div>
+        <motion.button
+          whileTap={{ scale: 0.97 }}
+          onClick={handleSubmit}
+          disabled={!isValid || isSending}
+          className={`px-6 py-3.5 rounded-2xl font-bold text-sm uppercase tracking-widest transition-all duration-300 flex items-center gap-2 whitespace-nowrap ${
+            isValid
+              ? "bg-gunmetal text-white shadow-lg shadow-gunmetal/15 hover:shadow-xl hover:shadow-gunmetal/20 hover:-translate-y-0.5"
+              : "bg-gunmetal/10 text-gunmetal/30 cursor-not-allowed"
+          }`}
+        >
+          {isSending ? (
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
+            >
+              <Icon icon="solar:refresh-bold" width={16} />
+            </motion.div>
+          ) : (
+            <>
+              <Icon icon="solar:arrow-right-bold" width={16} />
+              Recibir guía
+            </>
+          )}
+        </motion.button>
+      </div>
+
+      {/* Skip */}
+      <button
+        onClick={onSkip}
+        className="mt-5 text-xs text-gunmetal/30 hover:text-gunmetal/60 font-bold uppercase tracking-widest transition-colors"
+      >
+        Prefiero no dejar mi email
+      </button>
+    </motion.div>
+  );
+}
+
+
+
+
+
+// ============================================================
+// MAIN COMPONENT
 // ============================================================
 
 export default function MiniSurvey() {
@@ -177,12 +370,14 @@ export default function MiniSurvey() {
   const [skipped, setSkipped] = useState<Set<string>>(new Set());
   const [showFeedback, setShowFeedback] = useState<string | null>(null);
   const [isComplete, setIsComplete] = useState(false);
+  const [showEmailStep, setShowEmailStep] = useState(false);
   const [selectedAnim, setSelectedAnim] = useState<string | null>(null);
   const sectionRef = useRef<HTMLElement>(null);
   const hasTrackedView = useRef(false);
 
   const totalSteps = QUESTIONS.length;
-  const progress = isComplete ? 100 : ((currentStep + 1) / totalSteps) * 100;
+  // +1 para el email step en la barra de progreso
+  const progress = isComplete ? 100 : showEmailStep ? 95 : ((currentStep + 1) / (totalSteps + 1)) * 100;
   const currentQ = QUESTIONS[currentStep];
 
   // Track section view
@@ -205,42 +400,48 @@ export default function MiniSurvey() {
 
   const advanceStep = useCallback(() => {
     if (currentStep < totalSteps - 1) {
-      setCurrentStep(prev => prev + 1);
+      setCurrentStep((prev) => prev + 1);
     } else {
-      setIsComplete(true);
-      trackSurveyEvent("completed", { answers, skipped: Array.from(skipped) });
+      // Última pregunta completada → ir al email step
+      setShowEmailStep(true);
     }
-  }, [currentStep, totalSteps, answers, skipped]);
+  }, [currentStep, totalSteps]);
 
-  const handleAnswer = useCallback((questionId: string, optionId: string, feedbackKey: string) => {
-    setAnswers(prev => ({ ...prev, [questionId]: optionId }));
-    setSelectedAnim(optionId);
-    trackSurveyEvent("answer", { questionId, optionId });
+  const handleAnswer = useCallback(
+    (questionId: string, optionId: string, feedbackKey: string) => {
+      setAnswers((prev) => ({ ...prev, [questionId]: optionId }));
+      setSelectedAnim(optionId);
+      trackSurveyEvent("answer", { questionId, optionId });
 
-    const fb = currentQ.feedback[feedbackKey as keyof typeof currentQ.feedback];
+      const fb = currentQ.feedback[feedbackKey as keyof typeof currentQ.feedback];
 
-    // Brief pause to show selection animation, then feedback
-    setTimeout(() => {
-      setShowFeedback(fb || null);
-      setSelectedAnim(null);
       setTimeout(() => {
-        setShowFeedback(null);
-        advanceStep();
-      }, 1400);
-    }, 400);
-  }, [currentQ, advanceStep]);
+        setShowFeedback(fb || null);
+        setSelectedAnim(null);
+        setTimeout(() => {
+          setShowFeedback(null);
+          advanceStep();
+        }, 900); // más ágil: 900ms en vez de 1400ms
+      }, 350);
+    },
+    [currentQ, advanceStep]
+  );
 
   const handleSkipQuestion = () => {
-    setSkipped(prev => new Set(prev).add(currentQ.id));
+    setSkipped((prev) => new Set(prev).add(currentQ.id));
     trackSurveyEvent("skip", { questionId: currentQ.id });
     setShowFeedback(null);
     advanceStep();
   };
 
   const handleGoBack = () => {
+    if (showEmailStep) {
+      setShowEmailStep(false);
+      return;
+    }
     if (currentStep > 0) {
       setShowFeedback(null);
-      setCurrentStep(prev => prev - 1);
+      setCurrentStep((prev) => prev - 1);
     }
   };
 
@@ -248,6 +449,7 @@ export default function MiniSurvey() {
     trackSurveyEvent("dismissed", { atStep: currentStep, answers, skipped: Array.from(skipped) });
     setIsActive(false);
     setIsComplete(false);
+    setShowEmailStep(false);
     setCurrentStep(0);
     setAnswers({});
     setSkipped(new Set());
@@ -258,6 +460,20 @@ export default function MiniSurvey() {
     setIsActive(true);
   };
 
+  const handleEmailSubmit = async (email: string) => {
+    trackSurveyEvent("lead_captured", { email, answers, skipped: Array.from(skipped) });
+    await submitSurvey({ email, answers, skipped: Array.from(skipped) });
+    setShowEmailStep(false);
+    setIsComplete(true);
+  };
+
+  const handleEmailSkip = async () => {
+    trackSurveyEvent("email_skipped", { answers });
+    await submitSurvey({ answers, skipped: Array.from(skipped) });
+    setShowEmailStep(false);
+    setIsComplete(true);
+  };
+
   // ======== NO INICIADO ========
   if (!isActive) {
     return (
@@ -265,7 +481,7 @@ export default function MiniSurvey() {
         <div className="max-w-5xl mx-auto">
           <ScrollReveal>
             <span className="type-tech text-[10px] text-gunmetal/40 uppercase tracking-widest mb-4 block">
-              Opcional — 1 minuto
+              Opcional — 2 minutos
             </span>
           </ScrollReveal>
           <TextReveal
@@ -275,8 +491,11 @@ export default function MiniSurvey() {
             Antes de darte respuestas, entendamos tu contexto.
           </TextReveal>
           <ScrollReveal delay={0.3}>
-            <p className="type-body text-base sm:text-lg text-gunmetal/60 max-w-xl mb-10 leading-relaxed" style={{ wordBreak: "keep-all", overflowWrap: "break-word" }}>
-              7 preguntas rápidas para que el contenido que veas sea relevante para tu viaje. Sin registro, sin compromiso.
+            <p
+              className="type-body text-base sm:text-lg text-gunmetal/60 max-w-xl mb-10 leading-relaxed"
+              style={{ wordBreak: "keep-all", overflowWrap: "break-word" }}
+            >
+              9 preguntas rápidas para que el contenido que veas sea relevante para tu viaje. Sin registro, sin compromiso.
             </p>
             <div className="flex flex-col sm:flex-row items-start gap-4">
               <motion.button
@@ -306,7 +525,11 @@ export default function MiniSurvey() {
     return (
       <section className="py-24 px-6 md:px-12 lg:px-24 bg-bone border-t border-gunmetal/5">
         <div className="max-w-5xl mx-auto">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
             <motion.div
               initial={{ scale: 0, rotate: -180 }}
               animate={{ scale: 1, rotate: 0 }}
@@ -315,13 +538,22 @@ export default function MiniSurvey() {
             >
               <Icon icon="solar:check-circle-bold" width={40} />
             </motion.div>
-            <h2 className="type-display text-2xl sm:text-3xl md:text-4xl text-gunmetal mb-4" style={{ overflowWrap: "break-word" }}>
+            <h2
+              className="type-display text-2xl sm:text-3xl md:text-4xl text-gunmetal mb-4"
+              style={{ overflowWrap: "break-word" }}
+            >
               Listo. Ya sabemos por dónde empezar.
             </h2>
-            <p className="type-body text-base sm:text-lg text-gunmetal/60 max-w-lg mb-10 leading-relaxed" style={{ overflowWrap: "break-word" }}>
+            <p
+              className="type-body text-base sm:text-lg text-gunmetal/60 max-w-lg mb-10 leading-relaxed"
+              style={{ overflowWrap: "break-word" }}
+            >
               Con lo que nos contaste, el contenido de O247 ahora tiene más sentido para tu viaje. Explorá a tu ritmo.
             </p>
-            <button onClick={handleDismiss} className="text-xs text-gunmetal/40 hover:text-gunmetal font-bold uppercase tracking-widest transition-colors">
+            <button
+              onClick={handleDismiss}
+              className="text-xs text-gunmetal/40 hover:text-gunmetal font-bold uppercase tracking-widest transition-colors"
+            >
               Continuar
             </button>
           </motion.div>
@@ -332,15 +564,23 @@ export default function MiniSurvey() {
 
   // ======== EN PROGRESO ========
   return (
-    <section className="py-24 px-6 md:px-12 lg:px-24 bg-bone border-t border-gunmetal/5 relative overflow-hidden">
+    <section
+      ref={sectionRef}
+      className="py-24 px-6 md:px-12 lg:px-24 bg-bone border-t border-gunmetal/5 relative overflow-hidden"
+    >
       <div className="max-w-5xl mx-auto relative z-10">
 
-        {/* Header + Progreso + Cerrar */}
+        {/* Header */}
         <div className="flex items-center justify-between mb-3">
           <span className="type-tech text-[10px] text-gunmetal/40 uppercase tracking-widest">
-            Pregunta {currentStep + 1} de {totalSteps}
+            {showEmailStep
+              ? "Tu punto de partida"
+              : `Pregunta ${currentStep + 1} de ${totalSteps}`}
           </span>
-          <button onClick={handleDismiss} className="flex items-center gap-1.5 text-[10px] text-gunmetal/30 hover:text-gunmetal/60 font-bold uppercase tracking-widest transition-colors">
+          <button
+            onClick={handleDismiss}
+            className="flex items-center gap-1.5 text-[10px] text-gunmetal/30 hover:text-gunmetal/60 font-bold uppercase tracking-widest transition-colors"
+          >
             <Icon icon="solar:close-circle-linear" width={14} />
             Cerrar
           </button>
@@ -356,7 +596,18 @@ export default function MiniSurvey() {
         </div>
 
         <AnimatePresence mode="wait">
-          {!showFeedback ? (
+
+          {/* EMAIL STEP */}
+          {showEmailStep ? (
+            <EmailStep
+              key="email"
+              answers={answers}
+              onSubmit={handleEmailSubmit}
+              onSkip={handleEmailSkip}
+            />
+          ) : !showFeedback ? (
+
+            /* PREGUNTA */
             <motion.div
               key={`question-${currentStep}`}
               initial={{ opacity: 0, x: 30 }}
@@ -371,13 +622,15 @@ export default function MiniSurvey() {
                 {currentQ.question}
               </h3>
 
-              <div className={`grid gap-3 ${
-                currentQ.options.length <= 3
-                  ? "grid-cols-1 sm:grid-cols-3"
-                  : currentQ.options.length <= 4
+              <div
+                className={`grid gap-3 ${
+                  currentQ.options.length <= 3
+                    ? "grid-cols-1 sm:grid-cols-3"
+                    : currentQ.options.length <= 4
                     ? "grid-cols-1 sm:grid-cols-2"
                     : "grid-cols-2 sm:grid-cols-3 lg:grid-cols-4"
-              }`}>
+                }`}
+              >
                 {currentQ.options.map((opt, i) => {
                   const isSelected = selectedAnim === opt.id || answers[currentQ.id] === opt.id;
                   const isJustSelected = selectedAnim === opt.id;
@@ -385,11 +638,7 @@ export default function MiniSurvey() {
                     <motion.button
                       key={opt.id}
                       initial={{ opacity: 0, y: 12 }}
-                      animate={{
-                        opacity: 1,
-                        y: 0,
-                        scale: isJustSelected ? 1.03 : 1,
-                      }}
+                      animate={{ opacity: 1, y: 0, scale: isJustSelected ? 1.03 : 1 }}
                       transition={{ duration: 0.3, delay: i * 0.04 }}
                       whileHover={{
                         y: -3,
@@ -406,7 +655,6 @@ export default function MiniSurvey() {
                       }`}
                       style={{ overflowWrap: "break-word" }}
                     >
-                      {/* Sunset glow on selection */}
                       {isJustSelected && (
                         <motion.div
                           initial={{ opacity: 0, scale: 0.8 }}
@@ -415,11 +663,13 @@ export default function MiniSurvey() {
                         />
                       )}
                       <div className="relative z-10 flex items-center gap-3">
-                        <div className={`shrink-0 p-2.5 rounded-xl transition-all duration-300 ${
-                          isSelected
-                            ? "bg-sunset text-white shadow-md shadow-sunset/20"
-                            : "bg-bone text-gunmetal/50 group-hover:bg-sunset/10 group-hover:text-sunset"
-                        }`}>
+                        <div
+                          className={`shrink-0 p-2.5 rounded-xl transition-all duration-300 ${
+                            isSelected
+                              ? "bg-sunset text-white shadow-md shadow-sunset/20"
+                              : "bg-bone text-gunmetal/50 group-hover:bg-sunset/10 group-hover:text-sunset"
+                          }`}
+                        >
                           <Icon icon={opt.icon} className="w-5 h-5" />
                         </div>
                         <span
@@ -452,25 +702,30 @@ export default function MiniSurvey() {
                     </motion.button>
                   )}
                 </div>
-                <button onClick={handleSkipQuestion} className="text-xs text-gunmetal/30 hover:text-gunmetal/60 font-bold uppercase tracking-widest transition-colors">
+                <button
+                  onClick={handleSkipQuestion}
+                  className="text-xs text-gunmetal/30 hover:text-gunmetal/60 font-bold uppercase tracking-widest transition-colors"
+                >
                   Prefiero no contestar
                 </button>
               </div>
             </motion.div>
+
           ) : (
-            /* Feedback — más ágil, sin movimientos bruscos */
+
+            /* FEEDBACK */
             <motion.div
               key={`feedback-${currentStep}`}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.25, ease: "easeOut" }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
               className="py-12"
             >
               <motion.div
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
                 className="w-14 h-14 rounded-full bg-sunset/10 text-sunset flex items-center justify-center mb-6"
               >
                 <Icon icon="solar:check-read-bold" width={28} />
@@ -478,7 +733,7 @@ export default function MiniSurvey() {
               <motion.p
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: 0.15 }}
+                transition={{ duration: 0.25, delay: 0.1 }}
                 className="type-body text-lg sm:text-xl text-gunmetal font-medium max-w-md leading-relaxed"
                 style={{ overflowWrap: "break-word" }}
               >
@@ -490,4 +745,21 @@ export default function MiniSurvey() {
       </div>
     </section>
   );
+}// ============================================================
+// SUBMIT TO SUPABASE
+// ============================================================
+async function submitSurvey(payload: {
+  email?: string;
+  answers: Record<string, string>;
+  skipped: string[];
+}) {
+  try {
+    await fetch('/api/survey-submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+  } catch (err) {
+    console.error('[MiniSurvey] Submit error:', err);
+  }
 }
