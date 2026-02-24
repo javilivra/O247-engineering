@@ -168,6 +168,8 @@ export default function ParkPageLayout({ config }: { config: ParkPageConfig }) {
   } = config;
 
   const [category, setCategory] = useState(defaultCategory);
+  const [heroSlide, setHeroSlide] = useState(0);
+  const [heroTotal, setHeroTotal] = useState(heroSlides.length);
   const [activeFilters, setActiveFilters] = useState<Set<string>>(new Set());
   const [pendingFilters, setPendingFilters] = useState<Set<string>>(new Set());
   const [sortBy, setSortBy] = useState<SortOption>('popularity');
@@ -281,41 +283,51 @@ export default function ParkPageLayout({ config }: { config: ParkPageConfig }) {
         {/* ============================================================ */}
         {/* HERO */}
         {/* ============================================================ */}
-        <motion.div variants={itemVariants} className="w-full bg-bone pt-6 pb-0 px-6 md:px-12 lg:px-24">
+        <motion.div variants={itemVariants} className="w-full bg-bone px-6 md:px-12 lg:px-24 pt-6">
           <div className="max-w-[1200px] mx-auto">
-            <div className="relative w-full h-[480px] md:h-[540px] rounded-3xl overflow-hidden">
-              <HeroCarousel slides={heroSlides} duration={heroSlideDuration} />
-              <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/30 to-transparent z-10" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent z-10" />
-              <div className="absolute inset-0 z-20 flex items-end pb-8 px-8 md:px-12">
-                <div className="w-full">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="h-px w-8 bg-white/40" />
-                    <h2 className="text-[10px] font-bold tracking-[0.25em] uppercase text-white/60">{parkTagline}</h2>
-                  </div>
-                  <div className="mb-6">
-                    <h1 className="text-5xl md:text-7xl font-black text-white leading-[0.9] tracking-tighter mb-3 drop-shadow-2xl">
-                      {parkName.split(' ').map((word, i) => (
-                        <React.Fragment key={i}>{i > 0 && <br/>}{word}</React.Fragment>
-                      ))}
-                    </h1>
-                    <h2 className="text-xl md:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-sunset to-celeste drop-shadow-lg">
-                      {parkSubtitle}
-                    </h2>
-                  </div>
-                  {guidePath ? (
-                    <ParkHubIsland basePath={guidePath} />
-                  ) : (
-                    <div className="flex items-center gap-3">
-                      <div className="flex items-center gap-3 bg-white/15 backdrop-blur-md text-white px-5 py-2.5 rounded-full border border-white/20 shadow-xl">
-                        <div className="w-2 h-2 rounded-full bg-red-400 animate-pulse" />
-                        <span className="text-[10px] font-bold uppercase tracking-wider font-mono">HOY</span>
-                      </div>
-                    </div>
-                  )}
-                </div>
+            <section className="relative w-full h-[500px] rounded-[32px] overflow-hidden group">
+
+              {/* IMAGEN — ocupa todo, Ken Burns via HeroCarousel */}
+              <div className="absolute right-0 top-0 bottom-0 w-full md:w-[72%] overflow-hidden transition-transform duration-[3s] ease-out group-hover:scale-[1.02]">
+                <HeroCarousel slides={heroSlides} duration={heroSlideDuration} onSlideChange={(i, t) => { setHeroSlide(i); setHeroTotal(t); }} />
+                <div className="absolute inset-0 bg-gunmetal/0 mix-blend-multiply" />
               </div>
-            </div>
+
+              {/* GRADIENTE FUSIÓN — idéntico a Disney Springs, una sola capa */}
+              <div className="absolute inset-0 bg-gradient-to-r from-[#f7f7f5] via-[#f7f7f5] via-[30%] to-transparent z-10" />
+
+              {/* GRADIENTE FUSIÓN — idéntico a Disney Springs */}
+
+
+              {/* CONTENIDO izquierda */}
+              <div className="relative z-20 h-full flex flex-col justify-center pl-8 md:pl-12 max-w-[580px] pb-24">
+
+                {/* Tagline */}
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="h-px w-8 bg-gunmetal/30" />
+                  <span className="font-mono text-gunmetal/60 text-[10px] font-bold tracking-[0.2em] uppercase">{parkTagline}</span>
+                </div>
+
+                {/* Título */}
+                <h1 className="text-[72px] md:text-[84px] font-bold text-gunmetal tracking-tighter leading-[0.95] mb-4">
+                  {parkName.split(' ').map((word, i) => (
+                    <React.Fragment key={i}>{i > 0 && <br/>}{word}</React.Fragment>
+                  ))}
+                </h1>
+
+                {/* Subtítulo */}
+                <h2 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-sunset to-celeste mb-0">
+                  {parkSubtitle}
+                </h2>
+
+              </div>
+              {/* HUB ISLAND — absoluto sobre todo el hero */}
+              {guidePath && (
+                <div className="absolute bottom-6 left-8 right-8 md:left-12 md:right-12 z-30">
+                  <ParkHubIsland basePath={guidePath} />
+                </div>
+              )}
+            </section>
           </div>
         </motion.div>
         {/* CONTEXTO */}

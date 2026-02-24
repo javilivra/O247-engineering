@@ -55,7 +55,7 @@ interface ParkHubIslandProps {
 
 export default function ParkHubIsland({ basePath }: ParkHubIslandProps) {
   return (
-    <div className="flex items-center gap-2 sm:gap-3">
+    <div className="grid grid-cols-4 gap-2 w-full">
       {HUB_ITEMS.map((item, i) => (
         <motion.div
           key={item.anchor}
@@ -70,11 +70,11 @@ export default function ParkHubIsland({ basePath }: ParkHubIslandProps) {
             href={`${basePath}/guide#${item.anchor}`}
             className="
               block relative overflow-hidden
-              rounded-2xl px-3 py-3
-              bg-white/10 backdrop-blur-md
-              border border-white/20
-              shadow-[0_4px_24px_rgba(0,0,0,0.12),inset_0_1px_0_rgba(255,255,255,0.15)]
-              hover:bg-white/20 hover:border-white/35 hover:shadow-[0_8px_32px_rgba(0,0,0,0.18)]
+              rounded-2xl px-3 py-4
+              bg-gunmetal/60 backdrop-blur-md
+              border border-white/10
+              shadow-[0_4px_24px_rgba(0,0,0,0.25),inset_0_1px_0_rgba(255,255,255,0.08)]
+              hover:bg-gunmetal/75 hover:border-white/20 hover:shadow-[0_8px_32px_rgba(0,0,0,0.35)]
               transition-all duration-300
               cursor-pointer
               group
@@ -95,7 +95,7 @@ export default function ParkHubIsland({ basePath }: ParkHubIslandProps) {
                 <Icon icon={item.icon} width={16} className="opacity-90" />
               </div>
               <div>
-                <div className="text-[9px] font-bold uppercase tracking-[0.15em] text-white/50 font-mono leading-none mb-0.5">
+                <div className="text-[9px] font-bold uppercase tracking-[0.15em] text-white/60 font-mono leading-none mb-0.5">
                   {item.sublabel}
                 </div>
                 <div className="text-[11px] sm:text-xs font-black text-white leading-tight whitespace-nowrap">
