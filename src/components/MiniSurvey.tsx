@@ -10,7 +10,22 @@ import TextReveal from "./TextReveal";
 // DATA
 // ============================================================
 
-const QUESTIONS = [
+interface QuestionOption {
+  id: string;
+  label: string;
+  icon: string;
+  feedbackKey: string;
+}
+
+interface Question {
+  id: string;
+  question: string;
+  multiSelect?: boolean;
+  feedback: Record<string, string>;
+  options: QuestionOption[];
+}
+
+const QUESTIONS: Question[] = [
   {
     id: "experience",
     question: "¿Es tu primera vez en Orlando?",
@@ -37,11 +52,11 @@ const QUESTIONS = [
       solo: "Viaje solo = máxima eficiencia. Buen plan.",
     },
     options: [
-      { id: "family_kids", label: "Familia con niños", icon: "solar:users-group-rounded-bold-duotone", feedbackKey: "family_kids" },
+      { id: "family_kids", label: "Familia con niños", icon: "solar:bone-bold", feedbackKey: "family_kids" },
       { id: "family_no_kids", label: "Familia sin niños", icon: "solar:people-nearby-bold-duotone", feedbackKey: "family_no_kids" },
       { id: "couple", label: "Pareja", icon: "solar:heart-bold-duotone", feedbackKey: "couple" },
-      { id: "friends", label: "Amigos", icon: "solar:cup-star-bold-duotone", feedbackKey: "friends" },
-      { id: "group", label: "Grupo grande", icon: "solar:users-group-two-rounded-bold-duotone", feedbackKey: "group" },
+      { id: "friends", label: "Amigos", icon: "solar:confetti-bold-duotone", feedbackKey: "friends" },
+      { id: "group", label: "Grupo grande", icon: "solar:users-group-rounded-bold-duotone", feedbackKey: "group" },
       { id: "solo", label: "Viajo solo/a", icon: "solar:user-bold-duotone", feedbackKey: "solo" },
     ],
   },
@@ -85,8 +100,8 @@ const QUESTIONS = [
     },
     options: [
       { id: "tight", label: "Ajustado, quiero maximizar cada peso", icon: "solar:wallet-bold-duotone", feedbackKey: "tight" },
-      { id: "balanced", label: "Equilibrado, sin excesos", icon: "solar:graph-new-bold-duotone", feedbackKey: "balanced" },
-      { id: "flexible", label: "Flexible, priorizo la experiencia", icon: "solar:stars-bold-duotone", feedbackKey: "flexible" },
+      { id: "balanced", label: "Equilibrado, sin excesos", icon: "solar:shield-check-bold-duotone", feedbackKey: "balanced" },
+      { id: "flexible", label: "Flexible, priorizo la experiencia", icon: "solar:dollar-minimalistic-bold-duotone", feedbackKey: "flexible" },
     ],
   },
   {
@@ -100,12 +115,13 @@ const QUESTIONS = [
     options: [
       { id: "yes", label: "Sí, ya la tengo", icon: "solar:check-circle-bold-duotone", feedbackKey: "yes" },
       { id: "in_process", label: "Estoy tramitándola", icon: "solar:clock-circle-bold-duotone", feedbackKey: "in_process" },
-      { id: "no", label: "Todavía no", icon: "solar:document-bold-duotone", feedbackKey: "no" },
+      { id: "no", label: "Todavía no", icon: "solar:close-circle-bold", feedbackKey: "no" },
     ],
   },
   {
     id: "priority",
     question: "¿Qué te preocupa más al planificar?",
+    multiSelect: true,
     feedback: {
       time: "Reducir esperas es clave. Hay formas concretas de lograrlo.",
       money: "Optimizar el presupuesto sin sacrificar experiencia. Se puede.",
@@ -115,7 +131,12 @@ const QUESTIONS = [
     options: [
       { id: "time", label: "Perder tiempo en filas", icon: "solar:hourglass-bold-duotone", feedbackKey: "time" },
       { id: "money", label: "Gastar de más", icon: "solar:wallet-bold-duotone", feedbackKey: "money" },
-      { id: "overwhelm", label: "No saber por dónde empezar", icon: "solar:question-circle-bold-duotone", feedbackKey: "overwhelm" },
+      { id: "missing", label: "Perderme atracciones importantes", icon: "solar:star-fall-bold-duotone", feedbackKey: "missing" },
+      { id: "navigation", label: "No optimizar bien los tiempos en parques", icon: "solar:route-bold", feedbackKey: "navigation" },
+      { id: "unknown", label: "Desconocer qué se puede hacer en cada lugar", icon: "solar:map-bold-duotone", feedbackKey: "unknown" },
+      { id: "events", label: "Perderme eventos por elegir mal el día", icon: "solar:calendar-bold-duotone", feedbackKey: "events" },
+      { id: "workaround", label: "No tener plan B ante imprevistos", icon: "solar:danger-triangle-bold-duotone", feedbackKey: "workaround" },
+      { id: "overwhelm", label: "Abrumarme con tanta info al llegar", icon: "solar:question-circle-bold-duotone", feedbackKey: "overwhelm" },
       { id: "kids", label: "Que los chicos se cansen", icon: "solar:sleeping-square-bold-duotone", feedbackKey: "kids" },
     ],
   },
@@ -372,13 +393,14 @@ export default function MiniSurvey() {
   const [isComplete, setIsComplete] = useState(false);
   const [showEmailStep, setShowEmailStep] = useState(false);
   const [selectedAnim, setSelectedAnim] = useState<string | null>(null);
+  const [multiSelected, setMultiSelected] = useState<string[]>([]);
   const sectionRef = useRef<HTMLElement>(null);
   const hasTrackedView = useRef(false);
 
   const totalSteps = QUESTIONS.length;
   // +1 para el email step en la barra de progreso
   const progress = isComplete ? 100 : showEmailStep ? 95 : ((currentStep + 1) / (totalSteps + 1)) * 100;
-  const currentQ = QUESTIONS[currentStep];
+  const currentQ = QUESTIONS[currentStep] ?? QUESTIONS[0];
 
   // Track section view
   useEffect(() => {
@@ -399,10 +421,11 @@ export default function MiniSurvey() {
   }, []);
 
   const advanceStep = useCallback(() => {
+    setMultiSelected([]);
     if (currentStep < totalSteps - 1) {
-      setCurrentStep((prev) => prev + 1);
+      setCurrentStep((prev) => Math.min(prev + 1, totalSteps - 1));
     } else {
-      // Última pregunta completada → ir al email step
+      setIsComplete(false);
       setShowEmailStep(true);
     }
   }, [currentStep, totalSteps]);
@@ -426,6 +449,21 @@ export default function MiniSurvey() {
     },
     [currentQ, advanceStep]
   );
+
+  const handleMultiToggle = (optionId: string) => {
+    setMultiSelected(prev =>
+      prev.includes(optionId)
+        ? prev.filter(id => id !== optionId)
+        : [...prev, optionId]
+    );
+  };
+
+  const handleMultiConfirm = () => {
+    if (multiSelected.length === 0) return;
+    setAnswers(prev => ({ ...prev, [currentQ.id]: multiSelected.join(',') }));
+    trackSurveyEvent("answer", { questionId: currentQ.id, optionId: multiSelected.join(',') });
+    advanceStep();
+  };
 
   const handleSkipQuestion = () => {
     setSkipped((prev) => new Set(prev).add(currentQ.id));
@@ -632,8 +670,11 @@ export default function MiniSurvey() {
                 }`}
               >
                 {currentQ.options.map((opt, i) => {
-                  const isSelected = selectedAnim === opt.id || answers[currentQ.id] === opt.id;
-                  const isJustSelected = selectedAnim === opt.id;
+                  const isMulti = currentQ.multiSelect;
+                  const isSelected = isMulti
+                    ? multiSelected.includes(opt.id)
+                    : selectedAnim === opt.id || answers[currentQ.id] === opt.id;
+                  const isJustSelected = !isMulti && selectedAnim === opt.id;
                   return (
                     <motion.button
                       key={opt.id}
@@ -647,7 +688,10 @@ export default function MiniSurvey() {
                         transition: { duration: 0.2 },
                       }}
                       whileTap={{ scale: 0.97 }}
-                      onClick={() => handleAnswer(currentQ.id, opt.id, opt.feedbackKey)}
+                      onClick={() => currentQ.multiSelect
+                        ? handleMultiToggle(opt.id)
+                        : handleAnswer(currentQ.id, opt.id, opt.feedbackKey)
+                      }
                       className={`group relative p-4 sm:p-5 text-left rounded-2xl border-2 transition-all duration-300 ${
                         isSelected
                           ? "bg-white border-sunset shadow-lg shadow-sunset/10"
@@ -686,28 +730,80 @@ export default function MiniSurvey() {
                 })}
               </div>
 
-              {/* Footer */}
-              <div className="flex items-center justify-between mt-8">
-                <div>
-                  {currentStep > 0 && (
-                    <motion.button
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      whileHover={{ x: -3 }}
-                      onClick={handleGoBack}
-                      className="flex items-center gap-1.5 text-xs text-gunmetal/40 hover:text-gunmetal font-bold uppercase tracking-widest transition-all"
-                    >
-                      <Icon icon="solar:arrow-left-linear" width={14} />
-                      Anterior
-                    </motion.button>
-                  )}
-                </div>
-                <button
-                  onClick={handleSkipQuestion}
-                  className="text-xs text-gunmetal/30 hover:text-gunmetal/60 font-bold uppercase tracking-widest transition-colors"
+              {/* MULTISELECT — continuar */}
+              {currentQ.multiSelect && (
+                <motion.div
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mt-6 flex flex-col items-center gap-3"
                 >
-                  Prefiero no contestar
-                </button>
+                  <p className="text-[11px] font-mono uppercase tracking-widest text-gunmetal/40">
+                    {multiSelected.length === 0
+                      ? 'Seleccioná las que apliquen — podés elegir más de una'
+                      : `${multiSelected.length} seleccionada${multiSelected.length !== 1 ? 's' : ''}`
+                    }
+                  </p>
+                  <button
+                    onClick={handleMultiConfirm}
+                    disabled={multiSelected.length === 0}
+                    className={`px-10 py-3 rounded-full text-sm font-bold tracking-wide transition-all duration-300 ${
+                      multiSelected.length > 0
+                        ? 'bg-gunmetal text-white hover:bg-gunmetal/85 shadow-lg'
+                        : 'bg-gunmetal/8 text-gunmetal/20 cursor-not-allowed'
+                    }`}
+                  >
+                    Continuar
+                  </button>
+                </motion.div>
+              )}
+
+              {/* Footer */}
+              <div className={`flex items-center mt-6 ${currentQ.multiSelect ? 'justify-center' : 'justify-between'}`}>
+                {!currentQ.multiSelect && (
+                  <div>
+                    {currentStep > 0 && (
+                      <motion.button
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        whileHover={{ x: -3 }}
+                        onClick={handleGoBack}
+                        className="flex items-center gap-1.5 text-xs text-gunmetal/40 hover:text-gunmetal font-bold uppercase tracking-widest transition-all"
+                      >
+                        <Icon icon="solar:arrow-left-linear" width={14} />
+                        Anterior
+                      </motion.button>
+                    )}
+                  </div>
+                )}
+                {currentQ.multiSelect ? (
+                  <div className="flex items-center gap-6">
+                    {currentStep > 0 && (
+                      <motion.button
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        whileHover={{ x: -3 }}
+                        onClick={handleGoBack}
+                        className="flex items-center gap-1.5 text-xs text-gunmetal/40 hover:text-gunmetal font-bold uppercase tracking-widest transition-all"
+                      >
+                        <Icon icon="solar:arrow-left-linear" width={14} />
+                        Anterior
+                      </motion.button>
+                    )}
+                    <button
+                      onClick={handleSkipQuestion}
+                      className="text-xs text-gunmetal/30 hover:text-gunmetal/60 font-bold uppercase tracking-widest transition-colors"
+                    >
+                      Prefiero no contestar
+                    </button>
+                  </div>
+                ) : (
+                  <button
+                    onClick={handleSkipQuestion}
+                    className="text-xs text-gunmetal/30 hover:text-gunmetal/60 font-bold uppercase tracking-widest transition-colors"
+                  >
+                    Prefiero no contestar
+                  </button>
+                )}
               </div>
             </motion.div>
 

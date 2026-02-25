@@ -2,6 +2,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { useNavbar } from '@/context/NavbarContext';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -43,7 +44,7 @@ interface NavItem {
   label: string;
   href?: string;
   sections?: NavSection[];
-  spotlight?: { tag: string; title: string; desc: string; };
+  spotlight?: { tag: string; title: string; desc: string; href?: string; };
 }
 interface NavSection {
   title: string;
@@ -200,44 +201,16 @@ export default function Navbar() {
   // ── Rutas con hero oscuro (navbar transparente con texto blanco) ──
   // Incluye: home, y cualquier ruta de atracción /disney/[park]/[slug]
   // o /universal/[park]/[slug]. Se detecta por profundidad de segmentos.
+  // ── Modo navbar: context + fallback por ruta para home y atracciones ──
+  const { mode: navbarMode } = useNavbar();
   const isHome = pathname === '/';
-
   const isAttractionPage = (() => {
     const segments = pathname.split('/').filter(Boolean);
-    // /disney/mk/space-mountain → 3 segmentos = página de atracción
-    // /universal/us/velocicoaster → 3 segmentos = página de atracción
-    return (
-      segments.length >= 3 &&
-      (segments[0] === 'disney' || segments[0] === 'universal')
-    );
+    return segments.length >= 3 && (segments[0] === 'disney' || segments[0] === 'universal');
   })();
+  const isTransparentHero = navbarMode === 'dark' || isHome || isAttractionPage;
 
-  // Páginas de parque también tienen hero oscuro
-  const isParkPage = (() => {
-    const segments = pathname.split('/').filter(Boolean);
-    return (
-      segments.length === 2 &&
-      (segments[0] === 'disney' || segments[0] === 'universal')
-    );
-  })();
 
-  const isTransparentHero = isHome || isAttractionPage || isParkPage;
-
-  // Scroll detection (throttled via rAF)
-  useEffect(() => {
-    let ticking = false;
-    const onScroll = () => {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          setIsScrolled(window.scrollY > 20);
-          ticking = false;
-        });
-        ticking = true;
-      }
-    };
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
 
   useEffect(() => {
     setMobileOpen(false);
@@ -282,6 +255,84 @@ export default function Navbar() {
 
   const isDesktopMenuOpen = !!desktopMenu;
 
+  // ── Logo animation ──
+  const [logoExpanded, setLogoExpanded] = useState(false);
+  const [logoCollapsing, setLogoCollapsing] = useState(false);
+  const periodicRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const expandLogo = useCallback(() => {
+    setLogoCollapsing(false);
+    setLogoExpanded(true);
+  }, []);
+
+  const collapseLogo = useCallback(() => {
+    setLogoCollapsing(true);
+    setLogoExpanded(false);
+    setTimeout(() => setLogoCollapsing(false), 400);
+  }, []);
+
+  const schedulePeriodic = useCallback(() => {
+    if (periodicRef.current) clearTimeout(periodicRef.current);
+    periodicRef.current = setTimeout(() => {
+      expandLogo();
+      setTimeout(() => collapseLogo(), 2500);
+      schedulePeriodic();
+    }, 90000);
+  }, [expandLogo, collapseLogo]);
+
+  // Expandir al montar — primer render
+  useEffect(() => {
+    const t = setTimeout(() => {
+      expandLogo();
+      // Colapsar después de 2.5s si hay scroll
+      setTimeout(() => {
+        if (window.scrollY > 20) collapseLogo();
+      }, 2500);
+    }, 600);
+    schedulePeriodic();
+    return () => {
+      clearTimeout(t);
+      if (periodicRef.current) clearTimeout(periodicRef.current);
+    };
+  }, []);
+
+  // ── Scroll: isScrolled — listener estable, sin dependencias que cambien
+  useEffect(() => {
+    let ticking = false;
+    const onScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          setIsScrolled(window.scrollY > 20);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  // ── Logo collapse/expand reactivo al scroll — usa ref para evitar stale closure
+  const logoExpandedRef = useRef(logoExpanded);
+  useEffect(() => { logoExpandedRef.current = logoExpanded; }, [logoExpanded]);
+
+  useEffect(() => {
+    let ticking = false;
+    const onScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const scrolled = window.scrollY > 20;
+          if (scrolled && logoExpandedRef.current) collapseLogo();
+          if (!scrolled && !logoExpandedRef.current) expandLogo();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [expandLogo, collapseLogo]);
+
   // ── Lógica de color del texto ──
   // En páginas con hero: blanco cuando no scrolleó, gunmetal cuando scrolleó
   // En páginas sin hero: siempre gunmetal
@@ -292,10 +343,9 @@ export default function Navbar() {
   const navBg = isDesktopMenuOpen
     ? 'bg-transparent border-transparent'
     : isScrolled
-      ? 'bg-white/85 backdrop-blur-md border-b border-gunmetal/6 shadow-sm'
+      ? 'bg-white/90 backdrop-blur-md border-b border-gunmetal/6 shadow-sm'
       : isTransparentHero
         ? 'bg-transparent border-transparent'
-        // Páginas sin hero: siempre bg bone con borde
         : 'bg-bone/95 backdrop-blur-sm border-b border-gunmetal/8';
 
   const textClass = useDarkText ? 'text-gunmetal' : 'text-white';
@@ -322,15 +372,46 @@ export default function Navbar() {
       {/* HEADER */}
       <header
         ref={navRef}
-        className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ease-in-out ${navBg}`}
+        className={`fixed top-0 left-0 w-full z-50 transition-all duration-200 ease-out ${navBg}`}
         onMouseLeave={() => setDesktopMenu(null)}
       >
         <div className="max-w-[1400px] mx-auto px-6 md:px-8 h-[72px] md:h-[80px] flex items-center justify-between relative z-50">
 
-          {/* LOGO */}
-          <Link href="/" className="flex items-center gap-2 group" aria-label="O247 — Ir al inicio">
-            <span className={`text-2xl font-bold tracking-tight antialiased font-display transition-colors duration-300 ${logoClass}`}>
-              O247
+          {/* LOGO — animación ORLANDO247 ↔ O247 */}
+          <Link
+            href="/"
+            className="flex items-center group"
+            aria-label="O247 — Ir al inicio"
+            style={{ textDecoration: 'none' }}
+          >
+            <span className={`
+              text-2xl font-bold tracking-tight antialiased font-display
+              transition-colors duration-300
+              flex items-center
+              ${logoClass}
+            `}>
+              {/* O — ancla fija izquierda, nunca se mueve */}
+              <span>O</span>
+
+              {/* RLAND — se expande hacia la derecha */}
+              <span
+                style={{
+                  display: 'block',
+                  overflow: 'hidden',
+                  whiteSpace: 'nowrap',
+                  maxWidth: logoExpanded ? '120px' : '0px',
+                  opacity: logoExpanded ? 1 : 0,
+                  letterSpacing: logoExpanded ? '-0.02em' : '-0.1em',
+                  transition: logoCollapsing
+                    ? 'max-width 0.6s cubic-bezier(0.4,0,0.2,1), opacity 0.35s ease 0s, letter-spacing 0.5s ease'
+                    : 'max-width 1.0s cubic-bezier(0.16,1,0.3,1), opacity 0.7s cubic-bezier(0.16,1,0.3,1) 0.15s, letter-spacing 0.9s cubic-bezier(0.16,1,0.3,1) 0.1s',
+                }}
+              >
+                RLANDO
+              </span>
+
+              {/* 247 — sigue a RLAND naturalmente */}
+              <span>247</span>
             </span>
           </Link>
 
@@ -345,23 +426,39 @@ export default function Navbar() {
                 {item.href ? (
                   <Link
                     href={item.href}
-                    className={`px-4 py-2 text-[14px] tracking-wide antialiased font-sans font-medium transition-colors duration-300 ${useDarkText ? 'text-gunmetal hover:text-sunset' : 'text-white hover:text-sunset'}`}
-                  >
-                    {item.label}
-                  </Link>
-                ) : (
-                  <button
-                    className={`px-4 py-2 flex items-center gap-1.5 text-[14px] tracking-wide outline-none cursor-default antialiased font-sans font-medium transition-colors duration-300 ${
-                      desktopMenu === item.id
-                        ? 'text-white font-bold'
+                    className={`px-4 py-2 text-[14px] tracking-wide antialiased font-sans font-medium transition-colors duration-300 relative group
+                      ${pathname === item.href
+                        ? 'text-celeste'
                         : useDarkText
                           ? 'text-gunmetal hover:text-sunset'
                           : 'text-white hover:text-sunset'
+                      }`}
+                  >
+                    {item.label}
+                    {pathname === item.href && (
+                      <span className="absolute bottom-0 left-4 right-4 h-[2px] bg-celeste rounded-full" />
+                    )}
+                  </Link>
+                ) : (
+                  <button
+                    className={`px-4 py-2 flex items-center gap-1.5 text-[14px] tracking-wide outline-none cursor-pointer antialiased font-sans font-medium transition-colors duration-300 ${
+                      desktopMenu === item.id
+                        ? 'text-white font-bold'
+                        : pathname.startsWith(`/${item.id}`)
+                          ? 'text-celeste'
+                          : useDarkText
+                            ? 'text-gunmetal hover:text-sunset'
+                            : 'text-white hover:text-sunset'
                     }`}
                     aria-expanded={desktopMenu === item.id}
                     aria-haspopup="true"
                   >
-                    {item.label}
+                    <span className="relative">
+                      {item.label}
+                      {!desktopMenu && pathname.startsWith(`/${item.id}`) && (
+                        <span className="absolute bottom-[-4px] left-0 right-0 h-[2px] bg-celeste rounded-full" />
+                      )}
+                    </span>
                     <span className={`transition-colors duration-300 ${
                       desktopMenu === item.id
                         ? 'text-sunset'
@@ -369,7 +466,7 @@ export default function Navbar() {
                           ? 'text-gunmetal/40 group-hover:text-sunset'
                           : 'text-white/40 group-hover:text-sunset'
                     }`}>
-                      {desktopMenu === item.id ? <IconMinus /> : <IconPlus />}
+                      <IconChevron open={desktopMenu === item.id} />
                     </span>
                   </button>
                 )}
@@ -401,6 +498,7 @@ export default function Navbar() {
                 exit={{ opacity: 0, height: 0 }}
                 transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
                 className="absolute top-[80px] left-0 w-full hidden xl:block overflow-hidden origin-top z-50"
+                style={{ marginTop: '-8px', paddingTop: '8px' }}
                 onMouseEnter={() => setDesktopMenu(desktopMenu)}
                 onMouseLeave={() => setDesktopMenu(null)}
               >
@@ -449,12 +547,32 @@ export default function Navbar() {
                         <div className="flex items-center gap-2 mb-4 text-white/40">
                           <span className="text-[10px] font-bold tracking-[0.2em] uppercase font-mono">{item.spotlight.tag}</span>
                         </div>
-                        <h3 className="text-xl font-bold text-white mb-2 leading-tight font-display tracking-tight">
-                          {item.spotlight.title}
-                        </h3>
-                        <p className="text-[13px] text-white/60 leading-relaxed font-medium font-sans">
-                          {item.spotlight.desc}
-                        </p>
+                        {item.spotlight.href ? (
+                          <Link
+                            href={item.spotlight.href}
+                            onClick={() => setDesktopMenu(null)}
+                            className="group block"
+                          >
+                            <h3 className="text-xl font-bold text-white mb-2 leading-tight font-display tracking-tight group-hover:text-sunset transition-colors duration-200">
+                              {item.spotlight.title}
+                            </h3>
+                            <p className="text-[13px] text-white/60 leading-relaxed font-medium font-sans mb-3">
+                              {item.spotlight.desc}
+                            </p>
+                            <span className="text-[11px] font-bold text-sunset uppercase tracking-widest font-mono flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                              Ver más <IconArrow />
+                            </span>
+                          </Link>
+                        ) : (
+                          <>
+                            <h3 className="text-xl font-bold text-white mb-2 leading-tight font-display tracking-tight">
+                              {item.spotlight.title}
+                            </h3>
+                            <p className="text-[13px] text-white/60 leading-relaxed font-medium font-sans">
+                              {item.spotlight.desc}
+                            </p>
+                          </>
+                        )}
                       </div>
                     )}
                   </div>
@@ -502,9 +620,15 @@ export default function Navbar() {
                         key={item.id}
                         href={item.href}
                         onClick={() => setMobileOpen(false)}
-                        className="flex items-center justify-between py-4 px-4 text-white font-medium text-base rounded-xl hover:bg-white/5 transition-colors min-h-[48px]"
+                        className={`flex items-center justify-between py-4 px-4 font-medium text-base rounded-xl hover:bg-white/5 transition-colors min-h-[48px]
+                          ${pathname === item.href ? 'text-celeste' : 'text-white'}`}
                       >
-                        {item.label}
+                        <span className="flex items-center gap-2">
+                          {pathname === item.href && (
+                            <span className="w-1.5 h-1.5 rounded-full bg-celeste shrink-0" />
+                          )}
+                          {item.label}
+                        </span>
                         <IconArrow />
                       </Link>
                     );
@@ -514,12 +638,17 @@ export default function Navbar() {
                     <div key={item.id}>
                       <button
                         onClick={() => toggleMobileSection(item.id)}
-                        className={`flex items-center justify-between w-full py-4 px-4 text-white font-medium text-base rounded-xl transition-colors min-h-[48px] ${
-                          isExpanded ? 'bg-white/5' : 'hover:bg-white/5'
-                        }`}
+                        className={`flex items-center justify-between w-full py-4 px-4 font-medium text-base rounded-xl transition-colors min-h-[48px]
+                          ${isExpanded ? 'bg-white/5' : 'hover:bg-white/5'}
+                          ${pathname.startsWith(`/${item.id}`) && !isExpanded ? 'text-celeste' : 'text-white'}`}
                         aria-expanded={isExpanded}
                       >
-                        <span>{item.label}</span>
+                        <span className="flex items-center gap-2">
+                          {pathname.startsWith(`/${item.id}`) && (
+                            <span className="w-1.5 h-1.5 rounded-full bg-celeste shrink-0" />
+                          )}
+                          {item.label}
+                        </span>
                         <IconChevron open={isExpanded} />
                       </button>
                       <AnimatePresence>

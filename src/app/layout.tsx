@@ -1,4 +1,5 @@
 // @STATUS: GOLDEN MASTER V5 — Hide Navbar/Footer on attraction pages
+import { NavbarProvider } from '@/context/NavbarContext';
 import type { Metadata, Viewport } from "next";
 import { JetBrains_Mono } from "next/font/google"; 
 import "./globals.css";
@@ -69,7 +70,7 @@ export default function RootLayout({
           <CustomCursor />
           {/* ShellWrapper decide qué mostrar según la ruta */}
           <ShellWrapper>
-            {children}
+            <NavbarProvider>{children}</NavbarProvider>
           </ShellWrapper>
           <CookieConsent />
         </ModalProvider>

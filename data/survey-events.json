@@ -507,5 +507,1002 @@
     "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
     "ip": "127.0.0.1",
     "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_section_viewed",
+    "timestamp": "2026-02-25T00:19:55.108Z",
+    "sessionId": "s_1771974777402_ja3s8ng",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_section_viewed",
+    "timestamp": "2026-02-25T00:32:58.433Z",
+    "sessionId": "s_1771271856552_i1jjrqy",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_started",
+    "timestamp": "2026-02-25T00:34:18.566Z",
+    "sessionId": "s_1771271856552_i1jjrqy",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T00:34:36.775Z",
+    "questionId": "experience",
+    "optionId": "returning",
+    "sessionId": "s_1771271856552_i1jjrqy",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T00:34:46.182Z",
+    "questionId": "group",
+    "optionId": "couple",
+    "sessionId": "s_1771271856552_i1jjrqy",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T00:34:54.435Z",
+    "questionId": "duration",
+    "optionId": "medium",
+    "sessionId": "s_1771271856552_i1jjrqy",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T00:35:01.755Z",
+    "questionId": "travel_date",
+    "optionId": "no_date",
+    "sessionId": "s_1771271856552_i1jjrqy",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T00:35:14.011Z",
+    "questionId": "budget",
+    "optionId": "balanced",
+    "sessionId": "s_1771271856552_i1jjrqy",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T00:35:23.543Z",
+    "questionId": "visa",
+    "optionId": "yes",
+    "sessionId": "s_1771271856552_i1jjrqy",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T00:36:00.174Z",
+    "questionId": "priority",
+    "optionId": "overwhelm",
+    "sessionId": "s_1771271856552_i1jjrqy",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T00:36:16.036Z",
+    "questionId": "perfect_trip",
+    "optionId": "schedule",
+    "sessionId": "s_1771271856552_i1jjrqy",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T00:36:42.105Z",
+    "questionId": "source",
+    "optionId": "google",
+    "sessionId": "s_1771271856552_i1jjrqy",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_dismissed",
+    "timestamp": "2026-02-25T00:37:05.448Z",
+    "atStep": 8,
+    "answers": {
+      "experience": "returning",
+      "group": "couple",
+      "duration": "medium",
+      "travel_date": "no_date",
+      "budget": "balanced",
+      "visa": "yes",
+      "priority": "overwhelm",
+      "perfect_trip": "schedule",
+      "source": "google"
+    },
+    "skipped": [],
+    "sessionId": "s_1771271856552_i1jjrqy",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_started",
+    "timestamp": "2026-02-25T01:24:24.830Z",
+    "sessionId": "s_1771271856552_i1jjrqy",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T01:24:28.916Z",
+    "questionId": "experience",
+    "optionId": "returning",
+    "sessionId": "s_1771271856552_i1jjrqy",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T01:24:35.557Z",
+    "questionId": "group",
+    "optionId": "couple",
+    "sessionId": "s_1771271856552_i1jjrqy",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T01:24:38.473Z",
+    "questionId": "duration",
+    "optionId": "medium",
+    "sessionId": "s_1771271856552_i1jjrqy",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T01:24:45.290Z",
+    "questionId": "travel_date",
+    "optionId": "this_year",
+    "sessionId": "s_1771271856552_i1jjrqy",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T01:24:49.413Z",
+    "questionId": "budget",
+    "optionId": "balanced",
+    "sessionId": "s_1771271856552_i1jjrqy",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T01:26:06.343Z",
+    "questionId": "experience",
+    "optionId": "returning",
+    "sessionId": "s_1771271856552_i1jjrqy",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T01:34:59.226Z",
+    "questionId": "group",
+    "optionId": "couple",
+    "sessionId": "s_1771271856552_i1jjrqy",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T01:35:07.253Z",
+    "questionId": "duration",
+    "optionId": "medium",
+    "sessionId": "s_1771271856552_i1jjrqy",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T01:36:02.645Z",
+    "questionId": "travel_date",
+    "optionId": "this_year",
+    "sessionId": "s_1771271856552_i1jjrqy",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T01:38:57.713Z",
+    "questionId": "group",
+    "optionId": "couple",
+    "sessionId": "s_1771271856552_i1jjrqy",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T01:39:01.717Z",
+    "questionId": "duration",
+    "optionId": "medium",
+    "sessionId": "s_1771271856552_i1jjrqy",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T01:41:15.183Z",
+    "questionId": "duration",
+    "optionId": "medium",
+    "sessionId": "s_1771271856552_i1jjrqy",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T01:41:20.556Z",
+    "questionId": "travel_date",
+    "optionId": "this_year",
+    "sessionId": "s_1771271856552_i1jjrqy",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T01:45:15.518Z",
+    "questionId": "budget",
+    "optionId": "balanced",
+    "sessionId": "s_1771271856552_i1jjrqy",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T01:46:57.106Z",
+    "questionId": "visa",
+    "optionId": "in_process",
+    "sessionId": "s_1771271856552_i1jjrqy",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_section_viewed",
+    "timestamp": "2026-02-25T01:47:47.927Z",
+    "sessionId": "s_1771974777402_ja3s8ng",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T01:56:44.702Z",
+    "questionId": "priority",
+    "optionId": "overwhelm",
+    "sessionId": "s_1771271856552_i1jjrqy",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T02:00:39.668Z",
+    "questionId": "priority",
+    "optionId": "overwhelm",
+    "sessionId": "s_1771271856552_i1jjrqy",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T02:01:11.587Z",
+    "questionId": "perfect_trip",
+    "optionId": "schedule",
+    "sessionId": "s_1771271856552_i1jjrqy",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_section_viewed",
+    "timestamp": "2026-02-25T02:01:47.573Z",
+    "sessionId": "s_1771974777402_ja3s8ng",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_section_viewed",
+    "timestamp": "2026-02-25T02:02:17.206Z",
+    "sessionId": "s_1771974777402_ja3s8ng",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_section_viewed",
+    "timestamp": "2026-02-25T15:25:07.665Z",
+    "sessionId": "s_1771974777402_ja3s8ng",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_section_viewed",
+    "timestamp": "2026-02-25T15:31:39.313Z",
+    "sessionId": "s_1771965455715_st0p3he",
+    "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 26_3_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/145.0.7632.108 Mobile/15E148 Safari/604.1",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_section_viewed",
+    "timestamp": "2026-02-25T16:34:28.455Z",
+    "sessionId": "s_1771974777402_ja3s8ng",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_started",
+    "timestamp": "2026-02-25T16:34:30.428Z",
+    "sessionId": "s_1771974777402_ja3s8ng",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T16:34:34.645Z",
+    "questionId": "experience",
+    "optionId": "expert",
+    "sessionId": "s_1771974777402_ja3s8ng",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T16:34:42.728Z",
+    "questionId": "group",
+    "optionId": "family_no_kids",
+    "sessionId": "s_1771974777402_ja3s8ng",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T16:34:49.177Z",
+    "questionId": "duration",
+    "optionId": "long",
+    "sessionId": "s_1771974777402_ja3s8ng",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T16:34:59.911Z",
+    "questionId": "travel_date",
+    "optionId": "no_date",
+    "sessionId": "s_1771974777402_ja3s8ng",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T16:35:07.727Z",
+    "questionId": "budget",
+    "optionId": "flexible",
+    "sessionId": "s_1771974777402_ja3s8ng",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T16:35:13.495Z",
+    "questionId": "visa",
+    "optionId": "no",
+    "sessionId": "s_1771974777402_ja3s8ng",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T16:35:25.044Z",
+    "questionId": "priority",
+    "optionId": "kids",
+    "sessionId": "s_1771974777402_ja3s8ng",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T16:35:34.511Z",
+    "questionId": "perfect_trip",
+    "optionId": "logistics",
+    "sessionId": "s_1771974777402_ja3s8ng",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T16:35:38.277Z",
+    "questionId": "source",
+    "optionId": "other",
+    "sessionId": "s_1771974777402_ja3s8ng",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_section_viewed",
+    "timestamp": "2026-02-25T16:42:53.048Z",
+    "sessionId": "s_1771974777402_ja3s8ng",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_started",
+    "timestamp": "2026-02-25T16:42:55.551Z",
+    "sessionId": "s_1771974777402_ja3s8ng",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T16:42:57.551Z",
+    "questionId": "experience",
+    "optionId": "expert",
+    "sessionId": "s_1771974777402_ja3s8ng",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T16:43:07.167Z",
+    "questionId": "group",
+    "optionId": "friends",
+    "sessionId": "s_1771974777402_ja3s8ng",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T16:43:10.083Z",
+    "questionId": "duration",
+    "optionId": "long",
+    "sessionId": "s_1771974777402_ja3s8ng",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T16:43:14.084Z",
+    "questionId": "travel_date",
+    "optionId": "this_year",
+    "sessionId": "s_1771974777402_ja3s8ng",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T16:43:19.134Z",
+    "questionId": "budget",
+    "optionId": "flexible",
+    "sessionId": "s_1771974777402_ja3s8ng",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T16:43:22.033Z",
+    "questionId": "visa",
+    "optionId": "no",
+    "sessionId": "s_1771974777402_ja3s8ng",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_section_viewed",
+    "timestamp": "2026-02-25T16:57:10.004Z",
+    "sessionId": "s_1771974777402_ja3s8ng",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_started",
+    "timestamp": "2026-02-25T16:57:16.730Z",
+    "sessionId": "s_1771974777402_ja3s8ng",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T16:57:17.930Z",
+    "questionId": "experience",
+    "optionId": "expert",
+    "sessionId": "s_1771974777402_ja3s8ng",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T16:57:27.413Z",
+    "questionId": "group",
+    "optionId": "friends",
+    "sessionId": "s_1771974777402_ja3s8ng",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T16:57:30.479Z",
+    "questionId": "duration",
+    "optionId": "long",
+    "sessionId": "s_1771974777402_ja3s8ng",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T16:57:35.512Z",
+    "questionId": "travel_date",
+    "optionId": "this_year",
+    "sessionId": "s_1771974777402_ja3s8ng",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T16:57:39.613Z",
+    "questionId": "budget",
+    "optionId": "flexible",
+    "sessionId": "s_1771974777402_ja3s8ng",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T16:57:42.479Z",
+    "questionId": "visa",
+    "optionId": "no",
+    "sessionId": "s_1771974777402_ja3s8ng",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_section_viewed",
+    "timestamp": "2026-02-25T17:36:23.284Z",
+    "sessionId": "s_1771974777402_ja3s8ng",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_started",
+    "timestamp": "2026-02-25T17:36:25.201Z",
+    "sessionId": "s_1771974777402_ja3s8ng",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T17:36:26.468Z",
+    "questionId": "experience",
+    "optionId": "expert",
+    "sessionId": "s_1771974777402_ja3s8ng",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T17:36:30.618Z",
+    "questionId": "group",
+    "optionId": "friends",
+    "sessionId": "s_1771974777402_ja3s8ng",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T17:36:40.668Z",
+    "questionId": "duration",
+    "optionId": "long",
+    "sessionId": "s_1771974777402_ja3s8ng",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T17:36:43.934Z",
+    "questionId": "travel_date",
+    "optionId": "no_date",
+    "sessionId": "s_1771974777402_ja3s8ng",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T17:36:47.000Z",
+    "questionId": "budget",
+    "optionId": "flexible",
+    "sessionId": "s_1771974777402_ja3s8ng",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T17:36:49.634Z",
+    "questionId": "visa",
+    "optionId": "no",
+    "sessionId": "s_1771974777402_ja3s8ng",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_skip",
+    "timestamp": "2026-02-25T17:37:04.817Z",
+    "questionId": "priority",
+    "sessionId": "s_1771974777402_ja3s8ng",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_skip",
+    "timestamp": "2026-02-25T17:37:07.368Z",
+    "questionId": "perfect_trip",
+    "sessionId": "s_1771974777402_ja3s8ng",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_skip",
+    "timestamp": "2026-02-25T17:37:09.684Z",
+    "questionId": "source",
+    "sessionId": "s_1771974777402_ja3s8ng",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_section_viewed",
+    "timestamp": "2026-02-25T17:42:46.465Z",
+    "sessionId": "s_1771974777402_ja3s8ng",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_started",
+    "timestamp": "2026-02-25T17:42:48.033Z",
+    "sessionId": "s_1771974777402_ja3s8ng",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T17:42:49.316Z",
+    "questionId": "experience",
+    "optionId": "expert",
+    "sessionId": "s_1771974777402_ja3s8ng",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T17:42:52.183Z",
+    "questionId": "group",
+    "optionId": "friends",
+    "sessionId": "s_1771974777402_ja3s8ng",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T17:42:54.916Z",
+    "questionId": "duration",
+    "optionId": "long",
+    "sessionId": "s_1771974777402_ja3s8ng",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T17:42:57.900Z",
+    "questionId": "travel_date",
+    "optionId": "this_year",
+    "sessionId": "s_1771974777402_ja3s8ng",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T17:43:01.033Z",
+    "questionId": "budget",
+    "optionId": "flexible",
+    "sessionId": "s_1771974777402_ja3s8ng",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T17:43:03.799Z",
+    "questionId": "visa",
+    "optionId": "no",
+    "sessionId": "s_1771974777402_ja3s8ng",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T17:43:19.266Z",
+    "questionId": "priority",
+    "optionId": "overwhelm,workaround,events",
+    "sessionId": "s_1771974777402_ja3s8ng",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T17:43:23.866Z",
+    "questionId": "perfect_trip",
+    "optionId": "support",
+    "sessionId": "s_1771974777402_ja3s8ng",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T17:43:24.499Z",
+    "questionId": "perfect_trip",
+    "optionId": "delegate",
+    "sessionId": "s_1771974777402_ja3s8ng",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_section_viewed",
+    "timestamp": "2026-02-25T17:46:37.590Z",
+    "sessionId": "s_1771974777402_ja3s8ng",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_started",
+    "timestamp": "2026-02-25T17:46:41.448Z",
+    "sessionId": "s_1771974777402_ja3s8ng",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T17:46:44.815Z",
+    "questionId": "experience",
+    "optionId": "expert",
+    "sessionId": "s_1771974777402_ja3s8ng",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T17:46:47.464Z",
+    "questionId": "group",
+    "optionId": "friends",
+    "sessionId": "s_1771974777402_ja3s8ng",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T17:46:49.849Z",
+    "questionId": "duration",
+    "optionId": "long",
+    "sessionId": "s_1771974777402_ja3s8ng",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T17:46:52.764Z",
+    "questionId": "travel_date",
+    "optionId": "no_date",
+    "sessionId": "s_1771974777402_ja3s8ng",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T17:46:55.317Z",
+    "questionId": "budget",
+    "optionId": "flexible",
+    "sessionId": "s_1771974777402_ja3s8ng",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T17:46:57.882Z",
+    "questionId": "visa",
+    "optionId": "no",
+    "sessionId": "s_1771974777402_ja3s8ng",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T17:47:02.615Z",
+    "questionId": "priority",
+    "optionId": "overwhelm,workaround",
+    "sessionId": "s_1771974777402_ja3s8ng",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T17:47:04.649Z",
+    "questionId": "perfect_trip",
+    "optionId": "support",
+    "sessionId": "s_1771974777402_ja3s8ng",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T17:47:07.565Z",
+    "questionId": "source",
+    "optionId": "other",
+    "sessionId": "s_1771974777402_ja3s8ng",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_email_submitted",
+    "timestamp": "2026-02-25T17:47:14.948Z",
+    "answers": {
+      "experience": "expert",
+      "group": "friends",
+      "duration": "long",
+      "travel_date": "no_date",
+      "budget": "flexible",
+      "visa": "no",
+      "priority": "overwhelm,workaround",
+      "perfect_trip": "support",
+      "source": "other"
+    },
+    "sessionId": "s_1771974777402_ja3s8ng",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_lead_captured",
+    "timestamp": "2026-02-25T17:47:15.549Z",
+    "email": "livramentojavi@gmail.com",
+    "answers": {
+      "experience": "expert",
+      "group": "friends",
+      "duration": "long",
+      "travel_date": "no_date",
+      "budget": "flexible",
+      "visa": "no",
+      "priority": "overwhelm,workaround",
+      "perfect_trip": "support",
+      "source": "other"
+    },
+    "skipped": [],
+    "sessionId": "s_1771974777402_ja3s8ng",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_dismissed",
+    "timestamp": "2026-02-25T17:47:24.698Z",
+    "atStep": 8,
+    "answers": {
+      "experience": "expert",
+      "group": "friends",
+      "duration": "long",
+      "travel_date": "no_date",
+      "budget": "flexible",
+      "visa": "no",
+      "priority": "overwhelm,workaround",
+      "perfect_trip": "support",
+      "source": "other"
+    },
+    "skipped": [],
+    "sessionId": "s_1771974777402_ja3s8ng",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
   }
 ]
