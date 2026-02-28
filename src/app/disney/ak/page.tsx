@@ -1,4 +1,5 @@
 "use client";
+import { adaptParkItems } from '@/lib/parkItemAdapter';
 
 import React from 'react';
 import ParkPageLayout from '@/components/parks/ParkPageLayout';
@@ -37,7 +38,7 @@ export default function AnimalKingdomPage() {
         defaultCategory: 'attractions',
 
         categories: {
-          attractions: { data: AK_ATTRACTIONS },
+          attractions: { data: adaptParkItems(AK_ATTRACTIONS, 'ak', 'disney-world') },
           dining: { data: AK_DINING },
           shows: { data: AK_SHOWS },
           characters: { data: AK_CHARACTERS },

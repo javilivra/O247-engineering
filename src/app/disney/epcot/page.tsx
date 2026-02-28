@@ -1,4 +1,5 @@
 "use client";
+import { adaptParkItems } from '@/lib/parkItemAdapter';
 
 import React from 'react';
 import ParkPageLayout from '@/components/parks/ParkPageLayout';
@@ -37,7 +38,7 @@ export default function EpcotPage() {
         defaultCategory: 'attractions',
 
         categories: {
-          attractions: { data: EPCOT_ATTRACTIONS },
+          attractions: { data: adaptParkItems(EPCOT_ATTRACTIONS, 'epcot', 'disney-world') },
           dining: { data: EPCOT_DINING },
           shows: { data: EPCOT_SHOWS },
           characters: { data: EPCOT_CHARACTERS },

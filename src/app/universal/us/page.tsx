@@ -1,4 +1,5 @@
 "use client";
+import { adaptParkItems } from '@/lib/parkItemAdapter';
 import React from 'react';
 import ParkPageLayout from '@/components/parks/ParkPageLayout';
 import { US_ATTRACTIONS, US_DINING, US_SHOWS, US_CHARACTERS } from '@/data/us-data';
@@ -32,7 +33,7 @@ export default function UniversalStudiosPage() {
         ],
         defaultCategory: 'attractions',
         categories: {
-          attractions: { data: US_ATTRACTIONS },
+          attractions: { data: adaptParkItems(US_ATTRACTIONS, 'us', 'universal-orlando') },
           dining: { data: US_DINING },
           shows: { data: US_SHOWS },
           characters: { data: US_CHARACTERS },

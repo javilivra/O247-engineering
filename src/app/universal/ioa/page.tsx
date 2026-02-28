@@ -1,4 +1,5 @@
 "use client";
+import { adaptParkItems } from '@/lib/parkItemAdapter';
 import React from 'react';
 import ParkPageLayout from '@/components/parks/ParkPageLayout';
 import { IOA_ATTRACTIONS, IOA_DINING, IOA_SHOWS, IOA_CHARACTERS } from '@/data/ioa-data';
@@ -32,7 +33,7 @@ export default function IslandsOfAdventurePage() {
         ],
         defaultCategory: 'attractions',
         categories: {
-          attractions: { data: IOA_ATTRACTIONS },
+          attractions: { data: adaptParkItems(IOA_ATTRACTIONS, 'ioa', 'universal-orlando') },
           dining: { data: IOA_DINING },
           shows: { data: IOA_SHOWS },
           characters: { data: IOA_CHARACTERS },

@@ -109,7 +109,6 @@ export const POV_DATA: Record<string, string> = {
   'us-woody-roller':        '',
 
   // ── IOA adicionales ────────────────────────────────────────
-  'ioa-jurassic-river':     '',
   'ioa-jurassic-discovery': '',
   'ioa-storm-force':        '',
   'ioa-doctor-doom':        '',

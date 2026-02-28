@@ -74,6 +74,12 @@ export function adaptParkItem(
       backNeckIssues: item.vibes?.includes('coaster') ?? false,
     },
 
+    description: item.description ?? '',
+    lockers: {
+      required: false,
+      location: "Antes de la fila",
+      cost: "Gratis",
+    },
     photoPolicy: {
       camerasAllowed: true,
       phonesAllowed: true,

@@ -1,4 +1,5 @@
 "use client";
+import { adaptParkItems } from '@/lib/parkItemAdapter';
 import React from 'react';
 import ParkPageLayout from '@/components/parks/ParkPageLayout';
 import { VOLCANO_ATTRACTIONS, VOLCANO_DINING, VOLCANO_SHOWS, VOLCANO_CHARACTERS } from '@/data/volcano-data';
@@ -32,7 +33,7 @@ export default function VolcanoBayPage() {
         ],
         defaultCategory: 'attractions',
         categories: {
-          attractions: { data: VOLCANO_ATTRACTIONS },
+          attractions: { data: adaptParkItems(VOLCANO_ATTRACTIONS, 'volcano', 'universal-orlando') },
           dining: { data: VOLCANO_DINING },
           shows: { data: VOLCANO_SHOWS },
           characters: { data: VOLCANO_CHARACTERS },

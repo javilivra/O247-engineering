@@ -1,4 +1,5 @@
 "use client";
+import { adaptParkItems } from '@/lib/parkItemAdapter';
 import React from 'react';
 import ParkPageLayout from '@/components/parks/ParkPageLayout';
 import { EPIC_ATTRACTIONS, EPIC_DINING, EPIC_SHOWS, EPIC_CHARACTERS } from '@/data/epic-data';
@@ -32,7 +33,7 @@ export default function EpicUniversePage() {
         ],
         defaultCategory: 'attractions',
         categories: {
-          attractions: { data: EPIC_ATTRACTIONS },
+          attractions: { data: adaptParkItems(EPIC_ATTRACTIONS, 'epic', 'universal-orlando') },
           dining: { data: EPIC_DINING },
           shows: { data: EPIC_SHOWS },
           characters: { data: EPIC_CHARACTERS },

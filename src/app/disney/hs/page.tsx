@@ -1,4 +1,5 @@
 "use client";
+import { adaptParkItems } from '@/lib/parkItemAdapter';
 
 import React from 'react';
 import ParkPageLayout from '@/components/parks/ParkPageLayout';
@@ -37,7 +38,7 @@ export default function HollywoodStudiosPage() {
         defaultCategory: 'attractions',
 
         categories: {
-          attractions: { data: HS_ATTRACTIONS },
+          attractions: { data: adaptParkItems(HS_ATTRACTIONS, 'hs', 'disney-world') },
           dining: { data: HS_DINING },
           shows: { data: HS_SHOWS },
           characters: { data: HS_CHARACTERS },
