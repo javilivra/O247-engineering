@@ -37,7 +37,7 @@ const universalData: ParkData[] = [
     weatherType: "cloud",
   },
   {
-    id: "usf",
+    id: "us",
     name: "Universal Studios",
     slogan: "Salta a la pantalla. Diagon Alley, Minions y la acción del cine clásico y moderno.",
     image: "/images/universal_images/Universal_Studios_Entrance.webp",
@@ -122,6 +122,7 @@ export default function UniversalParksPage() {
                   data={park}
                   isExpanded={isExpanded}
                   onClick={() => handleCardClick(park.id)}
+                  route={`/universal/${park.id}`}
                 />
               </motion.div>
             );

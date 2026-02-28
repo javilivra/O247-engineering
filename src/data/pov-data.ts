@@ -62,4 +62,39 @@ export const POV_DATA: Record<string, string> = {
   'ep-figment':               '',
   'ep-land':                  '',
 
+
+  // ── UNIVERSAL STUDIOS FLORIDA ──────────────────────────────
+  'us-minion':            '',
+  'us-hollywood':         '',
+  'us-transformers':      '',
+  'us-simpsons':          '',
+  'us-fast-furious':      '',
+  'us-mummy':             '',
+  'us-bourne':            '',
+  'us-diagon':            '',
+  'us-hogwarts-express':  '',
+
+  // ── ISLANDS OF ADVENTURE ───────────────────────────────────
+  'ioa-hagrid':           '',
+  'ioa-velocicoaster':    '',
+  'ioa-forbidden-journey':'',
+  'ioa-hulk':             '',
+  'ioa-spiderman':        '',
+  'ioa-jurassic-river':   '',
+  'ioa-pteranodon':       '',
+  'ioa-dragon-challenge': '',
+  'ioa-popeye':           '',
+  'ioa-cat-in-hat':       '',
+
+  // ── EPIC UNIVERSE ──────────────────────────────────────────
+  'epic-mario':           '',
+  'epic-yoshi':           '',
+  'epic-ministry':        '',
+  'epic-monsters':        '',
+  'epic-starfall':        '',
+
+  // ── VOLCANO BAY ────────────────────────────────────────────
+  'vb-krakatau':          '',
+  'vb-honu':              '',
+  'vb-kala':              '',
 };

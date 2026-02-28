@@ -1,17 +1,17 @@
 import { notFound } from 'next/navigation';
-import { MK_ATTRACTIONS } from '@/data/mk-attractions-data';
-import { HS_ATTRACTIONS } from '@/data/hs-data';
-import { AK_ATTRACTIONS } from '@/data/ak-data';
-import { EPCOT_ATTRACTIONS } from '@/data/epcot-data';
+import { US_ATTRACTIONS } from '@/data/us-data';
+import { IOA_ATTRACTIONS } from '@/data/ioa-data';
+import { EPIC_ATTRACTIONS } from '@/data/epic-data';
+import { VOLCANO_ATTRACTIONS } from '@/data/volcano-data';
 import { adaptParkItems } from '@/lib/parkItemAdapter';
 import type { Attraction } from '@/data/types';
-import AttractionPageClient from './AttractionPageClient';
+import AttractionPageClient from '@/app/disney/[parks]/[slug]/AttractionPageClient';
 
 const ALL_ATTRACTIONS: Attraction[] = [
-  ...MK_ATTRACTIONS,
-  ...adaptParkItems(HS_ATTRACTIONS, 'hs', 'disney-world'),
-  ...adaptParkItems(AK_ATTRACTIONS, 'ak', 'disney-world'),
-  ...adaptParkItems(EPCOT_ATTRACTIONS, 'epcot', 'disney-world'),
+  ...adaptParkItems(US_ATTRACTIONS, 'us', 'universal-orlando'),
+  ...adaptParkItems(IOA_ATTRACTIONS, 'ioa', 'universal-orlando'),
+  ...adaptParkItems(EPIC_ATTRACTIONS, 'epic', 'universal-orlando'),
+  ...adaptParkItems(VOLCANO_ATTRACTIONS, 'volcano', 'universal-orlando'),
 ];
 
 export async function generateStaticParams() {
@@ -21,7 +21,7 @@ export async function generateStaticParams() {
   }));
 }
 
-export default async function AttractionPage({
+export default async function UniversalAttractionPage({
   params,
 }: {
   params: Promise<{ parks: string; slug: string }>;
