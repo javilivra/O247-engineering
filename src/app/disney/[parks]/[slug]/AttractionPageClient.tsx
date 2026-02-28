@@ -751,7 +751,7 @@ export default function AttractionPageClient({ attraction }: { attraction: Attra
           >
             {povPlaying ? (
               <iframe
-                src={`https://www.youtube.com/embed/${a.pov.videoId}?autoplay=1&rel=0&modestbranding=1`}
+                src={`https://www.youtube-nocookie.com/embed/${a.pov.videoId}?autoplay=1&rel=0&modestbranding=1`}
                 title={name}
                 style={{ position: "absolute", inset: 0, width: "100%", height: "100%", border: "none" }}
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

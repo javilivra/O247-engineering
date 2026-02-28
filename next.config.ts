@@ -70,7 +70,7 @@ const nextConfig: NextConfig = {
               // Actualizado para incluir Unsplash
               "img-src 'self' data: blob: https://img.youtube.com https://cdn1.parksmedia.wdpromedia.com https://images.unsplash.com",
               "connect-src 'self' https://api.themeparks.wiki https://queue-times.com https://api.open-meteo.com https://api.openweathermap.org",
-              "frame-src 'self'",
+              "frame-src 'self' https://www.youtube-nocookie.com https://www.youtube.com",
               "object-src 'none'",
               "base-uri 'self'",
               "form-action 'self'",
