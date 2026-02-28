@@ -1,4 +1,4 @@
-// @STATUS: REFACTORED V7.1 -- Fix navbar text color on attraction pages
+// @STATUS: REFACTORED V7.2 -- Update Orlando navigation
 "use client";
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
@@ -53,44 +53,44 @@ interface NavSection {
 
 const NAV_ITEMS: NavItem[] = [
   {
-    id: 'planning',
+    id: 'orlando',
     label: 'Orlando',
-    spotlight: { tag: 'HERRAMIENTA', title: 'Calculadora de Presupuesto', desc: 'Estima el costo real de tu viaje en 2 minutos.' },
+    spotlight: { tag: 'PLANIFICACIÓN Y COSTOS', title: 'Calculadora de presupuesto', desc: 'Estimá el costo real de tu viaje según duración, alojamiento y tipo de tickets.', href: '/orlando/presupuesto' },
     sections: [
       {
-        title: 'ESTRATEGIA TEMPORAL',
+        title: 'GUÍA DE CIUDAD',
         links: [
-          { href: '/planning/dates', label: 'El Algoritmo de Fechas' },
-          { href: '/planning/duration', label: 'Calculadora de Duración' },
-          { href: '/planning/budget', label: 'Presupuesto y Costos' },
-          { href: '/planning/weather', label: 'Clima y Multitudes' },
+          { href: '/orlando', label: 'Guía de Ciudad', highlight: true },
+          { href: '/orlando/cuando-viajar', label: 'Cuándo Viajar' },
+          { href: '/orlando/donde-dormir', label: 'Dónde Dormir' },
+          { href: '/orlando/movilidad', label: 'Cómo Moverte' },
         ],
       },
       {
-        title: 'INFRAESTRUCTURA',
+        title: 'PLANIFICACIÓN',
         links: [
-          { href: '/planning/hotels', label: 'Matriz de Alojamiento' },
-          { href: '/planning/transport', label: 'Auto vs. Uber' },
-          { href: '/planning/airport', label: 'Traslados Aeropuerto (MCO)' },
-          { href: '/planning/brightline', label: 'Conexión Miami (Brightline)' },
+          { href: '/orlando/duracion', label: 'Duración del Viaje' },
+          { href: '/orlando/presupuesto', label: 'Presupuesto y Costos' },
+          { href: '/orlando/clima', label: 'Clima y Multitudes' },
+          { href: '/orlando/ninos', label: 'Viajar con Niños' },
         ],
       },
       {
-        title: 'ACCESO TÁCTICO',
+        title: 'TICKETS Y MAPAS',
         links: [
-          { href: '/planning/tickets-guide', label: 'Ingeniería de Tickets' },
-          { href: '/disney/tickets', label: 'Tickets Disney: Base vs. Hopper' },
-          { href: '/universal/tickets', label: 'Tickets Universal: Park-to-Park' },
-          { href: '/planning/map', label: 'Mapa General de Parques' },
+          { href: '/orlando/tickets', label: 'Guía de Tickets' },
+          { href: '/disney/tickets', label: 'Comprar Tickets Disney'},
+          { href: '/universal/tickets', label: 'Comprar Tickets Universal'},
+          { href: '/orlando/mapa', label: 'Mapa Interactivo' },
         ],
       },
       {
-        title: 'FACTOR HUMANO',
+        title: 'EXTRAS',
         links: [
-          { href: '/planning/kids', label: 'Protocolo Infantil' },
-          { href: '/planning/rider-switch', label: 'Rider Switch & Strollers' },
-          { href: '/planning/dining', label: 'Gastronomía: Tipos de Comida' },
-          { href: '/shoppinear', label: 'Compras: Outlets & Malls' },
+          { href: '/orlando/gastronomia', label: 'Gastronomía' },
+          { href: '/shoppinear', label: 'Guía de Compras'},
+          { href: '/orlando/rider-switch', label: 'Rider Switch y Single Rider' },
+          { href: '/orlando/extras', label: 'Más Allá de los Parques' },
         ],
       },
     ],
@@ -98,7 +98,7 @@ const NAV_ITEMS: NavItem[] = [
   {
     id: 'disney',
     label: 'Disney World',
-    spotlight: { tag: 'DESTACADO', title: 'Guía Lightning Lane', desc: 'Domina el sistema de filas rápidas y evita esperas.' },
+    spotlight: { tag: 'DESTACADO', title: 'Guía Lightning Lane', desc: 'Domina el sistema de filas rápidas y evita esperas.', href: '/disney/tickets#ll' },
     sections: [
       {
         title: 'PARQUES TEMATICOS',
@@ -131,7 +131,7 @@ const NAV_ITEMS: NavItem[] = [
   {
     id: 'universal',
     label: 'Universal',
-    spotlight: { tag: 'NUEVO', title: 'Epic Universe 2025', desc: 'Todo sobre el nuevo parque temático más grande.' },
+    spotlight: { tag: 'NUEVO', title: 'Epic Universe 2025', desc: 'Todo sobre el nuevo parque temático más grande.', href: '/universal/epic' },
     sections: [
       {
         title: 'PARQUES TEMATICOS',
@@ -155,7 +155,7 @@ const NAV_ITEMS: NavItem[] = [
   {
     id: 'shoppinear',
     label: 'Shoppinear',
-    spotlight: { tag: 'UTIL', title: 'Calculadora de Compras', desc: 'Calcula si realmente conviene comprar algo en Orlando vs. tu pais.' },
+    spotlight: { tag: 'UTIL', title: 'Calculadora de Compras', desc: 'Calcula si realmente conviene comprar algo en Orlando vs. tu pais.', href: '/shoppinear#calculadora' },
     sections: [
       {
         title: 'PROTOCOLO DE COMPRAS',
@@ -198,10 +198,6 @@ export default function Navbar() {
   const navRef = useRef<HTMLElement>(null);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
 
-  // ── Rutas con hero oscuro (navbar transparente con texto blanco) ──
-  // Incluye: home, y cualquier ruta de atracción /disney/[park]/[slug]
-  // o /universal/[park]/[slug]. Se detecta por profundidad de segmentos.
-  // ── Modo navbar: context + fallback por ruta para home y atracciones ──
   const { mode: navbarMode } = useNavbar();
   const isHome = pathname === '/';
   const isAttractionPage = (() => {
@@ -209,8 +205,6 @@ export default function Navbar() {
     return segments.length >= 3 && (segments[0] === 'disney' || segments[0] === 'universal');
   })();
   const isTransparentHero = navbarMode === 'dark' || isHome || isAttractionPage;
-
-
 
   useEffect(() => {
     setMobileOpen(false);
@@ -255,7 +249,7 @@ export default function Navbar() {
 
   const isDesktopMenuOpen = !!desktopMenu;
 
-  // ── Logo animation ──
+  // Logo animation state and logic
   const [logoExpanded, setLogoExpanded] = useState(false);
   const [logoCollapsing, setLogoCollapsing] = useState(false);
   const periodicRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -280,11 +274,9 @@ export default function Navbar() {
     }, 90000);
   }, [expandLogo, collapseLogo]);
 
-  // Expandir al montar — primer render
   useEffect(() => {
     const t = setTimeout(() => {
       expandLogo();
-      // Colapsar después de 2.5s si hay scroll
       setTimeout(() => {
         if (window.scrollY > 20) collapseLogo();
       }, 2500);
@@ -294,9 +286,8 @@ export default function Navbar() {
       clearTimeout(t);
       if (periodicRef.current) clearTimeout(periodicRef.current);
     };
-  }, []);
+  }, [expandLogo, collapseLogo, schedulePeriodic]);
 
-  // ── Scroll: isScrolled — listener estable, sin dependencias que cambien
   useEffect(() => {
     let ticking = false;
     const onScroll = () => {
@@ -312,7 +303,6 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // ── Logo collapse/expand reactivo al scroll — usa ref para evitar stale closure
   const logoExpandedRef = useRef(logoExpanded);
   useEffect(() => { logoExpandedRef.current = logoExpanded; }, [logoExpanded]);
 
@@ -333,12 +323,7 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll);
   }, [expandLogo, collapseLogo]);
 
-  // ── Lógica de color del texto ──
-  // En páginas con hero: blanco cuando no scrolleó, gunmetal cuando scrolleó
-  // En páginas sin hero: siempre gunmetal
-  const useDarkText = !isDesktopMenuOpen && (
-    (isTransparentHero && isScrolled) || !isTransparentHero
-  );
+  const useDarkText = !isDesktopMenuOpen && ((isTransparentHero && isScrolled) || !isTransparentHero);
 
   const navBg = isDesktopMenuOpen
     ? 'bg-transparent border-transparent'
@@ -348,7 +333,6 @@ export default function Navbar() {
         ? 'bg-transparent border-transparent'
         : 'bg-bone/95 backdrop-blur-sm border-b border-gunmetal/8';
 
-  const textClass = useDarkText ? 'text-gunmetal' : 'text-white';
   const logoClass = useDarkText ? 'text-gunmetal' : 'text-white';
 
   const toggleMobileSection = useCallback((id: string) => {
@@ -357,7 +341,6 @@ export default function Navbar() {
 
   return (
     <>
-      {/* BACKDROP MEGA MENU */}
       <AnimatePresence>
         {desktopMenu && (
           <motion.div
@@ -369,33 +352,16 @@ export default function Navbar() {
         )}
       </AnimatePresence>
 
-      {/* HEADER */}
       <header
         ref={navRef}
         className={`fixed top-0 left-0 w-full z-50 transition-all duration-200 ease-out ${navBg}`}
         onMouseLeave={() => setDesktopMenu(null)}
       >
         <div className="max-w-[1400px] mx-auto px-6 md:px-8 h-[72px] md:h-[80px] flex items-center justify-between relative z-50">
-
-          {/* LOGO — animación ORLANDO247 ↔ O247 */}
-          <Link
-            href="/"
-            className="flex items-center group"
-            aria-label="O247 — Ir al inicio"
-            style={{ textDecoration: 'none' }}
-          >
-            <span className={`
-              text-2xl font-bold tracking-tight antialiased font-display
-              transition-colors duration-300
-              flex items-center
-              ${logoClass}
-            `}>
-              {/* O — ancla fija izquierda, nunca se mueve */}
+          <Link href="/" className="flex items-center group" aria-label="O247 — Ir al inicio" style={{ textDecoration: 'none' }}>
+            <span className={`text-2xl font-bold tracking-tight antialiased font-display transition-colors duration-300 flex items-center ${logoClass}`}>
               <span>O</span>
-
-              {/* RLAND — se expande hacia la derecha */}
-              <span
-                style={{
+              <span style={{
                   display: 'block',
                   overflow: 'hidden',
                   whiteSpace: 'nowrap',
@@ -405,67 +371,32 @@ export default function Navbar() {
                   transition: logoCollapsing
                     ? 'max-width 0.6s cubic-bezier(0.4,0,0.2,1), opacity 0.35s ease 0s, letter-spacing 0.5s ease'
                     : 'max-width 1.0s cubic-bezier(0.16,1,0.3,1), opacity 0.7s cubic-bezier(0.16,1,0.3,1) 0.15s, letter-spacing 0.9s cubic-bezier(0.16,1,0.3,1) 0.1s',
-                }}
-              >
+                }}>
                 RLANDO
               </span>
-
-              {/* 247 — sigue a RLAND naturalmente */}
               <span>247</span>
             </span>
           </Link>
 
-          {/* NAV DESKTOP */}
           <nav className="hidden xl:flex items-center gap-1 h-full" aria-label="Navegación principal">
             {NAV_ITEMS.map((item) => (
-              <div
-                key={item.id}
-                className="h-full flex items-center group"
-                onMouseEnter={() => !item.href && setDesktopMenu(item.id)}
-              >
+              <div key={item.id} className="h-full flex items-center group" onMouseEnter={() => !item.href && setDesktopMenu(item.id)}>
                 {item.href ? (
-                  <Link
-                    href={item.href}
-                    className={`px-4 py-2 text-[14px] tracking-wide antialiased font-sans font-medium transition-colors duration-300 relative group
-                      ${pathname === item.href
-                        ? 'text-celeste'
-                        : useDarkText
-                          ? 'text-gunmetal hover:text-sunset'
-                          : 'text-white hover:text-sunset'
-                      }`}
-                  >
+                  <Link href={item.href} className={`px-4 py-2 text-[14px] tracking-wide antialiased font-sans font-medium transition-colors duration-300 relative group ${pathname === item.href ? 'text-celeste' : useDarkText ? 'text-gunmetal hover:text-sunset' : 'text-white hover:text-sunset'}`}>
                     {item.label}
                     {pathname === item.href && (
                       <span className="absolute bottom-0 left-4 right-4 h-[2px] bg-celeste rounded-full" />
                     )}
                   </Link>
                 ) : (
-                  <button
-                    className={`px-4 py-2 flex items-center gap-1.5 text-[14px] tracking-wide outline-none cursor-pointer antialiased font-sans font-medium transition-colors duration-300 ${
-                      desktopMenu === item.id
-                        ? 'text-white font-bold'
-                        : pathname.startsWith(`/${item.id}`)
-                          ? 'text-celeste'
-                          : useDarkText
-                            ? 'text-gunmetal hover:text-sunset'
-                            : 'text-white hover:text-sunset'
-                    }`}
-                    aria-expanded={desktopMenu === item.id}
-                    aria-haspopup="true"
-                  >
+                  <button className={`px-4 py-2 flex items-center gap-1.5 text-[14px] tracking-wide outline-none cursor-pointer antialiased font-sans font-medium transition-colors duration-300 ${desktopMenu === item.id ? 'text-white font-bold' : pathname.startsWith(`/${item.id}`) ? 'text-celeste' : useDarkText ? 'text-gunmetal hover:text-sunset' : 'text-white hover:text-sunset'}`} aria-expanded={desktopMenu === item.id} aria-haspopup="true">
                     <span className="relative">
                       {item.label}
                       {!desktopMenu && pathname.startsWith(`/${item.id}`) && (
                         <span className="absolute bottom-[-4px] left-0 right-0 h-[2px] bg-celeste rounded-full" />
                       )}
                     </span>
-                    <span className={`transition-colors duration-300 ${
-                      desktopMenu === item.id
-                        ? 'text-sunset'
-                        : useDarkText
-                          ? 'text-gunmetal/40 group-hover:text-sunset'
-                          : 'text-white/40 group-hover:text-sunset'
-                    }`}>
+                    <span className={`transition-colors duration-300 ${desktopMenu === item.id ? 'text-sunset' : useDarkText ? 'text-gunmetal/40 group-hover:text-sunset' : 'text-white/40 group-hover:text-sunset'}`}>
                       <IconChevron open={desktopMenu === item.id} />
                     </span>
                   </button>
@@ -474,68 +405,36 @@ export default function Navbar() {
             ))}
           </nav>
 
-          {/* HAMBURGER */}
-          <button
-            className={`xl:hidden p-3 min-w-[48px] min-h-[48px] flex items-center justify-center transition-colors duration-300 ${useDarkText ? 'text-gunmetal' : 'text-white'}`}
-            onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label={mobileOpen ? 'Cerrar menú' : 'Abrir menú'}
-            aria-expanded={mobileOpen}
-            aria-controls="mobile-menu"
-          >
+          <button className={`xl:hidden p-3 min-w-[48px] min-h-[48px] flex items-center justify-center transition-colors duration-300 ${useDarkText ? 'text-gunmetal' : 'text-white'}`} onClick={() => setMobileOpen(!mobileOpen)} aria-label={mobileOpen ? 'Cerrar menú' : 'Abrir menú'} aria-expanded={mobileOpen} aria-controls="mobile-menu">
             {mobileOpen ? <IconClose /> : <IconHamburger />}
           </button>
         </div>
 
-        {/* MEGA MENU DESKTOP */}
         <AnimatePresence>
           {desktopMenu && (() => {
             const item = NAV_ITEMS.find((i) => i.id === desktopMenu);
             if (!item?.sections) return null;
             return (
-              <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-                exit={{ opacity: 0, height: 0 }}
-                transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                className="absolute top-[80px] left-0 w-full hidden xl:block overflow-hidden origin-top z-50"
-                style={{ marginTop: '-8px', paddingTop: '8px' }}
-                onMouseEnter={() => setDesktopMenu(desktopMenu)}
-                onMouseLeave={() => setDesktopMenu(null)}
-              >
+              <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }} className="absolute top-[80px] left-0 w-full hidden xl:block overflow-hidden origin-top z-50" style={{ marginTop: '-8px', paddingTop: '8px' }} onMouseEnter={() => setDesktopMenu(desktopMenu)} onMouseLeave={() => setDesktopMenu(null)}>
                 <div className="max-w-[1400px] mx-auto px-8 pb-16 pt-0">
                   <div className="w-full h-px bg-white/10 mb-10" />
                   <div className="flex gap-12">
                     <div className="flex gap-10 flex-1">
                       {item.sections.map((section) => (
                         <div key={section.title} className="min-w-[180px]">
-                          <div className="mb-5 text-[11px] font-bold tracking-[0.2em] text-white/40 uppercase font-mono">
-                            {section.title}
-                          </div>
+                          <div className="mb-5 text-[11px] font-bold tracking-[0.2em] text-white/40 uppercase font-mono">{section.title}</div>
                           <div className="flex flex-col gap-1">
                             {section.links.map((link) => (
-                              <Link
-                                key={link.href}
-                                href={link.href}
-                                onClick={() => setDesktopMenu(null)}
-                                className="group flex items-center justify-between w-full py-2 pr-4"
-                              >
+                              <Link key={link.href} href={link.href} onClick={() => setDesktopMenu(null)} className="group flex items-center justify-between w-full py-2 pr-4">
                                 <div className="flex items-center gap-2">
-                                  <span className={`text-[14px] font-medium tracking-tight transition-colors duration-200 antialiased font-sans ${
-                                    link.highlight
-                                      ? 'text-sunset drop-shadow-[0_0_8px_rgba(255,112,67,0.4)]'
-                                      : 'text-white/90 group-hover:text-sunset'
-                                  }`}>
+                                  <span className={`text-[14px] font-medium tracking-tight transition-colors duration-200 antialiased font-sans ${link.highlight ? 'text-sunset drop-shadow-[0_0_8px_rgba(255,112,67,0.4)]' : 'text-white/90 group-hover:text-sunset'}`}>
                                     {link.label}
                                   </span>
                                   {link.badge && (
-                                    <span className="px-1.5 py-0.5 bg-sunset text-gunmetal text-[9px] font-bold rounded-sm tracking-wide font-mono">
-                                      {link.badge}
-                                    </span>
+                                    <span className="px-1.5 py-0.5 bg-sunset text-gunmetal text-[9px] font-bold rounded-sm tracking-wide font-mono">{link.badge}</span>
                                   )}
                                 </div>
-                                <span className="text-sunset opacity-0 group-hover:opacity-100 transition-all duration-200 translate-x-[-10px] group-hover:translate-x-0">
-                                  <IconArrow />
-                                </span>
+                                <span className="text-sunset opacity-0 group-hover:opacity-100 transition-all duration-200 translate-x-[-10px] group-hover:translate-x-0"><IconArrow /></span>
                               </Link>
                             ))}
                           </div>
@@ -548,29 +447,15 @@ export default function Navbar() {
                           <span className="text-[10px] font-bold tracking-[0.2em] uppercase font-mono">{item.spotlight.tag}</span>
                         </div>
                         {item.spotlight.href ? (
-                          <Link
-                            href={item.spotlight.href}
-                            onClick={() => setDesktopMenu(null)}
-                            className="group block"
-                          >
-                            <h3 className="text-xl font-bold text-white mb-2 leading-tight font-display tracking-tight group-hover:text-sunset transition-colors duration-200">
-                              {item.spotlight.title}
-                            </h3>
-                            <p className="text-[13px] text-white/60 leading-relaxed font-medium font-sans mb-3">
-                              {item.spotlight.desc}
-                            </p>
-                            <span className="text-[11px] font-bold text-sunset uppercase tracking-widest font-mono flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                              Ver más <IconArrow />
-                            </span>
+                          <Link href={item.spotlight.href} onClick={() => setDesktopMenu(null)} className="group block">
+                            <h3 className="text-xl font-bold text-white mb-2 leading-tight font-display tracking-tight group-hover:text-sunset transition-colors duration-200">{item.spotlight.title}</h3>
+                            <p className="text-[13px] text-white/60 leading-relaxed font-medium font-sans mb-3">{item.spotlight.desc}</p>
+                            <span className="text-[11px] font-bold text-sunset uppercase tracking-widest font-mono flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-200">Ver más <IconArrow /></span>
                           </Link>
                         ) : (
                           <>
-                            <h3 className="text-xl font-bold text-white mb-2 leading-tight font-display tracking-tight">
-                              {item.spotlight.title}
-                            </h3>
-                            <p className="text-[13px] text-white/60 leading-relaxed font-medium font-sans">
-                              {item.spotlight.desc}
-                            </p>
+                            <h3 className="text-xl font-bold text-white mb-2 leading-tight font-display tracking-tight">{item.spotlight.title}</h3>
+                            <p className="text-[13px] text-white/60 leading-relaxed font-medium font-sans">{item.spotlight.desc}</p>
                           </>
                         )}
                       </div>
@@ -583,32 +468,12 @@ export default function Navbar() {
         </AnimatePresence>
       </header>
 
-      {/* MENÚ MOBILE */}
       <AnimatePresence>
         {mobileOpen && (
-          <motion.div
-            id="mobile-menu"
-            ref={mobileMenuRef}
-            role="dialog"
-            aria-modal="true"
-            aria-label="Menú de navegación"
-            initial={{ opacity: 0, x: '100%' }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: '100%' }}
-            transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-            className="fixed inset-0 bg-gunmetal z-[60] flex flex-col overflow-y-auto"
-          >
+          <motion.div id="mobile-menu" ref={mobileMenuRef} role="dialog" aria-modal="true" aria-label="Menú de navegación" initial={{ opacity: 0, x: '100%' }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: '100%' }} transition={{ type: 'spring', damping: 30, stiffness: 300 }} className="fixed inset-0 bg-gunmetal z-[60] flex flex-col overflow-y-auto">
             <div className="flex items-center justify-between px-6 h-[72px] border-b border-white/10 shrink-0">
-              <Link href="/" className="text-2xl font-bold text-white font-display tracking-tight" onClick={() => setMobileOpen(false)}>
-                O247
-              </Link>
-              <button
-                onClick={() => setMobileOpen(false)}
-                className="p-3 min-w-[48px] min-h-[48px] flex items-center justify-center text-white/60 hover:text-white transition-colors"
-                aria-label="Cerrar menú"
-              >
-                <IconClose />
-              </button>
+              <Link href="/" className="text-2xl font-bold text-white font-display tracking-tight" onClick={() => setMobileOpen(false)}>O247</Link>
+              <button onClick={() => setMobileOpen(false)} className="p-3 min-w-[48px] min-h-[48px] flex items-center justify-center text-white/60 hover:text-white transition-colors" aria-label="Cerrar menú"><IconClose /></button>
             </div>
 
             <nav className="flex-1 px-6 pt-6 pb-8" aria-label="Navegación móvil">
@@ -616,17 +481,9 @@ export default function Navbar() {
                 {NAV_ITEMS.map((item) => {
                   if (item.href) {
                     return (
-                      <Link
-                        key={item.id}
-                        href={item.href}
-                        onClick={() => setMobileOpen(false)}
-                        className={`flex items-center justify-between py-4 px-4 font-medium text-base rounded-xl hover:bg-white/5 transition-colors min-h-[48px]
-                          ${pathname === item.href ? 'text-celeste' : 'text-white'}`}
-                      >
+                      <Link key={item.id} href={item.href} onClick={() => setMobileOpen(false)} className={`flex items-center justify-between py-4 px-4 font-medium text-base rounded-xl hover:bg-white/5 transition-colors min-h-[48px] ${pathname === item.href ? 'text-celeste' : 'text-white'}`}>
                         <span className="flex items-center gap-2">
-                          {pathname === item.href && (
-                            <span className="w-1.5 h-1.5 rounded-full bg-celeste shrink-0" />
-                          )}
+                          {pathname === item.href && <span className="w-1.5 h-1.5 rounded-full bg-celeste shrink-0" />}
                           {item.label}
                         </span>
                         <IconArrow />
@@ -636,51 +493,24 @@ export default function Navbar() {
                   const isExpanded = mobileExpanded === item.id;
                   return (
                     <div key={item.id}>
-                      <button
-                        onClick={() => toggleMobileSection(item.id)}
-                        className={`flex items-center justify-between w-full py-4 px-4 font-medium text-base rounded-xl transition-colors min-h-[48px]
-                          ${isExpanded ? 'bg-white/5' : 'hover:bg-white/5'}
-                          ${pathname.startsWith(`/${item.id}`) && !isExpanded ? 'text-celeste' : 'text-white'}`}
-                        aria-expanded={isExpanded}
-                      >
+                      <button onClick={() => toggleMobileSection(item.id)} className={`flex items-center justify-between w-full py-4 px-4 font-medium text-base rounded-xl transition-colors min-h-[48px] ${isExpanded ? 'bg-white/5' : 'hover:bg-white/5'} ${pathname.startsWith(`/${item.id}`) && !isExpanded ? 'text-celeste' : 'text-white'}`} aria-expanded={isExpanded}>
                         <span className="flex items-center gap-2">
-                          {pathname.startsWith(`/${item.id}`) && (
-                            <span className="w-1.5 h-1.5 rounded-full bg-celeste shrink-0" />
-                          )}
+                          {pathname.startsWith(`/${item.id}`) && <span className="w-1.5 h-1.5 rounded-full bg-celeste shrink-0" />}
                           {item.label}
                         </span>
                         <IconChevron open={isExpanded} />
                       </button>
                       <AnimatePresence>
                         {isExpanded && item.sections && (
-                          <motion.div
-                            initial={{ height: 0, opacity: 0 }}
-                            animate={{ height: 'auto', opacity: 1 }}
-                            exit={{ height: 0, opacity: 0 }}
-                            transition={{ duration: 0.25 }}
-                            className="overflow-hidden"
-                          >
+                          <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.25 }} className="overflow-hidden">
                             <div className="pl-4 pr-2 pb-4 pt-2">
                               {item.sections.map((section) => (
                                 <div key={section.title} className="mb-4 last:mb-0">
-                                  <div className="text-[10px] font-bold tracking-[0.2em] text-white/30 uppercase font-mono mb-3 px-4">
-                                    {section.title}
-                                  </div>
+                                  <div className="text-[10px] font-bold tracking-[0.2em] text-white/30 uppercase font-mono mb-3 px-4">{section.title}</div>
                                   {section.links.map((link) => (
-                                    <Link
-                                      key={link.href}
-                                      href={link.href}
-                                      onClick={() => setMobileOpen(false)}
-                                      className="flex items-center gap-3 py-3 px-4 rounded-lg hover:bg-white/5 transition-colors min-h-[44px]"
-                                    >
-                                      <span className={`text-sm font-medium ${link.highlight ? 'text-sunset' : 'text-white/80'}`}>
-                                        {link.label}
-                                      </span>
-                                      {link.badge && (
-                                        <span className="px-1.5 py-0.5 bg-sunset text-gunmetal text-[9px] font-bold rounded-sm tracking-wide font-mono">
-                                          {link.badge}
-                                        </span>
-                                      )}
+                                    <Link key={link.href} href={link.href} onClick={() => setMobileOpen(false)} className="flex items-center gap-3 py-3 px-4 rounded-lg hover:bg-white/5 transition-colors min-h-[44px]">
+                                      <span className={`text-sm font-medium ${link.highlight ? 'text-sunset' : 'text-white/80'}`}>{link.label}</span>
+                                      {link.badge && <span className="px-1.5 py-0.5 bg-sunset text-gunmetal text-[9px] font-bold rounded-sm tracking-wide font-mono">{link.badge}</span>}
                                     </Link>
                                   ))}
                                 </div>

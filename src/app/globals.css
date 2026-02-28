@@ -4,38 +4,25 @@
 
 /* --- CONFIGURACIÓN DE VARIABLES --- */
 :root {
-  /* 1. Definimos la fuente EXACTA como viene del link (MANTENIDO) */
   --font-primary: "Google Sans Flex", sans-serif;
-  
-  /* 2. Tu fuente técnica (MANTENIDO) */
   --font-tech: 'JetBrains Mono', monospace;
-  
-  /* NOTA: He eliminado las variables de color antiguas (--color-surface, etc.)
-     porque ahora las manejamos directamente con Tailwind (bg-bone, text-gunmetal).
-     Esto evita tener dos fuentes de verdad para los colores. */
 }
 
 /* --- CONFIGURACIÓN BASE DEL SITIO --- */
 @layer base {
   body {
-    /* APLICACIÓN DE LA NUEVA PALETA "OASIS TECH" */
     @apply bg-bone text-gunmetal;
-    
-    /* CONFIGURACIÓN TIPOGRÁFICA AVANZADA (MANTENIDO INTACTO) */
     font-family: var(--font-primary);
     font-optical-sizing: auto;
     font-style: normal;
-    /* Configuración base: Ancho estándar (100), sin inclinación, sin grado extra */
     font-variation-settings:
       "slnt" 0,
       "wdth" 100,
       "GRAD" 0,
       "ROND" 0;
-      
     -webkit-font-smoothing: antialiased;
   }
 
-  /* Aseguramos que los títulos usen la fuente display y el color oscuro */
   h1, h2, h3, h4, h5, h6 {
     @apply font-display text-gunmetal;
   }
@@ -43,47 +30,34 @@
 
 
 /* --- UTILIDADES DE INGENIERÍA & MARCA --- */
-
-/* Títulos Hero (MANTENIDO) */
 .font-display {
   font-family: var(--font-primary);
-  font-weight: 600; /* Peso visual fuerte */
-  letter-spacing: -0.03em; /* Tracking negativo elegante */
-  /* Ajuste óptico: Quizás un poco más de 'grade' para impacto */
+  font-weight: 600;
+  letter-spacing: -0.03em;
   font-variation-settings: "opsz" 32, "wdth" 100, "GRAD" 50; 
 }
 
-/* Textos Técnicos (MANTENIDO) */
 .font-tech {
   font-family: var(--font-tech);
   letter-spacing: -0.02em;
 }
 
-/* Estilos O247 (Glass, Glow, etc) */
-
-/* ACTUALIZADO: Glass effect adaptado al fondo Hueso */
 .o247-glass {
-  /* Usamos bg-bone con opacidad y un borde sutil gunmetal */
   @apply bg-bone/80 border-b border-gunmetal/5;
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
 }
 
-/* ACTUALIZADO: Reemplaza al antiguo .text-lime-glow */
 .text-sunset-glow {
   @apply text-sunset;
-  /* Sombra naranja basada en el color sunset (#FF7043) */
   text-shadow: 0 0 25px rgba(255, 112, 67, 0.4);
 }
 
-/* MANTENIDO */
 .mask-gradient {
   mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
   -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
 }
 
-/* --- TRAMA DE INGENIERÍA (MANTENIDO) --- */
-/* Estas tramas oscuras sutiles se verán excelente sobre el fondo hueso */
 .bg-grid-pattern {
   background-size: 40px 40px;
   background-image: linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
@@ -99,7 +73,6 @@
   -webkit-mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
 }
 
-/* Sombras Averi (MANTENIDO) */
 .shadow-averi {
   box-shadow: 
     0 1px 2px -1px rgba(0, 0, 0, 0.05),
@@ -113,38 +86,27 @@
 }
 
 @layer components {
-  /* --- 1. TYPOGRAPHY TOOLS --- */
-  
-  /* Voz Narrativa de Alto Impacto (H1, H2) */
   .type-display {
     @apply font-display font-medium tracking-tighter leading-[1.1] text-gunmetal;
-    /* Ajuste variable para punch visual */
     font-variation-settings: "opsz" 32, "wdth" 100, "GRAD" 50; 
   }
 
-  /* Voz de Lectura Inmersiva (Párrafos) */
   .type-body {
     @apply font-sans text-base font-normal tracking-normal leading-relaxed text-gunmetal/80;
   }
 
-  /* Voz Técnica de Precisión (Datos, Etiquetas) */
   .type-tech {
     @apply font-mono font-medium tracking-wider leading-tight text-gunmetal;
   }
 
-  /* --- 2. PHYSICS & SHAPE TOOLS --- */
-
-  /* Contenedores Estándar (Oasis) */
   .card-oasis {
     @apply bg-white rounded-2xl border border-gunmetal/5 shadow-sm;
   }
 
-  /* Elementos Flotantes (Solo usar sobre mapas/imgs) */
   .glass-panel {
     @apply backdrop-blur-md bg-white/80 border border-white/40 shadow-lg;
   }
   
-  /* Botones Primarios (Acción Solar) */
   .btn-primary {
     @apply bg-sunset text-gunmetal font-medium rounded-full px-6 py-3 
            hover:shadow-[0_0_20px_rgba(255,112,67,0.3)] hover:-translate-y-0.5 
@@ -152,13 +114,10 @@
   }
 }
 
-
-/* SCROLL SUAVE NATIVO */
 html {
   scroll-behavior: smooth;
 }
 
-/* --- LENIS SMOOTH SCROLL CONFIG --- */
 html.lenis, html.lenis body {
   height: auto;
 }
@@ -179,23 +138,16 @@ html.lenis, html.lenis body {
   pointer-events: none;
 }
 
-/* =========================================================================
-   FASE 4: MEJORAS DE ACCESIBILIDAD (WCAG Focus & Utils)
-   ========================================================================= */
-
-/* Anillo de foco visible SOLO para navegación por teclado */
 :focus-visible {
-  outline: 2px solid #FF7043; /* Color Sunset - Alto contraste */
+  outline: 2px solid #FF7043;
   outline-offset: 2px;
 }
 
-/* Asegurar contraste en selección de texto para legibilidad */
 ::selection {
-  background-color: #FF7043; /* Sunset */
-  color: #1a1a1a; /* Gunmetal */
+  background-color: #FF7043;
+  color: #1a1a1a;
 }
 
-/* Utilidad para esconder elementos visualmente pero mantenerlos para lectores de pantalla (Screen Readers) */
 .sr-only {
   position: absolute;
   width: 1px;
@@ -206,4 +158,49 @@ html.lenis, html.lenis body {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border-width: 0;
+}
+
+/* STYLES FROM STITCH EXAMPLE */
+.step-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.step-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.01);
+}
+.glass-pill {
+    background: rgba(247, 247, 245, 0.9); /* Adapted to use bone color */
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(247, 247, 245, 0.5);
+}
+.glass-tag {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+.journey-connector::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #e2e8f0;
+    z-index: 0;
+    transform: translateY(-50%);
+}
+.step-collapsed {
+    opacity: 0.5;
+    max-height: 180px;overflow: hidden;
+    pointer-events: none;
+}
+.step-expanded {
+    opacity: 1;
+    max-height: 1000px;
+    pointer-events: auto;
+}
+.btn-glow:active {
+    box-shadow: 0 0 15px rgba(167, 226, 110, 0.6);
+    border-color: #a7e26e;
 }

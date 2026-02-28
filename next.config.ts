@@ -1,3 +1,4 @@
+
 import type { NextConfig } from "next";
 
 // =============================================================================
@@ -19,16 +20,21 @@ const nextConfig: NextConfig = {
         hostname: "img.youtube.com",
         pathname: "/vi/**",
       },
-      // Agregamos dominios de Disney por si acaso se usan en el futuro
+      // Dominio de Disney
       {
         protocol: "https",
         hostname: "cdn1.parksmedia.wdpromedia.com",
+      },
+      // Dominio para Unsplash (soluciona error de imagen en /orlando)
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
       }
     ],
     formats: ["image/avif", "image/webp"],
   },
 
-  // HEADERS DE SEGURIDAD HTTP (CRÍTICO FASE 0)
+  // HEADERS DE SEGURIDAD HTTP
   async headers() {
     return [
       {
@@ -61,7 +67,8 @@ const nextConfig: NextConfig = {
               "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
               "font-src 'self' https://fonts.gstatic.com",
-              "img-src 'self' data: blob: https://img.youtube.com https://cdn1.parksmedia.wdpromedia.com",
+              // Actualizado para incluir Unsplash
+              "img-src 'self' data: blob: https://img.youtube.com https://cdn1.parksmedia.wdpromedia.com https://images.unsplash.com",
               "connect-src 'self' https://api.themeparks.wiki https://queue-times.com https://api.open-meteo.com https://api.openweathermap.org",
               "frame-src 'self'",
               "object-src 'none'",

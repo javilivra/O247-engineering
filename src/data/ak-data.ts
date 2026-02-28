@@ -1,10 +1,22 @@
+import { POV_DATA } from './pov-data';
 import type { ParkItem } from './types';
+
+// Auto-inyecta videoId desde POV_DATA si no está definido en el item
+function withPov<T extends { id: string; pov?: { videoId: string; channelName: string; channelUrl: string } }>(items: T[]): T[] {
+  return items.map(item => {
+    const videoId = POV_DATA[item.id];
+    if (!videoId) return item;
+    if (item.pov?.videoId) return item; // ya tiene pov definido, no pisar
+    return { ...item, pov: { videoId, channelName: '', channelUrl: '' } };
+  });
+}
+
 
 // ============================================================
 // ANIMAL KINGDOM — STUB DATA
 // ============================================================
 
-export const AK_ATTRACTIONS: ParkItem[] = [
+export const AK_ATTRACTIONS: ParkItem[] = withPov([
   {
     id: 'ak-flight', name: 'Avatar Flight of Passage',
     land: 'Pandora — The World of Avatar', tier: 'Tier 1', type: 'Attraction',
@@ -67,7 +79,7 @@ export const AK_ATTRACTIONS: ParkItem[] = [
     waitTime: '15 min', status: 'open',
     description: 'Atracción giratoria estilo Dumbo con dinosaurios.',
   },
-];
+]);
 
 export const AK_DINING: ParkItem[] = [
   {

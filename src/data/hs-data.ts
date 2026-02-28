@@ -1,10 +1,22 @@
+import { POV_DATA } from './pov-data';
 import type { ParkItem } from './types';
+
+// Auto-inyecta videoId desde POV_DATA si no está definido en el item
+function withPov<T extends { id: string; pov?: { videoId: string; channelName: string; channelUrl: string } }>(items: T[]): T[] {
+  return items.map(item => {
+    const videoId = POV_DATA[item.id];
+    if (!videoId) return item;
+    if (item.pov?.videoId) return item; // ya tiene pov definido, no pisar
+    return { ...item, pov: { videoId, channelName: '', channelUrl: '' } };
+  });
+}
+
 
 // ============================================================
 // HOLLYWOOD STUDIOS — STUB DATA
 // ============================================================
 
-export const HS_ATTRACTIONS: ParkItem[] = [
+export const HS_ATTRACTIONS: ParkItem[] = withPov([
   {
     id: 'hs-rise', name: 'Rise of the Resistance',
     land: "Star Wars: Galaxy's Edge", tier: 'Tier 1', type: 'Attraction',
@@ -75,7 +87,7 @@ export const HS_ATTRACTIONS: ParkItem[] = [
     waitTime: '25 min', status: 'open',
     description: 'Simulador de vuelo Star Wars con destinos aleatorios.',
   },
-];
+]);
 
 export const HS_DINING: ParkItem[] = [
   {

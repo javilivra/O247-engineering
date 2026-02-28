@@ -1,0 +1,135 @@
+.sphistory-section {
+    position: relative;
+    overflow: hidden;
+}
+.sphistory-top-line {
+    position: absolute;
+    left: 0;
+    top: 52px;
+    width: 100%;
+    height: 1px;
+    background-color: #e0e0e0;
+}
+.sphistory-container {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 0;
+    position: relative;
+}
+.sphistory-wrapper {
+    padding: 30px 0 0;
+    display: flex;
+    flex-direction: column;
+}
+.historySwiper {
+    height: auto;
+    user-select: none;
+    overflow: visible;
+}
+.sphistory-swiper-line {
+    width: 100%;
+    height: 2px;
+    background-color: #ddd;
+    position: absolute;
+    left: 0;
+    top: 29px;
+    z-index: -1;
+}
+.historySwiper .swiper-wrapper {
+    display: inline-flex;
+    align-items: center;
+    width: auto;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+.historySwiper .swiper-slide {
+    width: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+    cursor: pointer;
+}
+.sphistory-year-item {
+    font-size: 24px;
+    line-height: 1;
+    font-weight: 600;
+    color: #ccc;
+    position: relative;
+    padding-bottom: 30px;
+    transition: color .3s ease;
+}
+.historySwiper .swiper-slide-active .sphistory-year-item {
+    color: #1a1a1a;
+}
+.sphistory-year-item:after {
+    content: "";
+    width: 12px;
+    height: 12px;
+    background-color: #ccc;
+    border-radius: 50%;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 0;
+    transition: all .3s ease;
+}
+.historySwiper .swiper-slide-active .sphistory-year-item:after {
+    background-color: #1a1a1a;
+    transform: translateX(-50%) scale(1.5);
+}
+.sphistory-nav-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 15px;
+}
+.sphistory-nav-buttons {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.sphistory-nav-button {
+    width: 52px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 50%;
+    border: 1px solid #ddd;
+    transition: all .3s ease;
+}
+.historyText {
+    width: 100%;
+    overflow: hidden;
+    margin-top: 40px;
+    padding: 0 20px;
+}
+.sphistory-content-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    align-items: center;
+}
+.sphistory-text-editor h2 {
+    font-size: 32px;
+    margin-bottom: 20px;
+}
+.sphistory-text-editor p {
+    font-size: 16px;
+    line-height: 1.6;
+}
+.sphistory-image {
+    width: 100%;
+    height: 400px;
+    position: relative;
+}
+.full-cover {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.rounded-12 {
+    border-radius: 12px;
+}

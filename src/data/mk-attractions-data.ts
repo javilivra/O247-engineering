@@ -1,3 +1,15 @@
+import { POV_DATA } from './pov-data';
+
+// Auto-inyecta videoId desde POV_DATA si no está definido en el item
+function withPov<T extends { id: string; pov?: { videoId: string; channelName: string; channelUrl: string } }>(items: T[]): T[] {
+  return items.map(item => {
+    const videoId = POV_DATA[item.id];
+    if (!videoId) return item;
+    if (item.pov?.videoId) return item; // ya tiene pov definido, no pisar
+    return { ...item, pov: { videoId, channelName: '', channelUrl: '' } };
+  });
+}
+
 // src/data/mk-attractions-data.ts
 import type { Attraction, ItemStatus } from './types';
 
@@ -228,7 +240,7 @@ export const MK_ATTRACTIONS: Attraction[] = [
     secretTip: 'El olor a Beignets en la fila es artificial (pumped-in), pero delicioso!',
     description: 'La atraccion mas nueva de Magic Kingdom (2024). Reemplazo de Splash Mountain con tematica de La Princesa y el Sapo. Recorrido musical en tronco por el bayou de Louisiana con animatronicos de nueva generacion y una caida principal de 15 metros a 40 km/h. Te vas a mojar.',
     insiderFacts: ['La caida principal es de 15 metros a 40 km/h — te vas a mojar.', 'Tiene mas de 100 animatronicos de nueva generacion.', 'El olor a beignets en la fila es un aromatizador artificial.', 'La confiabilidad es baja (65%) porque es nueva y sufre cierres tecnicos frecuentes.', 'Si llueve fuerte, la atraccion cierra temporalmente.'],
-    pov: { videoId: '3n8OgTv7MYk', channelName: 'Theme Park Obsession', channelUrl: 'https://www.youtube.com/@ThemeParkObsession' },
+    pov: { videoId: 'nOY1o9SVC1A', channelName: 'DocumentDisney', channelUrl: 'https://www.youtube.com/embed/nOY1o9SVC1A' },
     avgWaitByMonth: gm(90), forecastToday: gf(90, 'mp'),
     relatedActivities: [{ title: 'Memory Maker Photo', type: 'photo', description: 'Foto automatica en la caida. Incluida en Memory Maker.' }],
     warnings: { ...DW, drops: true, water: true, darkness: true, scareFactor: 3 as const, pregnancyRestriction: true, backNeckIssues: true, notes: 'Caida importante de 15m. Te vas a mojar significativamente.' },

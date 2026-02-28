@@ -1504,5 +1504,119 @@
     "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
     "ip": "127.0.0.1",
     "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_section_viewed",
+    "timestamp": "2026-02-25T17:59:16.428Z",
+    "sessionId": "s_1771965455715_st0p3he",
+    "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 26_3_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/145.0.7632.108 Mobile/15E148 Safari/604.1",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_started",
+    "timestamp": "2026-02-25T17:59:18.864Z",
+    "sessionId": "s_1771965455715_st0p3he",
+    "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 26_3_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/145.0.7632.108 Mobile/15E148 Safari/604.1",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T17:59:20.677Z",
+    "questionId": "experience",
+    "optionId": "returning",
+    "sessionId": "s_1771965455715_st0p3he",
+    "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 26_3_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/145.0.7632.108 Mobile/15E148 Safari/604.1",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T17:59:23.461Z",
+    "questionId": "group",
+    "optionId": "solo",
+    "sessionId": "s_1771965455715_st0p3he",
+    "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 26_3_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/145.0.7632.108 Mobile/15E148 Safari/604.1",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T17:59:25.795Z",
+    "questionId": "duration",
+    "optionId": "medium",
+    "sessionId": "s_1771965455715_st0p3he",
+    "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 26_3_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/145.0.7632.108 Mobile/15E148 Safari/604.1",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T17:59:28.312Z",
+    "questionId": "travel_date",
+    "optionId": "next_year",
+    "sessionId": "s_1771965455715_st0p3he",
+    "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 26_3_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/145.0.7632.108 Mobile/15E148 Safari/604.1",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T17:59:31.360Z",
+    "questionId": "budget",
+    "optionId": "flexible",
+    "sessionId": "s_1771965455715_st0p3he",
+    "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 26_3_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/145.0.7632.108 Mobile/15E148 Safari/604.1",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T17:59:34.194Z",
+    "questionId": "visa",
+    "optionId": "no",
+    "sessionId": "s_1771965455715_st0p3he",
+    "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 26_3_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/145.0.7632.108 Mobile/15E148 Safari/604.1",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T17:59:38.705Z",
+    "questionId": "priority",
+    "optionId": "navigation,events,unknown",
+    "sessionId": "s_1771965455715_st0p3he",
+    "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 26_3_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/145.0.7632.108 Mobile/15E148 Safari/604.1",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T17:59:40.489Z",
+    "questionId": "perfect_trip",
+    "optionId": "delegate",
+    "sessionId": "s_1771965455715_st0p3he",
+    "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 26_3_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/145.0.7632.108 Mobile/15E148 Safari/604.1",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_answer",
+    "timestamp": "2026-02-25T17:59:43.623Z",
+    "questionId": "source",
+    "optionId": "youtube",
+    "sessionId": "s_1771965455715_st0p3he",
+    "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 26_3_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/145.0.7632.108 Mobile/15E148 Safari/604.1",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/"
+  },
+  {
+    "event": "o247_survey_section_viewed",
+    "timestamp": "2026-02-27T15:58:25.482Z",
+    "sessionId": "s_1772207908342_cf0gguj",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+    "ip": "127.0.0.1",
+    "referer": "https://9000-firebase-o247-engineering-1769115387438.cluster-hlmk2l2htragyudeyf6f3tzsi6.cloudworkstations.dev/?monospaceUid=239308"
   }
 ]
