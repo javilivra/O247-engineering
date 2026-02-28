@@ -87,6 +87,48 @@ export const EPCOT_ATTRACTIONS: ParkItem[] = withPov([
     waitTime: '15 min', status: 'open',
     description: 'Recorrido en bote por los invernaderos reales de Epcot.',
   },
+  {
+    id: 'ep-gran-fiesta', name: 'Gran Fiesta Tour Starring The Three Caballeros',
+    land: 'World Showcase — Mexico', tier: 'Tier 3', type: 'Attraction',
+    image: '/images/epcot.jpg', vibes: ['family', 'indoor', 'boat', 'classic'],
+    waitTime: '10 min', status: 'open',
+    description: 'Paseo en bote por México con los Tres Caballeros. Clásico de Epcot, ideal para el calor.',
+  },
+  {
+    id: 'ep-china-film', name: 'Reflections of China',
+    land: 'World Showcase — China', tier: 'Tier 3', type: 'Attraction',
+    image: '/images/epcot.jpg', vibes: ['family', 'indoor', 'film', 'classic'],
+    waitTime: '5 min', status: 'open',
+    description: 'Film en 360° sobre la cultura y paisajes de China. Sin colas, sin reserva.',
+  },
+  {
+    id: 'ep-canada-film', name: "O Canada!",
+    land: 'World Showcase — Canada', tier: 'Tier 3', type: 'Attraction',
+    image: '/images/epcot.jpg', vibes: ['family', 'indoor', 'film', 'classic'],
+    waitTime: '5 min', status: 'open',
+    description: 'Film en 360° sobre Canadá. Actualizado recientemente con nuevas escenas.',
+  },
+  {
+    id: 'ep-france-film', name: 'Impressions de France',
+    land: 'World Showcase — France', tier: 'Tier 3', type: 'Attraction',
+    image: '/images/epcot.jpg', vibes: ['family', 'indoor', 'film', 'classic'],
+    waitTime: '5 min', status: 'open',
+    description: 'Film clásico sobre Francia. Relajante y con aire acondicionado.',
+  },
+  {
+    id: 'ep-beauty-beast', name: 'Beauty and the Beast Sing-Along',
+    land: 'World Showcase — France', tier: 'Tier 3', type: 'Attraction',
+    image: '/images/epcot.jpg', vibes: ['family', 'indoor', 'show', 'musical'],
+    waitTime: '10 min', status: 'open',
+    description: 'Versión alternativa de La Bella y la Bestia en formato sing-along.',
+  },
+  {
+    id: 'ep-wonders-xian',  name: 'Wonders of Xian',
+    land: 'World Showcase — China', tier: 'Tier 3', type: 'Attraction',
+    image: '/images/epcot.jpg', vibes: ['family', 'indoor', 'film'],
+    waitTime: '5 min', status: 'open',
+    description: 'Documental sobre la ciudad de Xian y sus guerreros de terracota.',
+  },
 ]);
 
 export const EPCOT_DINING: ParkItem[] = [

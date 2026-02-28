@@ -87,6 +87,27 @@ export const HS_ATTRACTIONS: ParkItem[] = withPov([
     waitTime: '25 min', status: 'open',
     description: 'Simulador de vuelo Star Wars con destinos aleatorios.',
   },
+  {
+    id: 'hs-lightning', name: "Lightning McQueen's Racing Academy",
+    land: 'Hollywood Boulevard', tier: 'Tier 3', type: 'Attraction',
+    image: '/images/hs.jpg', vibes: ['family', 'indoor', 'show'],
+    waitTime: '15 min', status: 'open',
+    description: 'Show de Lightning McQueen con efectos especiales y pantallas inmersivas.',
+  },
+  {
+    id: 'hs-mermaid', name: 'Voyage of the Little Mermaid',
+    land: 'Animation Courtyard', tier: 'Tier 3', type: 'Attraction',
+    image: '/images/hs.jpg', vibes: ['family', 'indoor', 'show', 'dark'],
+    waitTime: '20 min', status: 'open',
+    description: 'Show con marionetas, efectos de agua y escenas de La Sirenita.',
+  },
+  {
+    id: 'hs-disney-junior', name: 'Disney Junior Play and Dance!',
+    land: 'Animation Courtyard', tier: 'Tier 3', type: 'Attraction',
+    image: '/images/hs.jpg', vibes: ['family', 'indoor', 'show', 'kids'],
+    waitTime: '10 min', status: 'open',
+    description: 'Show interactivo con personajes de Disney Junior para los más chicos.',
+  },
 ]);
 
 export const HS_DINING: ParkItem[] = [

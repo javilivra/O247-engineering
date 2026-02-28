@@ -97,4 +97,36 @@ export const POV_DATA: Record<string, string> = {
   'vb-krakatau':          '',
   'vb-honu':              '',
   'vb-kala':              '',
+
+  // ── US adicionales ─────────────────────────────────────────
+  'us-gringotts':           '',
+  'us-hogwarts-express-us': '',
+  'us-men-black':           '',
+  'us-race-through-ny':     '',
+  'us-horror-makeup':       '',
+  'us-animal-actors':       '',
+  'us-fievel':              '',
+  'us-woody-roller':        '',
+
+  // ── IOA adicionales ────────────────────────────────────────
+  'ioa-jurassic-river':     '',
+  'ioa-jurassic-discovery': '',
+  'ioa-storm-force':        '',
+  'ioa-doctor-doom':        '',
+  'ioa-dudley':             '',
+  'ioa-one-fish':           '',
+  'ioa-caro-seuss':         '',
+
+  // ── EPIC adicionales ───────────────────────────────────────
+  'epic-mario-kart':        '',
+  'epic-hogwarts-express-epic': '',
+  'epic-orbis':             '',
+  'epic-space-racer':       '',
+  'epic-werewolf':          '',
+
+  // ── VOLCANO adicionales ────────────────────────────────────
+  'vb-puka-uli':            '',
+  'vb-runamukka':           '',
+  'vb-the-reef':            '',
+  'vb-wave-pool':           '',
 };

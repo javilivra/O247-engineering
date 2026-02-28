@@ -79,6 +79,41 @@ export const AK_ATTRACTIONS: ParkItem[] = withPov([
     waitTime: '15 min', status: 'open',
     description: 'Atracción giratoria estilo Dumbo con dinosaurios.',
   },
+  {
+    id: 'ak-maharajah', name: 'Maharajah Jungle Trek',
+    land: 'Asia', tier: 'Tier 2', type: 'Attraction',
+    image: '/images/cinderellacastlehero.jpg', vibes: ['family', 'outdoor', 'walkthrough'],
+    waitTime: '0 min', status: 'open',
+    description: 'Sendero autoguiado por ruinas asiáticas con tigres de Bengala, tapires y murciélagos gigantes.',
+  },
+  {
+    id: 'ak-wildlife-express', name: 'Wildlife Express Train',
+    land: 'Africa', tier: 'Tier 3', type: 'Attraction',
+    image: '/images/cinderellacastlehero.jpg', vibes: ['family', 'outdoor', 'train'],
+    waitTime: '10 min', status: 'open',
+    description: 'Tren que conecta Africa con Rafiki\'s Planet Watch. Único acceso a la zona de conservación.',
+  },
+  {
+    id: 'ak-rafikis', name: "Rafiki's Planet Watch",
+    land: "Rafiki's Planet Watch", tier: 'Tier 3', type: 'Attraction',
+    image: '/images/cinderellacastlehero.jpg', vibes: ['family', 'outdoor', 'educational'],
+    waitTime: '5 min', status: 'open',
+    description: 'Zona de conservación con animales pequeños y el backstage del cuidado animal.',
+  },
+  {
+    id: 'ak-affection', name: 'Affection Section',
+    land: "Rafiki's Planet Watch", tier: 'Tier 3', type: 'Attraction',
+    image: '/images/cinderellacastlehero.jpg', vibes: ['family', 'outdoor', 'petting-zoo'],
+    waitTime: '0 min', status: 'open',
+    description: 'Zona de contacto con animales de granja. Ideal para los más chicos.',
+  },
+  {
+    id: 'ak-planet-watch', name: 'Conservation Station',
+    land: "Rafiki's Planet Watch", tier: 'Tier 3', type: 'Attraction',
+    image: '/images/cinderellacastlehero.jpg', vibes: ['family', 'indoor', 'educational'],
+    waitTime: '0 min', status: 'open',
+    description: 'Centro de conservación con ventanas al backstage veterinario del parque.',
+  },
 ]);
 
 export const AK_DINING: ParkItem[] = [
