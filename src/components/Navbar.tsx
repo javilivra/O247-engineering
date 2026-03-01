@@ -204,7 +204,7 @@ export default function Navbar() {
     const segments = pathname.split('/').filter(Boolean);
     return segments.length >= 3 && (segments[0] === 'disney' || segments[0] === 'universal');
   })();
-  const isTransparentHero = navbarMode === 'dark' || isHome || isAttractionPage;
+  const isOrlandoGuide = pathname === '/orlando'; const isTransparentHero = navbarMode === 'dark' || isHome || isAttractionPage || isOrlandoGuide;
 
   useEffect(() => {
     setMobileOpen(false);

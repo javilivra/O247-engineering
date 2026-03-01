@@ -174,13 +174,13 @@ export default function GlobalBreadcrumbs() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  if (!hasHydrated || pathname === '/') return null;
+  if (!hasHydrated || pathname === '/' || pathname === '/orlando') return null;
 
   const pathSegments = pathname.split('/').filter(s => s !== '' && s !== 'parks');
   const isDark = pathSegments.some(seg => DARK_HERO_SLUGS.includes(seg));
 
   const positionClass = isDark
-    ? "absolute top-[90px] left-0 z-30"
+    ? "absolute top-[92px] left-0 z-30"
     : "relative mt-20 mb-2 z-30";
 
   const getName = (segment: string) =>
