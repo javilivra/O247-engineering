@@ -341,7 +341,7 @@ export default function ParkPageLayout({ config }: { config: ParkPageConfig }) {
         {/* ============================================================ */}
         {/* STICKY FILTER BAR */}
         {/* ============================================================ */}
-        <div className="sticky top-0 z-40">
+        <div className="sticky top-0 z-30">
           <div className="absolute inset-0 bg-bone/95 backdrop-blur-xl border-b border-gunmetal/5" />
           <div className="relative z-10 max-w-[1200px] mx-auto px-4 sm:px-6 md:px-12 lg:px-24 py-3 space-y-2.5">
 
