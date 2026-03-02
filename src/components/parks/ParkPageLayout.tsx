@@ -321,12 +321,7 @@ export default function ParkPageLayout({ config }: { config: ParkPageConfig }) {
                 </h2>
 
               </div>
-              {/* HUB ISLAND — absoluto sobre todo el hero */}
-              {guidePath && (
-                <div className="absolute bottom-6 left-8 right-8 md:left-12 md:right-12 z-30">
-                  <ParkHubIsland basePath={guidePath} />
-                </div>
-              )}
+
             </section>
           </div>
         </motion.div>
@@ -338,11 +333,25 @@ export default function ParkPageLayout({ config }: { config: ParkPageConfig }) {
           </motion.div>
         </div>
 
+        {/* HUB ISLAND — navegación contextual, posición arquitectónica correcta */}
+        {guidePath && (
+          <div className="max-w-[1200px] mx-auto px-6 md:px-12 lg:px-24 pt-8 pb-4">
+            <ParkHubIsland basePath={guidePath} />
+          </div>
+        )}
+
         {/* ============================================================ */}
         {/* STICKY FILTER BAR */}
         {/* ============================================================ */}
         <div className="sticky top-0 z-30">
-          <div className="absolute inset-0 bg-bone/95 backdrop-blur-xl border-b border-gunmetal/5" />
+          <div className="absolute inset-0"
+            style={{
+              background: 'rgba(247,247,245,0.82)',
+              backdropFilter: 'blur(24px) saturate(180%)',
+              WebkitBackdropFilter: 'blur(24px) saturate(180%)',
+              borderColor: 'rgba(255,255,255,0.6)',
+              boxShadow: '0 1px 0 rgba(255,255,255,0.8) inset, 0 4px 24px rgba(0,0,0,0.06)',
+            }} />
           <div className="relative z-10 max-w-[1200px] mx-auto px-4 sm:px-6 md:px-12 lg:px-24 py-3 space-y-2.5">
 
             {/* ROW 1: Categories + Filters btn + Search + Sort */}
@@ -359,9 +368,16 @@ export default function ParkPageLayout({ config }: { config: ParkPageConfig }) {
                         onClick={() => setCategory(tab.id)}
                         className={`relative px-3 sm:px-4 py-2 rounded-full flex items-center gap-2 transition-all duration-300 shrink-0 ${
                           isActive
-                            ? 'bg-gunmetal text-white shadow-lg shadow-gunmetal/10'
-                            : 'text-gunmetal/40 hover:text-gunmetal hover:bg-white'
+                            ? 'text-gunmetal shadow-sm'
+                            : 'text-gunmetal/40 hover:text-gunmetal hover:bg-white/60'
                         }`}
+                        style={isActive ? {
+                          background: 'rgba(255,255,255,0.75)',
+                          backdropFilter: 'blur(12px)',
+                          WebkitBackdropFilter: 'blur(12px)',
+                          border: '1px solid rgba(255,255,255,0.9)',
+                          boxShadow: '0 2px 12px rgba(0,0,0,0.08), 0 1px 0 rgba(255,255,255,0.9) inset',
+                        } : undefined}
                       >
                         <Icon icon={tab.icon} width={15} className={isActive ? 'text-sunset' : 'opacity-40'} />
                         <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-widest leading-none">{tab.label}</span>

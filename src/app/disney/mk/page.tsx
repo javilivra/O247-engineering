@@ -1,3 +1,4 @@
+
 "use client";
 
 import React from 'react';
@@ -7,6 +8,7 @@ import { MK_DINING } from '@/data/mk-dining-data';
 import { MK_SHOWS } from '@/data/mk-shows-data';
 import { MK_CHARACTERS } from '@/data/mk-characters-data';
 import ParkPageLayout from '@/components/parks/ParkPageLayout';
+import ParkHubIsland from '@/components/parks/ParkHubIsland';
 import type { FilterSection, FilterChip } from '@/components/parks/FilterModal';
 
 // ============================================================
@@ -138,6 +140,9 @@ export default function MagicKingdomPage() {
         ),
         introExpanded: (
           <>
+            <div className="mb-6">
+              <ParkHubIsland basePath="/disney/mk" />
+            </div>
             <p>Es el parque más reconocible de Walt Disney World, organizado alrededor del <strong>Castillo de Cenicienta</strong> como punto central. Desde allí, las tierras temáticas se despliegan en forma radial, facilitando la orientación pero concentrando gran parte del movimiento diario.</p>
             <p>Aquí conviven atracciones familiares, íconos históricos y espectáculos nocturnos que marcan el ritmo del día. Es el parque que mejor funciona para primeras visitas y también el que <strong>más temprano concentra multitudes</strong>, por lo que el horario de llegada cambia por completo la experiencia.</p>
             <div className="pl-4 border-l-2 border-sunset">
