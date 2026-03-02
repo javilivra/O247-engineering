@@ -328,7 +328,7 @@ export default function ParkPageLayout({ config }: { config: ParkPageConfig }) {
         {/* CONTEXTO */}
         {/* ============================================================ */}
         <div className="max-w-[1200px] mx-auto px-6 md:px-12 lg:px-24">
-          <motion.div variants={itemVariants} className="py-12 border-b border-gunmetal/5">
+          <motion.div variants={itemVariants} className="py-12">
             <ContextualIntro short={introShort} expanded={introExpanded} />
           </motion.div>
         </div>
