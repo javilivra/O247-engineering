@@ -75,7 +75,7 @@ export default function FilterModal({
             animate={{ y: 0 }}
             exit={{ y: '100%' }}
             transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-            className="fixed bottom-0 left-0 right-0 z-[70] bg-bone rounded-t-3xl shadow-2xl max-h-[85vh] flex flex-col"
+            className="fixed bottom-0 left-0 right-0 z-[70] rounded-t-3xl max-h-[85vh] flex flex-col" style={{ background: "rgba(247,247,245,0.92)", backdropFilter: "blur(32px) saturate(200%)", WebkitBackdropFilter: "blur(32px) saturate(200%)", boxShadow: "0 -8px 48px rgba(0,0,0,0.12), 0 -1px 0 rgba(255,255,255,0.8)" }}
           >
             {/* Handle */}
             <div className="flex justify-center pt-3 pb-1">
@@ -83,7 +83,7 @@ export default function FilterModal({
             </div>
 
             {/* Header */}
-            <div className="flex items-center justify-between px-6 py-3 border-b border-gunmetal/5">
+            <div className="flex items-center justify-between px-6 py-3">
               <div>
                 <h2 className="text-lg font-black text-gunmetal">Filtros</h2>
                 {count > 0 && (

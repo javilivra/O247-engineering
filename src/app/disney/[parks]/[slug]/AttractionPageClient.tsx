@@ -26,7 +26,6 @@
 
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import AddButton from "@/components/AddButton";
 import type { Attraction, WaitForecastSlot } from "@/data/types";
 import { useAttractionLive } from "@/hooks/useAttractionLive";
 
@@ -582,15 +581,17 @@ export default function AttractionPageClient({ attraction }: { attraction: Attra
             {name}
           </motion.h1>
 
-          {/* HUD de decisión rápida — solo las 4 más críticas */}
+          {/* HUD de decisión rápida — full width, 2 cols mobile / 4 cols desktop */}
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.25 }}
             style={{
-              display: "flex", gap: "8px", flexWrap: "wrap",
+              display: "grid",
+              gridTemplateColumns: isMobile ? "repeat(2, 1fr)" : "repeat(4, 1fr)",
+              gap: "8px",
+              width: "100%",
               marginBottom: "28px",
-              maxWidth: "680px",
             }}
           >
             <HudStat
@@ -610,61 +611,7 @@ export default function AttractionPageClient({ attraction }: { attraction: Attra
             <HudStat icon={Icons.ruler} label={a.heightReq > 0 ? "Alt. mín." : "Altura"} value={a.heightReq > 0 ? String(a.heightReq) : "Libre"} unit={a.heightReq > 0 ? "cm" : undefined}/>
           </motion.div>
 
-          {/* AddButton + mapa miniatura en la misma fila */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.4 }}
-            style={{ display: "flex", alignItems: "flex-end", gap: "16px", flexWrap: isMobile ? "wrap" : "nowrap" }}
-          >
-            <AddButton itemId={`${a.park}-${a.slug}`} label="Agregar al Plan"/>
 
-            {/* Mapa miniatura — muestra la imagen jpeg del mapa oficial de Disney */}
-            <div style={{
-              width: isMobile ? "100%" : "260px",
-              height: "120px",
-              borderRadius: "14px",
-              overflow: "hidden",
-              border: `1px solid ${T.border}`,
-              background: T.surface,
-              position: "relative",
-              flexShrink: 0,
-            }}>
-              {/* Imagen del mapa — cada atracción puede tener su mapImage en la data */}
-              {(a as ExtendedAttraction & { mapImage?: string }).mapImage ? (
-                <img
-                  src={(a as ExtendedAttraction & { mapImage?: string }).mapImage}
-                  alt={`Mapa ${name}`}
-                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                />
-              ) : (
-                /* Placeholder mientras no haya imagen de mapa */
-                <div style={{
-                  width: "100%", height: "100%",
-                  background: `linear-gradient(135deg, ${T.surface} 0%, ${T.panel} 100%)`,
-                  display: "flex", flexDirection: "column",
-                  alignItems: "center", justifyContent: "center", gap: "6px",
-                }}>
-                  {/* Ícono mapa */}
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ color: T.muted, opacity: 0.5 }}>
-                    <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/>
-                    <line x1="8" y1="2" x2="8" y2="18"/>
-                    <line x1="16" y1="6" x2="16" y2="22"/>
-                  </svg>
-                  <span style={{ ...F.tech, fontSize: "8px", color: T.faint }}>Mapa del área</span>
-                </div>
-              )}
-              {/* Overlay con land label */}
-              <div style={{
-                position: "absolute", bottom: "8px", left: "8px",
-                background: "rgba(37,52,63,0.7)", backdropFilter: "blur(8px)",
-                border: `1px solid ${T.border}`, borderRadius: "100px",
-                padding: "3px 9px",
-              }}>
-                <span style={{ ...F.tech, fontSize: "8px", color: T.muted }}>{a.land}</span>
-              </div>
-            </div>
-          </motion.div>
         </div>
       </section>
 
