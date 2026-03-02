@@ -349,8 +349,7 @@ export default function ParkPageLayout({ config }: { config: ParkPageConfig }) {
               background: 'rgba(247,247,245,0.82)',
               backdropFilter: 'blur(24px) saturate(180%)',
               WebkitBackdropFilter: 'blur(24px) saturate(180%)',
-              borderColor: 'rgba(255,255,255,0.6)',
-              boxShadow: '0 1px 0 rgba(255,255,255,0.8) inset, 0 4px 24px rgba(0,0,0,0.06)',
+              boxShadow: '0 8px 32px rgba(0,0,0,0.04)',
             }} />
           <div className="relative z-10 max-w-[1200px] mx-auto px-4 sm:px-6 md:px-12 lg:px-24 py-3 space-y-2.5">
 

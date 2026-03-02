@@ -54,9 +54,9 @@ function useIsMobile() {
 // ── DESIGN TOKENS ─────────────────────────────────────────────
 const T = {
   bone:     "#f7f7f5",
-  carbon:   "#0e0f11",
-  surface:  "#16181c",
-  panel:    "#1e2026",
+  carbon:   "#25343F",
+  surface:  "#334552",
+  panel:    "#405461",
   border:   "rgba(255,255,255,0.07)",
   borderMd: "rgba(255,255,255,0.12)",
   text:     "#f0f0ee",
@@ -117,29 +117,54 @@ function SectionLabel({ icon, label, accent = false }: { icon?: React.ReactNode;
   );
 }
 
-// ── HUD STAT PILL ─────────────────────────────────────────────
+// ── HUD STAT PILL — liquid glass (coherente con ParkHubIsland) ───────────────
 function HudStat({ icon, label, value, unit, accent }: {
   icon: React.ReactNode; label: string; value: string; unit?: string; accent?: string;
 }) {
+  const accentColor = accent || T.celeste;
   return (
     <div style={{
-      display: "flex", flexDirection: "column", gap: "6px",
-      padding: "16px 20px",
-      background: "rgba(255,255,255,0.04)",
-      border: `1px solid ${T.border}`,
-      borderRadius: "14px",
-      backdropFilter: "blur(20px)",
+      display: "flex", flexDirection: "column", gap: "10px",
+      padding: "16px",
+      background: "rgba(255,255,255,0.07)",
+      backdropFilter: "blur(24px) saturate(180%)",
+      WebkitBackdropFilter: "blur(24px) saturate(180%)",
+      border: "1px solid rgba(255,255,255,0.14)",
+      borderRadius: "16px",
+      boxShadow: "0 4px 24px rgba(0,0,0,0.2), 0 1px 0 rgba(255,255,255,0.12) inset, 0 -1px 0 rgba(0,0,0,0.15) inset",
       flex: 1, minWidth: 0,
+      position: "relative" as const,
+      overflow: "hidden",
     }}>
-      <div style={{ display: "flex", alignItems: "center", gap: "5px", color: T.muted }}>
-        {icon}
-        <span style={{ ...F.tech, fontSize: "8.5px", color: T.muted }}>{label}</span>
+      {/* Specular highlight top */}
+      <div style={{
+        position: "absolute", top: 0, left: 0, right: 0, height: "1px",
+        background: "linear-gradient(to right, transparent, rgba(255,255,255,0.35) 40%, rgba(255,255,255,0.15) 70%, transparent)",
+      }} />
+      {/* Subtle color glow */}
+      <div style={{
+        position: "absolute", top: 0, right: 0, width: "60px", height: "60px",
+        background: `radial-gradient(circle, ${accentColor}20 0%, transparent 70%)`,
+        pointerEvents: "none",
+      }} />
+      {/* Icon + label */}
+      <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+        <div style={{
+          width: "28px", height: "28px", borderRadius: "8px",
+          display: "flex", alignItems: "center", justifyContent: "center",
+          background: `${accentColor}20`,
+          border: `1px solid ${accentColor}30`,
+          color: accentColor, flexShrink: 0,
+        }}>
+          {icon}
+        </div>
+        <span style={{ ...F.tech, fontSize: "8px", color: T.muted, letterSpacing: "0.12em" }}>{label}</span>
       </div>
+      {/* Value */}
       <div style={{ display: "flex", alignItems: "baseline", gap: "3px" }}>
         <span style={{
-          ...F.display, fontSize: "1.8rem", lineHeight: 1,
-          color: accent || T.text,
-          ...(accent ? { background: T.grad, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" } : {}),
+          ...F.display, fontSize: "1.7rem", lineHeight: 1,
+          color: accentColor,
         }}>{value}</span>
         {unit && <span style={{ ...F.tech, fontSize: "9px", color: T.muted }}>{unit}</span>}
       </div>
@@ -358,13 +383,13 @@ function ActivityCard({ activity }: { activity: Activity }) {
         )}
         {/* Overlay gradient inferior */}
         {activity.image && (
-          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, transparent 50%, rgba(14,15,17,0.7) 100%)" }}/>
+          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, transparent 50%, rgba(37,52,63,0.7) 100%)" }}/>
         )}
         {/* Type badge superpuesto */}
         <div style={{
           position: "absolute", top: "10px", left: "10px",
           display: "flex", alignItems: "center", gap: "5px",
-          background: "rgba(14,15,17,0.65)", backdropFilter: "blur(10px)",
+          background: "rgba(37,52,63,0.65)", backdropFilter: "blur(10px)",
           border: `1px solid ${T.border}`, borderRadius: "100px",
           padding: "4px 10px",
         }}>
@@ -476,8 +501,8 @@ export default function AttractionPageClient({ attraction }: { attraction: Attra
         <div style={{
           position: "absolute", inset: 0,
           background: `
-            linear-gradient(to right, rgba(14,15,17,0.85) 0%, rgba(14,15,17,0.2) 55%, rgba(14,15,17,0) 100%),
-            linear-gradient(to top, rgba(14,15,17,1) 0%, rgba(14,15,17,0.6) 25%, transparent 55%)
+            linear-gradient(to right, rgba(37,52,63,0.85) 0%, rgba(37,52,63,0.2) 55%, rgba(37,52,63,0) 100%),
+            linear-gradient(to top, rgba(37,52,63,1) 0%, rgba(37,52,63,0.6) 25%, transparent 55%)
           `,
         }}/>
 
@@ -495,7 +520,7 @@ export default function AttractionPageClient({ attraction }: { attraction: Attra
           style={{
             position: "absolute", top: "28px", left: "32px", zIndex: 20,
             display: "flex", alignItems: "center", gap: "8px",
-            background: "rgba(14,15,17,0.5)", backdropFilter: "blur(16px)",
+            background: "rgba(37,52,63,0.5)", backdropFilter: "blur(16px)",
             border: `1px solid ${T.border}`, borderRadius: "100px",
             padding: "8px 14px 8px 10px", cursor: "pointer", color: T.muted,
             ...F.tech, fontSize: "9px",
@@ -632,7 +657,7 @@ export default function AttractionPageClient({ attraction }: { attraction: Attra
               {/* Overlay con land label */}
               <div style={{
                 position: "absolute", bottom: "8px", left: "8px",
-                background: "rgba(14,15,17,0.7)", backdropFilter: "blur(8px)",
+                background: "rgba(37,52,63,0.7)", backdropFilter: "blur(8px)",
                 border: `1px solid ${T.border}`, borderRadius: "100px",
                 padding: "3px 9px",
               }}>
@@ -792,7 +817,7 @@ export default function AttractionPageClient({ attraction }: { attraction: Attra
                 <div style={{
                   position: "absolute", bottom: "16px", right: "16px",
                   display: "flex", alignItems: "center", gap: "6px",
-                  background: "rgba(14,15,17,0.7)", backdropFilter: "blur(12px)",
+                  background: "rgba(37,52,63,0.7)", backdropFilter: "blur(12px)",
                   border: `1px solid ${T.border}`, borderRadius: "100px", padding: "6px 12px",
                 }}>
                   <span style={{ color: "rgba(255,255,255,0.7)" }}>{Icons.youtube}</span>
