@@ -2,6 +2,7 @@
 "use client";
 
 import React from 'react';
+import { getAlertsForPark } from '@/data/alerts-data';
 import type { Attraction } from '@/data/types';
 import { MK_ATTRACTIONS } from '@/data/mk-attractions-data';
 import { MK_DINING } from '@/data/mk-dining-data';
@@ -174,7 +175,7 @@ export default function MagicKingdomPage() {
           },
         },
 
-        alerts: MK_ATTRACTIONS,
+        alerts: getAlertsForPark('mk'),
       }}
     />
   );
