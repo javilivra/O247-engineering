@@ -3,7 +3,7 @@ import { POV_DATA } from './pov-data';
 // Auto-inyecta videoId desde POV_DATA si no está definido en el item
 function withPov<T extends { id: string; pov?: { videoId: string; channelName: string; channelUrl: string } }>(items: T[]): T[] {
   return items.map(item => {
-    const videoId = POV_DATA[item.id] || POV_DATA["mk-" + item.id];
+    const videoId = POV_DATA[item.id] || POV_DATA["mk-" + item.id.replace(/_/g, "-")];
     if (!videoId) return item;
     if (item.pov?.videoId) return item; // ya tiene pov definido, no pisar
     return { ...item, pov: { videoId, channelName: '', channelUrl: '' } };
@@ -68,7 +68,7 @@ const RS = 'Historico 12 meses O247';
 // ===================================================
 // MK_ATTRACTIONS -- Datos normalizados completos
 // ===================================================
-export const MK_ATTRACTIONS: Attraction[] = [
+export const MK_ATTRACTIONS: Attraction[] = withPov([
 
     // --- MAIN STREET, U.S.A. ---
     {
@@ -798,4 +798,4 @@ export const MK_ATTRACTIONS: Attraction[] = [
         accessibility: { ...DA, assistiveListening: true, closedCaptions: true },
         lockers: NL, photoPolicy: { ...DP },
     },
-];
+]);

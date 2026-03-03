@@ -1,4 +1,5 @@
 "use client";
+import { getAlertsForPark } from '@/data/alerts-data';
 import { adaptParkItems } from '@/lib/parkItemAdapter';
 
 import React from 'react';
@@ -44,7 +45,7 @@ export default function EpcotPage() {
           characters: { data: EPCOT_CHARACTERS },
         },
 
-        alerts: EPCOT_ATTRACTIONS,
+        alerts: getAlertsForPark('epcot'),
       }}
     />
   );

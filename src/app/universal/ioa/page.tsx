@@ -1,4 +1,5 @@
 "use client";
+import { getAlertsForPark } from '@/data/alerts-data';
 import { adaptParkItems } from '@/lib/parkItemAdapter';
 import React from 'react';
 import ParkPageLayout from '@/components/parks/ParkPageLayout';
@@ -38,7 +39,7 @@ export default function IslandsOfAdventurePage() {
           shows: { data: IOA_SHOWS },
           characters: { data: IOA_CHARACTERS },
         },
-        alerts: IOA_ATTRACTIONS,
+        alerts: getAlertsForPark('ioa'),
       }}
     />
   );

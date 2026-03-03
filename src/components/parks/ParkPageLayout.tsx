@@ -12,6 +12,7 @@ import HeroCarousel from '@/components/parks/HeroCarousel';
 import FilterModal from '@/components/parks/FilterModal';
 import type { FilterChip, FilterSection } from '@/components/parks/FilterModal';
 import ParkHubIsland from '@/components/parks/ParkHubIsland';
+import type { ParkAlert } from '@/data/alerts-data';
 
 // ============================================================
 // TYPES — Park page config
@@ -56,8 +57,8 @@ export interface ParkPageConfig {
   categories: Record<string, CategoryConfig>;
   defaultCategory: string;
 
-  /** Alerts (optional — typically from attractions data) */
-  alerts?: ParkItem[];
+  /** Alerts — from alerts-data.ts */
+  alerts?: ParkAlert[];
 }
 
 // ============================================================
@@ -213,7 +214,7 @@ export default function ParkPageLayout({ config }: { config: ParkPageConfig }) {
   const clearAll = () => { setActiveFilters(new Set()); setSearchQuery(''); setSearchOpen(false); };
 
   // Alerts
-  const activeAlerts = alerts.filter(a => a.status === 'closed' || a.status === 'refurbishment' || a.status === 'down');
+  const activeAlerts = alerts.filter(a => a.isActive);
   const [alertIndex, setAlertIndex] = useState(0);
   const [isBarScrolled, setIsBarScrolled] = useState(false);
   useEffect(() => {
@@ -349,7 +350,7 @@ export default function ParkPageLayout({ config }: { config: ParkPageConfig }) {
         {/* ============================================================ */}
         <div className="sticky top-0 z-30">
           <div className="absolute inset-0" />
-          <div className="relative z-10 max-w-[1200px] mx-auto px-4 sm:px-6 md:px-12 lg:px-24 py-3 space-y-2.5">
+          <div className="relative z-10 max-w-[1200px] mx-auto px-4 sm:px-6 md:px-12 lg:px-24 py-4 space-y-2.5">
 
             {/* ROW 1: Categories + Filters btn + Search + Sort */}
             <div className="flex items-center gap-2">
@@ -559,9 +560,9 @@ export default function ParkPageLayout({ config }: { config: ParkPageConfig }) {
                       <AnimatePresence mode="wait">
                         <motion.div key={alertIndex} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.3 }} className="absolute inset-0">
                           <p className="text-sm md:text-base font-bold text-white leading-tight">
-                            {activeAlerts[alertIndex].name}{' '}
+                            {activeAlerts[alertIndex].attractionName}{' '}
                             <span className="opacity-60 font-medium">se encuentra en</span>{' '}
-                            <span className="text-red-300 border-b border-red-500/50 pb-0.5">{activeAlerts[alertIndex].status === 'refurbishment' ? 'Remodelación' : 'Cierre Temporal'}</span>.
+                            <span className="text-red-300 border-b border-red-500/50 pb-0.5">{activeAlerts[alertIndex].type === 'refurbishment' ? 'Remodelación' : activeAlerts[alertIndex].type === 'closure' ? 'Cierre Definitivo' : activeAlerts[alertIndex].type === 'opening' ? 'Próxima Apertura' : 'Cierre Temporal'}</span>.
                           </p>
                         </motion.div>
                       </AnimatePresence>

@@ -11,6 +11,7 @@ import Navbar from "@/components/Navbar";
 import GlobalBreadcrumbs from "@/components/GlobalBreadcrumbs";
 import Footer from "@/components/Footer";
 import CustomCursor from "@/components/CustomCursor";
+import ScrollToTop from "@/components/ScrollToTop";
 import BackButton from "@/components/BackButton";
 import { ModalProvider } from "@/context/ModalContext";
 import ShellWrapper from "@/components/ShellWrapper";
@@ -68,6 +69,7 @@ export default function RootLayout({
       <body className="antialiased min-h-screen bg-bone text-gunmetal font-sans selection:bg-sunset selection:text-white">
         <ModalProvider>
           <CustomCursor />
+          <ScrollToTop />
           {/* ShellWrapper decide qué mostrar según la ruta */}
           <ShellWrapper>
             <NavbarProvider>{children}</NavbarProvider>

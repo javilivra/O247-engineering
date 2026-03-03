@@ -2,6 +2,7 @@
 import { adaptParkItems } from '@/lib/parkItemAdapter';
 import React from 'react';
 import ParkPageLayout from '@/components/parks/ParkPageLayout';
+import { getAlertsForPark } from '@/data/alerts-data';
 import { EPIC_ATTRACTIONS, EPIC_DINING, EPIC_SHOWS, EPIC_CHARACTERS } from '@/data/epic-data';
 
 export default function EpicUniversePage() {
@@ -38,7 +39,7 @@ export default function EpicUniversePage() {
           shows: { data: EPIC_SHOWS },
           characters: { data: EPIC_CHARACTERS },
         },
-        alerts: EPIC_ATTRACTIONS,
+        alerts: getAlertsForPark('eu'),
       }}
     />
   );

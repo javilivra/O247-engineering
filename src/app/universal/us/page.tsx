@@ -2,6 +2,7 @@
 import { adaptParkItems } from '@/lib/parkItemAdapter';
 import React from 'react';
 import ParkPageLayout from '@/components/parks/ParkPageLayout';
+import { getAlertsForPark } from '@/data/alerts-data';
 import { US_ATTRACTIONS, US_DINING, US_SHOWS, US_CHARACTERS } from '@/data/us-data';
 
 export default function UniversalStudiosPage() {
@@ -38,7 +39,7 @@ export default function UniversalStudiosPage() {
           shows: { data: US_SHOWS },
           characters: { data: US_CHARACTERS },
         },
-        alerts: US_ATTRACTIONS,
+        alerts: getAlertsForPark('usf'),
       }}
     />
   );

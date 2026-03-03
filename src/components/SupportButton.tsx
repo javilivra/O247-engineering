@@ -3,52 +3,83 @@
 import { useState } from "react";
 import SupportModal from "@/components/SupportModal";
 
-function SupportHandsIcon({ size = 16, color = "currentColor" }: { size?: number; color?: string }) {
+function SupportHeartIcon({ size = 14, color = "currentColor" }: { size?: number; color?: string }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 18 18" fill="none">
-      <path d="M2.5 12c0-.55.45-1 1-1H4.5v4H3.5a1 1 0 0 1-1-1v-2z" stroke={color} strokeWidth="1.25" strokeLinejoin="round"/>
-      <path d="M4.5 11l2-3.2a1.1 1.1 0 0 1 .95-.55H11c.55 0 1 .45 1 1v.5h1c.55 0 1 .45 1 1v2.7c0 .55-.45 1-1 1H7L4.5 13V11z" stroke={color} strokeWidth="1.25" strokeLinejoin="round"/>
-      <path d="M8.5 6.5V4M7.2 5.3l1.3-1.3 1.3 1.3" stroke={color} strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
+    <svg width={size} height={size} viewBox="0 0 20 20" fill="none">
+      <path
+        d="M10 16.5S3 12 3 7.5A3.5 3.5 0 0 1 9.5 5.6L10 6l.5-.4A3.5 3.5 0 0 1 17 7.5C17 12 10 16.5 10 16.5z"
+        fill={color}
+        opacity="0.9"
+      />
+      <path d="M14.5 3.5l.5 1.2M16.5 5l1.2.5M15.8 6.5l1.3.2" stroke={color} strokeWidth="1.1" strokeLinecap="round" opacity="0.6"/>
     </svg>
   );
 }
 
-type Variant = "outline" | "inline" | "ghost";
-interface Props { variant?: Variant; label?: string; className?: string; }
+type Variant = "hero" | "outline" | "inline" | "ghost";
 
-export default function SupportButton({ variant = "outline", label = "Apoyar O247", className = "" }: Props) {
+interface Props {
+  variant?: Variant;
+  label?: string;
+  className?: string;
+}
+
+export default function SupportButton({
+  variant = "hero",
+  label = "Apoyar O247",
+  className = "",
+}: Props) {
   const [open, setOpen] = useState(false);
-  const [hov, setHov]   = useState(false);
 
-  const styles: Record<Variant, { base: React.CSSProperties; hover: React.CSSProperties }> = {
-    outline: {
-      base:  { padding: "8px 16px", borderRadius: 10, border: "1.5px solid rgba(255,112,67,0.55)", background: "transparent", color: "#FF7043", fontSize: 13, fontWeight: 500 },
-      hover: { background: "#FF7043", color: "white", borderColor: "#FF7043", boxShadow: "0 4px 14px rgba(255,112,67,0.28)" },
-    },
-    inline: {
-      base:  { padding: "11px 22px", borderRadius: 12, border: "1.5px solid rgba(255,112,67,0.22)", background: "rgba(255,112,67,0.06)", color: "#FF7043", fontSize: 14, fontWeight: 500 },
-      hover: { background: "#FF7043", color: "white", borderColor: "#FF7043", boxShadow: "0 6px 22px rgba(255,112,67,0.3)" },
-    },
-    ghost: {
-      base:  { padding: "6px 10px", borderRadius: 8, border: "none", background: "transparent", color: "rgba(37,52,63,0.5)", fontSize: 13, fontWeight: 500 },
-      hover: { color: "#FF7043", background: "rgba(255,112,67,0.06)" },
-    },
+  const variantClass: Record<Variant, string> = {
+    hero: [
+      "relative px-7 py-2.5 rounded-full",
+      "font-bold text-[11px] tracking-[0.15em] uppercase text-white",
+      "shadow-lg transition-all duration-300",
+      "hover:brightness-110 hover:shadow-lg",
+      "active:scale-95",
+      "flex items-center gap-2",
+    ].join(" "),
+    outline: [
+      "px-5 py-2.5 rounded-full",
+      "border-2 border-sunset/60 bg-transparent",
+      "font-bold text-[11px] tracking-[0.15em] uppercase text-sunset",
+      "transition-all duration-200",
+      "hover:bg-sunset hover:border-sunset hover:text-white hover:shadow-lg",
+      "active:scale-95",
+      "flex items-center gap-2",
+    ].join(" "),
+    inline: [
+      "px-6 py-3 rounded-full",
+      "font-bold text-[11px] tracking-[0.15em] uppercase text-white",
+      "shadow-md transition-all duration-300",
+      "hover:brightness-110 hover:shadow-lg",
+      "active:scale-95",
+      "flex items-center gap-2",
+    ].join(" "),
+    ghost: [
+      "px-4 py-2 rounded-full bg-transparent",
+      "font-semibold text-[11px] tracking-[0.12em] uppercase",
+      "text-gunmetal/40 hover:text-sunset",
+      "transition-colors duration-200",
+      "flex items-center gap-2",
+    ].join(" "),
   };
 
-  const current    = hov ? { ...styles[variant].base, ...styles[variant].hover } : styles[variant].base;
-  const iconColor  = hov ? (variant === "ghost" ? "#FF7043" : "white") : (variant === "ghost" ? "rgba(37,52,63,0.42)" : "#FF7043");
+  const gradientStyle =
+    variant === "hero" || variant === "inline"
+      ? { background: "linear-gradient(to right, #00B4D8, #FF7043)" }
+      : {};
 
   return (
     <>
       <button
         onClick={() => setOpen(true)}
-        onMouseEnter={() => setHov(true)}
-        onMouseLeave={() => setHov(false)}
         aria-label="Apoyar el proyecto O247"
-        className={className}
-        style={{ display: "inline-flex", alignItems: "center", gap: 8, cursor: "pointer", transition: "all 0.2s ease", fontFamily: "var(--font-sans)", ...current }}
+        className={`${variantClass[variant]} ${className}`}
+        style={{ fontFamily: "var(--font-sans)", cursor: "pointer", border: "none", ...gradientStyle }}
       >
-        <SupportHandsIcon size={15} color={iconColor} />
+        <SupportHeartIcon size={14} color="white" />
         {label}
       </button>
       <SupportModal isOpen={open} onClose={() => setOpen(false)} />

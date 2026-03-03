@@ -2,6 +2,7 @@
 import { adaptParkItems } from '@/lib/parkItemAdapter';
 import React from 'react';
 import ParkPageLayout from '@/components/parks/ParkPageLayout';
+import { getAlertsForPark } from '@/data/alerts-data';
 import { VOLCANO_ATTRACTIONS, VOLCANO_DINING, VOLCANO_SHOWS, VOLCANO_CHARACTERS } from '@/data/volcano-data';
 
 export default function VolcanoBayPage() {
@@ -38,7 +39,7 @@ export default function VolcanoBayPage() {
           shows: { data: VOLCANO_SHOWS },
           characters: { data: VOLCANO_CHARACTERS },
         },
-        alerts: VOLCANO_ATTRACTIONS,
+        alerts: getAlertsForPark('vb'),
       }}
     />
   );
