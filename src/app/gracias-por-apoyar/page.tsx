@@ -57,7 +57,7 @@ export default function GraciasPage() {
             </div>
           </div>
           
-            href="/downloads/glosario-disney-universal-o247.pdf"
+          <a href="/downloads/glosario-disney-universal-o247.pdf"
             download
             className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-medium transition-all duration-200"
             style={{ background: "#00B4D8", color: "white", display: "flex" }}

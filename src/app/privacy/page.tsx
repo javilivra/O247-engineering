@@ -4,8 +4,6 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Icon } from "@/components/Icon";
 import Link from "next/link";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 
 // --- DATA: SECCIONES DE PRIVACIDAD ---
 const PRIVACY_SECTIONS = [
@@ -116,7 +114,6 @@ export default function PrivacyPage() {
 
   return (
     <main className="bg-bone min-h-screen">
-      <Navbar />
 
       {/* HEADER */}
       <section className="pt-40 pb-16 px-6 border-b border-gunmetal/5">
@@ -213,7 +210,6 @@ export default function PrivacyPage() {
         </div>
       </section>
 
-      <Footer />
     </main>
   );
 }

@@ -29,11 +29,15 @@ export default function HeroCarousel({ slides, duration = 5000, onSlideChange }:
       setCurrent((c) => {
         const next = (c + 1) % slides.length;
         setPrev(c);
-        onSlideChange?.(next, slides.length);
         return next;
       });
     }, duration);
-  }, [slides.length, duration, onSlideChange]);
+  }, [slides.length, duration]);
+
+  // Notificar cambio de slide FUERA del render cycle
+  useEffect(() => {
+    onSlideChange?.(current, slides.length);
+  }, [current, slides.length, onSlideChange]);
 
   useEffect(() => {
     startAutoplay();

@@ -6,8 +6,7 @@ import { motion } from "framer-motion";
 import { Icon } from "@/components/Icon";
 import Image from "next/image";
 import Link from "next/link";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import SupportButton from "@/components/SupportButton";
 
 // Componente simple de ScrollReveal para esta página
 const Reveal = ({ children, delay = 0 }: { children: React.ReactNode, delay?: number }) => (
@@ -24,7 +23,6 @@ const Reveal = ({ children, delay = 0 }: { children: React.ReactNode, delay?: nu
 export default function AboutPage() {
   return (
     <main className="bg-bone min-h-screen selection:bg-sunset selection:text-white">
-      <Navbar />
 
       {/* --- HERO: EL MANIFIESTO --- */}
       <section className="pt-40 pb-20 px-6 border-b border-gunmetal/5">
@@ -106,10 +104,11 @@ export default function AboutPage() {
                         <div className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20">
                             <Icon icon="solar:user-id-bold-duotone" className="text-white w-6 h-6" />
                         </div>
-                        <div>
+                        <div className="flex-1">
                             <p className="text-white font-bold text-lg">Javier & Carolina</p>
                             <p className="text-white/50 text-xs font-mono uppercase tracking-widest">Founders & Lead Engineers</p>
                         </div>
+                        <SupportButton variant="ghost" />
                     </div>
                     <p className="text-white/70 text-sm leading-relaxed border-l-2 border-sunset pl-4">
                         "Nuestro objetivo no es venderte un viaje, es diseñarte una experiencia sin fricción."
@@ -184,7 +183,7 @@ export default function AboutPage() {
                 <p className="text-lg text-gunmetal/60 mb-10">
                     Deja de planificar como turista y empieza a ejecutar como ingeniero.
                 </p>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                     <Link 
                         href="/contact" 
                         className="px-8 py-4 bg-gunmetal text-white rounded-full font-bold uppercase tracking-widest text-xs hover:bg-sunset transition-colors shadow-xl"
@@ -197,12 +196,12 @@ export default function AboutPage() {
                     >
                         Ver Demo (Magic Kingdom)
                     </Link>
+                    <SupportButton variant="outline" />
                 </div>
             </Reveal>
         </div>
       </section>
 
-      <Footer />
     </main>
   );
 }

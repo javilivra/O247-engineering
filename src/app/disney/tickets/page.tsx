@@ -3,8 +3,6 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Icon } from "@/components/Icon";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 
 // --- DATA: MATRIZ DE TICKETS ---
 const TICKET_TYPES = [
@@ -153,7 +151,6 @@ export default function DisneyTicketsPage() {
 
   return (
     <main className="bg-bone min-h-screen font-sans selection:bg-sunset selection:text-white">
-      <Navbar />
 
       {/* --- HERO: MANIFIESTO ESTRATÉGICO --- */}
       <section className="pt-40 pb-24 px-6 bg-bone relative overflow-hidden">
@@ -460,7 +457,6 @@ export default function DisneyTicketsPage() {
          </div>
       </section>
 
-      <Footer />
     </main>
   );
 }

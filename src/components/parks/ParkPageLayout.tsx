@@ -7,7 +7,7 @@ import { Icon } from "@/components/Icon";
 import Link from 'next/link';
 
 import type { ParkItem } from '@/data/types';
-import BentoCard from '@/app/disney/BentoCard';
+import BentoCard from '@/components/parks/BentoCard';
 import HeroCarousel from '@/components/parks/HeroCarousel';
 import FilterModal from '@/components/parks/FilterModal';
 import type { FilterChip, FilterSection } from '@/components/parks/FilterModal';

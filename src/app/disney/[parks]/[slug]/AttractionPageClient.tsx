@@ -1,4 +1,5 @@
 "use client";
+import SupportButton from "@/components/SupportButton";
 
 // ============================================================
 // AttractionPageClient.tsx  v9.0 — "Editorial Dark"
@@ -112,6 +113,7 @@ function SectionLabel({ icon, label, accent = false }: { icon?: React.ReactNode;
       {icon && <span style={{ color: accent ? T.sunset : T.celeste, opacity: 0.8 }}>{icon}</span>}
       <span style={{ ...F.tech, fontSize: "10px", color: T.muted }}>{label}</span>
       <div style={{ flex: 1, height: "1px", background: T.border, marginLeft: "8px" }}/>
+
     </div>
   );
 }
@@ -434,6 +436,7 @@ function getDefaultSteps(access: string, accessExplained: string) {
 // ══════════════════════════════════════════════════════════════
 // COMPONENTE PRINCIPAL
 // ══════════════════════════════════════════════════════════════
+
 export default function AttractionPageClient({ attraction }: { attraction: Attraction }) {
   const a = attraction as ExtendedAttraction;
   const isMobile = useIsMobile();
@@ -973,6 +976,7 @@ export default function AttractionPageClient({ attraction }: { attraction: Attra
         <span style={{ ...F.display, fontSize: "1rem", background: T.grad, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
           O247
         </span>
+        <SupportButton variant="outline" />
         <span style={{ ...F.tech, fontSize: "8px", color: T.faint }}>
           {name} · {a.land} · Magic Kingdom
         </span>

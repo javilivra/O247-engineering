@@ -4,8 +4,6 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Icon } from "@/components/Icon";
 import Link from "next/link";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 
 // --- DATA: SECCIONES DE LOS TÉRMINOS ---
 const TERMS_SECTIONS = [
@@ -110,7 +108,6 @@ export default function TermsPage() {
 
   return (
     <main className="bg-bone min-h-screen">
-      <Navbar />
 
       {/* HEADER SIMPLE */}
       <section className="pt-40 pb-16 px-6 border-b border-gunmetal/5">
@@ -207,7 +204,6 @@ export default function TermsPage() {
         </div>
       </section>
 
-      <Footer />
     </main>
   );
 }

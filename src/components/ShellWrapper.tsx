@@ -8,6 +8,12 @@ import GlobalBreadcrumbs from "@/components/GlobalBreadcrumbs";
 import BackButton from "@/components/BackButton";
 import SmoothScroll from "@/components/SmoothScroll";
 
+// Rutas que renderizan sin Navbar/Footer (páginas limpias)
+const CLEAN_ROUTES = [
+  "/gracias-por-apoyar",
+  // Fase 2: agregar rutas de checkout/pago acá
+];
+
 function isAttractionRoute(pathname: string): boolean {
   if (!pathname) return false;
   const segments = pathname.split("/").filter(Boolean);
@@ -16,6 +22,10 @@ function isAttractionRoute(pathname: string): boolean {
     segments.length === 3 &&
     (segments[0] === "disney" || segments[0] === "universal")
   );
+}
+
+function isCleanRoute(pathname: string): boolean {
+  return CLEAN_ROUTES.includes(pathname);
 }
 
 function FullShell({ children }: { children: React.ReactNode }) {
