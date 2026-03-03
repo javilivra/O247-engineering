@@ -268,7 +268,6 @@ function StepAmount({ method, onBack }: { method: SupportMethod; onBack: () => v
   );
 
   const freeActive = selected === "libre";
-  const freeActive = selected === "libre";
   const canPay = selected && (selected !== "libre" || freeAmt.length > 0);
 
   return (
