@@ -3,7 +3,7 @@ import { POV_DATA } from './pov-data';
 // Auto-inyecta videoId desde POV_DATA si no está definido en el item
 function withPov<T extends { id: string; pov?: { videoId: string; channelName: string; channelUrl: string } }>(items: T[]): T[] {
   return items.map(item => {
-    const videoId = POV_DATA[item.id];
+    const videoId = POV_DATA[item.id] || POV_DATA["mk-" + item.id];
     if (!videoId) return item;
     if (item.pov?.videoId) return item; // ya tiene pov definido, no pisar
     return { ...item, pov: { videoId, channelName: '', channelUrl: '' } };
@@ -84,7 +84,6 @@ export const MK_ATTRACTIONS: Attraction[] = [
     secretTip: 'Escucha el codigo morse en la estacion de Main Street: transmite el discurso de inauguracion de Walt Disney de 1971.',
     description: 'Un autentico tren a vapor de epoca que recorre los 2.5 km del perimetro completo de Magic Kingdom. Con 4 estaciones (Main Street, Frontierland, Fantasyland y Tomorrowland), funciona tanto como atraccion panoramica como transporte real entre zonas del parque. Estuvo cerrado 4 anos (2018-2023) por la construccion de TRON.',
     insiderFacts: ['Las 4 locomotoras son autenticas de los anos 1920, restauradas pieza por pieza.', 'El recorrido completo dura 20 minutos y cubre 2.5 km.', 'Estuvo cerrado desde 2018 hasta 2023 por la construccion de TRON Lightcycle.'],
-    pov: { videoId: 'QVpYBNnhPfc', channelName: 'AllEars.net', channelUrl: 'https://www.youtube.com/@AllEarsNet' },
     avgWaitByMonth: gm(20), forecastToday: gf(20, 'fl'),
     relatedActivities: [
         { title: 'Main Street Vehicles', type: 'experience', description: 'Autos antiguos que recorren Main Street. Solo funcionan antes de las 11 AM.' },
@@ -168,7 +167,6 @@ export const MK_ATTRACTIONS: Attraction[] = [
     secretTip: 'La mitad del avion estrellado es la otra mitad del avion de la pelicula Casablanca.',
     description: 'Crucero tematico por rios exoticos con animatronicos de animales y un capitan que hace chistes durante todo el trayecto. Renovada en 2021 con nuevas escenas. Los chistes cambian segun el capitan y la hora del dia — la version nocturna tiene iluminacion especial.',
     insiderFacts: ['Rediseñada completamente en 2021 eliminando escenas consideradas insensibles.', 'Cada capitan tiene libertad para improvisar — ningun viaje es igual.', 'La version nocturna tiene iluminacion que cambia completamente la atmosfera.', 'Walt Disney personalmente guio el primer bote en la inauguracion de Disneyland (1955).'],
-    pov: { videoId: 'EGBsP2Kxevw', channelName: 'Theme Park Obsession', channelUrl: 'https://www.youtube.com/@ThemeParkObsession' },
     avgWaitByMonth: gm(55), forecastToday: gf(55, 'ap'),
     relatedActivities: [
         { title: 'Jingle Cruise (Temporada)', type: 'experience', description: 'En Navidad se transforma con decoracion festiva y chistes navidenos.' },
@@ -212,7 +210,6 @@ export const MK_ATTRACTIONS: Attraction[] = [
     secretTip: 'En la escena del pozo y el alcalde, el nivel del agua sube y baja de verdad.',
     description: 'Recorrido en bote por escenas de la vida pirata con animatronicos de ultima generacion, incluyendo un Jack Sparrow increiblemente realista. La atraccion inspiro las peliculas (no al reves). Incluye 2 pequenas caidas en la oscuridad.',
     insiderFacts: ['La atraccion inspiro las peliculas — existia 30 anos antes que la primera pelicula.', 'Tiene 2 caidas en la oscuridad de aprox 1 metro cada una.', 'El animatronico de Jack Sparrow es considerado uno de los mas avanzados del mundo.', 'El agua tiene un aroma especifico ("bromine water") inconfundible.', 'Busca los gatos escondidos en varias escenas — hay al menos 3.'],
-    pov: { videoId: 'agJgqK_JnYQ', channelName: 'Theme Park Obsession', channelUrl: 'https://www.youtube.com/@ThemeParkObsession' },
     avgWaitByMonth: gm(40), forecastToday: gf(40, 'ap'),
     relatedActivities: [
         { title: 'A Pirates Adventure', type: 'game', description: '5 misiones interactivas de busqueda del tesoro por Adventureland. Gratis.' },
@@ -240,7 +237,6 @@ export const MK_ATTRACTIONS: Attraction[] = [
     secretTip: 'El olor a Beignets en la fila es artificial (pumped-in), pero delicioso!',
     description: 'La atraccion mas nueva de Magic Kingdom (2024). Reemplazo de Splash Mountain con tematica de La Princesa y el Sapo. Recorrido musical en tronco por el bayou de Louisiana con animatronicos de nueva generacion y una caida principal de 15 metros a 40 km/h. Te vas a mojar.',
     insiderFacts: ['La caida principal es de 15 metros a 40 km/h — te vas a mojar.', 'Tiene mas de 100 animatronicos de nueva generacion.', 'El olor a beignets en la fila es un aromatizador artificial.', 'La confiabilidad es baja (65%) porque es nueva y sufre cierres tecnicos frecuentes.', 'Si llueve fuerte, la atraccion cierra temporalmente.'],
-    pov: { videoId: 'nOY1o9SVC1A', channelName: 'DocumentDisney', channelUrl: 'https://www.youtube.com/embed/nOY1o9SVC1A' },
     avgWaitByMonth: gm(90), forecastToday: gf(90, 'mp'),
     relatedActivities: [{ title: 'Memory Maker Photo', type: 'photo', description: 'Foto automatica en la caida. Incluida en Memory Maker.' }],
     warnings: { ...DW, drops: true, water: true, darkness: true, scareFactor: 3 as const, pregnancyRestriction: true, backNeckIssues: true, notes: 'Caida importante de 15m. Te vas a mojar significativamente.' },
@@ -322,7 +318,6 @@ export const MK_ATTRACTIONS: Attraction[] = [
     secretTip: 'Busca el anillo de boda incrustado en el pavimento a la salida de la mansion.',
     description: 'Iconico recorrido en Doom Buggies por una mansion embrujada con 999 fantasmas. Combina efectos practicos clasicos (Peppers Ghost de 1862) con tecnologia moderna. No es de terror sino de humor macabro — perfecto para toda la familia. La fila interactiva del cementerio es una atraccion en si misma.',
     insiderFacts: ['El efecto del fantasma en el espejo usa la tecnica Peppers Ghost de 1862.', 'Busca el anillo de compromiso incrustado en el concreto a la salida.', 'El cementerio de la fila tiene instrumentos que suenan al tocarlos.', 'Hay exactamente 999 fantasmas y siempre buscan al numero 1000.', 'En temporada de Halloween se transforma completamente.'],
-    pov: { videoId: 'kOcHTMghYRc', channelName: 'Theme Park Obsession', channelUrl: 'https://www.youtube.com/@ThemeParkObsession' },
     avgWaitByMonth: gm(45), forecastToday: gf(45, 'ep'),
     relatedActivities: [
         { title: 'Memento Mori', type: 'shopping', description: 'Tienda tematica de Haunted Mansion con merchandise exclusivo.' },
@@ -348,7 +343,6 @@ export const MK_ATTRACTIONS: Attraction[] = [
     secretTip: 'Solo hay un muneco que no sonrie en toda la atraccion — el payaso con el globo.',
     description: 'Recorrido en bote por escenas que representan ninos de todo el mundo cantando la iconica cancion. Con 14 minutos y A/C, es uno de los mejores descansos del parque. Creado para la Feria Mundial de 1964 por Walt Disney.',
     insiderFacts: ['Creado para la Feria Mundial de Nueva York de 1964.', 'Tiene 289 munecos animatronicos de 5 continentes.', 'Solo un muneco no sonrie — el payaso con el globo.', 'La cancion fue compuesta por los hermanos Sherman en menos de 24 horas.'],
-    pov: { videoId: 'a-5peDpGZJU', channelName: 'AllEars.net', channelUrl: 'https://www.youtube.com/@AllEarsNet' },
     avgWaitByMonth: gm(25), forecastToday: gf(25, 'ap'),
     relatedActivities: [],
     warnings: { ...DW, water: true },
@@ -368,7 +362,6 @@ export const MK_ATTRACTIONS: Attraction[] = [
     secretTip: 'Los coches cuelgan del techo, una tecnologia revolucionaria en 1955 y 1971.',
     description: 'Vuelas sobre Londres y Neverland en un barco pirata suspendido del techo. A pesar de durar solo 3 minutos, es consistentemente la atraccion con mas fila de Fantasyland por su baja capacidad y enorme demanda nostalgica.',
     insiderFacts: ['Solo dura 3 minutos pero la fila supera los 90 minutos frecuentemente.', 'Los vehiculos cuelgan del techo — unica atraccion con este sistema en MK.', 'Tiene la peor relacion duracion/espera de todo Magic Kingdom.', 'El sistema de riel aereo fue revolucionario en 1955.'],
-    pov: { videoId: 'XwWQ8qwEJFE', channelName: 'AllEars.net', channelUrl: 'https://www.youtube.com/@AllEarsNet' },
     avgWaitByMonth: gm(65), forecastToday: gf(65, 'mp'),
     relatedActivities: [],
     warnings: { ...DW, darkness: true, heights: true },
@@ -464,7 +457,6 @@ export const MK_ATTRACTIONS: Attraction[] = [
     secretTip: 'Gira los barriles en la fila para ver proyecciones en el techo.',
     description: 'Montana rusa familiar con vagones que se balancean naturalmente en las curvas. La mas demandada de Fantasyland con escenas de los enanos en la mina con proyecciones y animatronicos. La fila interactiva con gemas y barriles es una atraccion en si misma.',
     insiderFacts: ['Los vagones se balancean en las curvas gracias a un sistema de pivote.', 'La fila interactiva tiene 3 zonas de juegos con gemas y proyecciones.', 'Costo 145 millones de dolares — la mas cara de Fantasyland.', 'El mejor momento es durante los fuegos artificiales.', 'Gira los barriles en la fila para activar proyecciones en el techo.'],
-    pov: { videoId: 'YPQmQBbYtgk', channelName: 'Theme Park Obsession', channelUrl: 'https://www.youtube.com/@ThemeParkObsession' },
     avgWaitByMonth: gm(75), forecastToday: gf(75, 'mp'),
     relatedActivities: [{ title: 'Memory Maker Photo', type: 'photo', description: 'Foto automatica en la bajada principal.' }],
     warnings: { ...DW, motionSickness: true, drops: true, scareFactor: 2 as const, pregnancyRestriction: true, backNeckIssues: true },
@@ -659,7 +651,6 @@ export const MK_ATTRACTIONS: Attraction[] = [
         secretTip: 'Pedi fila trasera (fila 9) para maxima intensidad. De noche el canopy de 250,000 LEDs es impresionante.',
         description: 'La montana rusa mas rapida de Magic Kingdom. Vas sentado sobre una moto estilo TRON inclinado hacia adelante a 96 km/h. La experiencia dura solo 2 minutos pero la seccion exterior con el canopy iluminado es espectacular de noche. Los lockers son obligatorios — no podes llevar NADA encima.',
         insiderFacts: ['Velocidad maxima: 96 km/h — la mas rapida de Magic Kingdom.', 'La posicion de conduccion es unica: inclinado sobre la moto.', 'La construccion duro 6 anos y obligo a cerrar el Railroad.', 'El canopy exterior tiene 250,000 LEDs que cambian de color.', 'De noche, la iluminacion azul/naranja es visible desde todo el parque.', 'La fila trasera (row 9) tiene la experiencia mas intensa.'],
-        pov: { videoId: 'yzPLBbKBA5A', channelName: 'Theme Park Obsession', channelUrl: 'https://www.youtube.com/@ThemeParkObsession' },
         avgWaitByMonth: gm(85), forecastToday: gf(85, 'mp'),
         relatedActivities: [
             { title: 'TRON Identity Program', type: 'experience', description: 'Experiencia de realidad digital antes de la fila.' },
@@ -702,7 +693,6 @@ export const MK_ATTRACTIONS: Attraction[] = [
         secretTip: 'La pista izquierda (Alpha) es ligeramente mas larga que la derecha (Omega).',
         description: 'Montana rusa en completa oscuridad dentro de una estructura en forma de cono que simula el espacio exterior. No ves absolutamente nada de la pista, lo cual amplifica cada giro y bajada. Tiene 2 pistas paralelas (Alpha y Omega) y la fila interactiva con juegos espaciales es excelente.',
         insiderFacts: ['Tiene 2 pistas paralelas: Alpha (izquierda, mas larga) y Omega (derecha).', 'Esta en oscuridad total — no ves la pista, multiplica la sensacion.', 'La velocidad maxima es solo 45 km/h pero se siente mucho mas rapido por la oscuridad.', 'La fila interactiva tiene juegos espaciales en pantallas tactiles.', 'La estructura exterior es un cono de 55 metros de diametro.'],
-        pov: { videoId: 'OKHlYGaDvR4', channelName: 'Theme Park Obsession', channelUrl: 'https://www.youtube.com/@ThemeParkObsession' },
         avgWaitByMonth: gm(50), forecastToday: gf(50, 'mp'),
         relatedActivities: [
             { title: 'Memory Maker Photo', type: 'photo', description: 'Foto automatica durante el recorrido.' },
@@ -745,7 +735,6 @@ export const MK_ATTRACTIONS: Attraction[] = [
         secretTip: 'Pasas por dentro de Space Mountain con las luces encendidas si tenes suerte.',
         description: 'Tour panoramico de 10 minutos por Tomorrowland en vehiculos magneticos que nunca se detienen. Pasas por dentro de Buzz Lightyear, Space Mountain (a veces con luces encendidas), y tenes vistas elevadas de todo Tomorrowland.',
         insiderFacts: ['Usa propulsion magnetica (linear induction) — no tiene motor a bordo.', 'A veces pasas por Space Mountain con las luces encendidas, revelando toda la pista.', 'Es el favorito de los empleados de Disney (Cast Members).', 'Walt Disney lo presento como el transporte del futuro.', 'Jamas se detiene — los vehiculos giran en loop continuo.'],
-        pov: { videoId: 'Zw-xJ2k_S3E', channelName: 'AllEars.net', channelUrl: 'https://www.youtube.com/@AllEarsNet' },
         avgWaitByMonth: gm(15), forecastToday: gf(15, 'fl'),
         relatedActivities: [],
         warnings: { ...DW },
