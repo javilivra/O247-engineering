@@ -181,7 +181,7 @@ export default function GlobalBreadcrumbs() {
 
   const positionClass = isDark
     ? "absolute top-[92px] left-0 z-30"
-    : "relative mt-20 mb-2 z-30";
+    : "relative mt-20 py-3 z-30";
 
   const getName = (segment: string) =>
     PATH_MAP[segment] || segment.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());

@@ -125,10 +125,7 @@ function ContextualIntro({ short, expanded }: { short: React.ReactNode; expanded
   const [isOpen, setIsOpen] = useState(false);
   return (
     <div className="relative z-10">
-      <div className="flex items-center gap-3 mb-6">
-        <div className="w-8 h-px bg-gunmetal/20" />
-        <h3 className="text-[10px] font-bold tracking-[0.2em] uppercase font-mono text-gunmetal/40">COMO ESTA PENSADO</h3>
-      </div>
+
       <div className="text-xl md:text-2xl font-medium text-gunmetal leading-relaxed font-sans">
         {short}
         {expanded && (
@@ -218,6 +215,13 @@ export default function ParkPageLayout({ config }: { config: ParkPageConfig }) {
   // Alerts
   const activeAlerts = alerts.filter(a => a.status === 'closed' || a.status === 'refurbishment' || a.status === 'down');
   const [alertIndex, setAlertIndex] = useState(0);
+  const [isBarScrolled, setIsBarScrolled] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setIsBarScrolled(window.scrollY > 40);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
   const nextAlert = () => setAlertIndex((prev) => (prev + 1) % activeAlerts.length);
 
   // Data
@@ -344,13 +348,7 @@ export default function ParkPageLayout({ config }: { config: ParkPageConfig }) {
         {/* STICKY FILTER BAR */}
         {/* ============================================================ */}
         <div className="sticky top-0 z-30">
-          <div className="absolute inset-0"
-            style={{
-              background: 'rgba(247,247,245,0.82)',
-              backdropFilter: 'blur(24px) saturate(180%)',
-              WebkitBackdropFilter: 'blur(24px) saturate(180%)',
-              boxShadow: '0 8px 32px rgba(0,0,0,0.04)',
-            }} />
+          <div className="absolute inset-0" />
           <div className="relative z-10 max-w-[1200px] mx-auto px-4 sm:px-6 md:px-12 lg:px-24 py-3 space-y-2.5">
 
             {/* ROW 1: Categories + Filters btn + Search + Sort */}

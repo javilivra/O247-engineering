@@ -331,7 +331,7 @@ export default function Navbar() {
       ? 'bg-white/90 backdrop-blur-md border-b border-gunmetal/6 shadow-sm'
       : isTransparentHero
         ? 'bg-transparent border-transparent'
-        : 'bg-bone/95 backdrop-blur-sm border-b border-gunmetal/8';
+        : 'bg-bone/95 backdrop-blur-sm';
 
   const logoClass = useDarkText ? 'text-gunmetal' : 'text-white';
 
