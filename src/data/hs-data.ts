@@ -47,6 +47,7 @@ export const HS_ATTRACTIONS: ParkItem[] = withPov([
   },
   {
     id: 'hs-rnrc', name: "Rock 'n' Roller Coaster",
+    permanentlyClosed: true, permanentlyClosedDate: '2 Mar 2026', closingNote: "Reabre como Rock 'n' Roller Coaster Starring The Muppets — verano 2026",
     land: 'Sunset Boulevard', tier: 'Tier 1', type: 'Attraction',
     image: '/images/attractions/hs/hs-rock_roll_coaster.webp', vibes: ['thrill', 'indoor', 'dark', 'fast'],
     waitTime: '65 min', status: 'open',

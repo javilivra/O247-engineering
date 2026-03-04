@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Icon } from '@/components/Icon';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -52,99 +52,174 @@ function getTypeConfig(type: string) {
   }
 }
 
+type CardStatus = 'permanent' | 'closing-soon' | 'refurbishment' | 'coming-soon' | 'normal';
+
+function getCardStatus(data: ParkItem): CardStatus {
+  const a = data as any;
+  if (a.permanentlyClosed) return 'permanent';
+  if (a.closingDate) return 'closing-soon';
+  if (a.refurbishmentUntil || data.status === 'refurbishment') return 'refurbishment';
+  if (a.comingSoon) return 'coming-soon';
+  return 'normal';
+}
+
 function IntensityBar({ level }: { level: number }) {
   const segments = 10;
   const filled = Math.round((level / 5) * segments);
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-      <span style={{ fontFamily: 'monospace', fontSize: '7px', letterSpacing: '0.15em', color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase' }}>
-        Intensity Level
-      </span>
+      <span style={{ fontFamily: 'monospace', fontSize: '7px', letterSpacing: '0.15em', color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase' }}>Intensity Level</span>
       <div style={{ display: 'flex', gap: '3px', alignItems: 'flex-end' }}>
         {Array.from({ length: segments }).map((_, i) => {
           const active = i < filled;
           const color = i < 3 ? '#22c55e' : i < 6 ? '#eab308' : '#ef4444';
-          return (
-            <div key={i} style={{
-              width: '7px',
-              height: '12px',
-              borderRadius: '2px',
-              background: active ? color : 'rgba(255,255,255,0.07)',
-              boxShadow: active ? `0 0 5px ${color}90` : 'none',
-            }} />
-          );
+          return <div key={i} style={{ width: '7px', height: '12px', borderRadius: '2px', background: active ? color : 'rgba(255,255,255,0.07)', boxShadow: active ? `0 0 5px ${color}90` : 'none' }} />;
         })}
       </div>
     </div>
   );
 }
 
-function CardFront({ data, config, hovered, added, onAdd, isAttraction }: {
-  data: ParkItem;
-  config: ReturnType<typeof getTypeConfig>;
-  hovered: boolean;
-  added: boolean;
-  onAdd: (e: React.MouseEvent) => void;
-  isAttraction: boolean;
+function PermanentClosedOverlay({ data }: { data: ParkItem }) {
+  const a = data as any;
+  const config = getTypeConfig(data.type);
+  return (
+    <>
+      {/* Overlay rojo oscuro sobre la imagen */}
+      <div className="absolute inset-0 z-10 rounded-2xl" style={{ background: 'linear-gradient(to top, rgba(120,0,0,0.92) 0%, rgba(80,0,0,0.75) 50%, rgba(40,0,0,0.55) 100%)' }} />
+      {/* Banda cerrado — igual a mantenimiento pero roja */}
+      <div className="absolute top-3 left-3 right-3 z-20 flex items-center gap-2 px-3 py-2 rounded-xl"
+        style={{ background: 'rgba(20,0,0,0.82)', backdropFilter: 'blur(10px)', boxShadow: '0 2px 16px rgba(0,0,0,0.5)', border: '1px solid rgba(220,38,38,0.4)' }}>
+        <span style={{ color: '#ef4444', display:'inline-flex', flexShrink: 0 }}><Icon icon="solar:info-circle-bold" width={14} /></span>
+        <div className="flex flex-col">
+          <span style={{ fontFamily: 'monospace', fontSize: '8px', fontWeight: 900, letterSpacing: '0.15em', color: '#ef4444', textTransform: 'uppercase', lineHeight: 1.3 }}>Cerrado Permanentemente</span>
+          {a.closingNote && <span style={{ fontFamily: 'monospace', fontSize: '8px', fontWeight: 600, color: 'rgba(255,255,255,0.55)', lineHeight: 1.3 }}>{a.closingNote}</span>}
+        </div>
+      </div>
+      {/* Land + Nombre — igual que card normal */}
+      <div className="absolute bottom-0 left-0 right-0 z-20 p-4">
+        <div className="flex items-center gap-1 mb-1">
+          <span style={{ color: config.accent, flexShrink: 0, display: 'inline-flex' }}><Icon icon="solar:map-point-bold" width={9} /></span>
+          <span style={{ fontFamily: 'monospace', fontSize: '9px', fontWeight: 700, letterSpacing: '0.14em', color: 'rgba(255,255,255,0.45)', textTransform: 'uppercase' }}>{data.land}</span>
+        </div>
+        <h3 style={{ fontWeight: 900, lineHeight: 1.2, marginBottom: '10px', color: 'white' }} className="text-2xl md:text-3xl line-clamp-2">{data.name}</h3>
+        <div style={{ borderTop: '1px solid rgba(255,255,255,0.07)', paddingTop: '10px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+            <span style={{ fontFamily: 'monospace', fontSize: '7px', letterSpacing: '0.15em', color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase' }}>Cierre</span>
+            <span style={{ fontFamily: 'monospace', fontSize: '11px', fontWeight: 800, color: '#fca5a5' }}>{a.permanentlyClosedDate || '—'}</span>
+          </div>
+          <span style={{ fontFamily: 'monospace', fontSize: '9px', fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.25)' }}>Cerrado</span>
+        </div>
+      </div>
+    </>
+  );
+}
+
+function RefurbishmentBand({ data }: { data: ParkItem }) {
+  const a = data as any;
+  return (
+    <div className="absolute top-3 left-3 right-3 z-20 flex items-center gap-2 px-3 py-2 rounded-xl"
+      style={{ background: 'rgba(20,20,20,0.82)', backdropFilter: 'blur(10px)', boxShadow: '0 2px 16px rgba(0,0,0,0.5)', border: '1px solid rgba(234,179,8,0.4)' }}>
+      <span style={{ color: '#eab308', display:'inline-flex', flexShrink: 0 }}><Icon icon="solar:info-circle-bold" width={14} /></span>
+      <div className="flex flex-col">
+        <span style={{ fontFamily: 'monospace', fontSize: '8px', fontWeight: 900, letterSpacing: '0.15em', color: '#eab308', textTransform: 'uppercase', lineHeight: 1.3 }}>Mantenimiento</span>
+        <span style={{ fontFamily: 'monospace', fontSize: '8px', fontWeight: 600, color: 'rgba(255,255,255,0.6)', lineHeight: 1.3 }}>Reabre · {a.refurbishmentUntil || 'Por confirmar'}</span>
+      </div>
+    </div>
+  );
+}
+
+function ClosingSoonBand({ data }: { data: ParkItem }) {
+  const a = data as any;
+  return (
+    <div className="absolute bottom-0 left-0 right-0 z-20 flex items-center justify-between px-3 py-2 rounded-b-2xl"
+      style={{ background: 'linear-gradient(90deg, rgba(180,50,0,0.95), rgba(239,68,68,0.9))' }}>
+      <div className="flex items-center gap-1.5">
+        <span style={{ color: 'rgba(255,220,220,0.95)', display:'inline-flex' }}><Icon icon="solar:danger-triangle-bold" width={11} /></span>
+        <span style={{ fontFamily: 'monospace', fontSize: '8px', fontWeight: 900, letterSpacing: '0.15em', color: 'rgba(255,220,220,0.95)', textTransform: 'uppercase' }}>Cierre definitivo</span>
+      </div>
+      <span style={{ fontFamily: 'monospace', fontSize: '8px', fontWeight: 700, color: 'rgba(255,200,200,0.85)' }}>{a.closingDate}</span>
+    </div>
+  );
+}
+
+function ComingSoonOverlay({ data }: { data: ParkItem }) {
+  const a = data as any;
+  return (
+    <div className="absolute inset-0 z-20 rounded-2xl overflow-hidden flex flex-col items-center justify-center"
+      style={{ background: 'linear-gradient(135deg, rgba(0,20,40,0.93) 0%, rgba(0,50,80,0.88) 100%)' }}>
+      <div className="absolute inset-0 overflow-hidden rounded-2xl pointer-events-none">
+        <div style={{ position: 'absolute', top: '18px', right: '-32px', width: '160px', padding: '5px 0', textAlign: 'center', background: '#00B4D8', transform: 'rotate(35deg)', fontFamily: 'monospace', fontSize: '7px', fontWeight: 900, letterSpacing: '0.2em', color: 'white', textTransform: 'uppercase', boxShadow: '0 2px 12px rgba(0,180,216,0.6)' }}>PRÓXIMO</div>
+      </div>
+      <div className="mb-3" style={{ width: 40, height: 40, borderRadius: '50%', background: 'rgba(0,180,216,0.15)', border: '1px solid rgba(0,180,216,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <Icon icon="solar:star-bold" width={18} className="text-celeste" />
+      </div>
+      <h3 style={{ fontWeight: 900, fontSize: '1.1rem', color: 'white', textAlign: 'center', lineHeight: 1.2, maxWidth: '80%', marginBottom: '8px' }}>{data.name}</h3>
+      {a.openingDate && (
+        <div style={{ background: 'rgba(0,180,216,0.15)', border: '1px solid rgba(0,180,216,0.3)', borderRadius: '100px', padding: '4px 12px' }}>
+          <span style={{ fontFamily: 'monospace', fontSize: '9px', fontWeight: 800, letterSpacing: '0.15em', color: '#7dd3fc', textTransform: 'uppercase' }}>Abre · {a.openingDate}</span>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function CardFront({ data, config, hovered, added, onAdd, isAttraction, cardStatus }: {
+  data: ParkItem; config: ReturnType<typeof getTypeConfig>; hovered: boolean; added: boolean;
+  onAdd: (e: React.MouseEvent) => void; isAttraction: boolean; cardStatus: CardStatus;
 }) {
   const safeImage = data.image?.trim() || '/images/mk_att_heroslide_1.webp';
   const accessBadge = getAccessBadge(data);
   const a = data as any;
   const scareFactor: number = a.warnings?.scareFactor ?? (data.tier === 'Tier 1' ? 4 : data.tier === 'Tier 2' ? 2 : 1);
+  const isSpecial = cardStatus === 'permanent' || cardStatus === 'coming-soon';
 
   return (
     <div className="absolute inset-0 rounded-2xl overflow-hidden" style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' }}>
       <div className="absolute inset-0">
         <Image src={safeImage} alt={data.name} fill className="object-cover"
-          style={{ transform: hovered ? 'scale(1.06)' : 'scale(1)', transition: 'transform 0.7s cubic-bezier(0.16,1,0.3,1)' }}
+          style={{ transform: hovered && !isSpecial ? 'scale(1.06)' : 'scale(1)', transition: 'transform 0.7s cubic-bezier(0.16,1,0.3,1)', filter: isSpecial ? 'grayscale(60%) brightness(0.35)' : cardStatus === 'refurbishment' ? 'brightness(0.65)' : 'none' }}
           sizes="(max-width: 768px) 100vw, 50vw" unoptimized={safeImage.startsWith('http')} />
         <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(14,15,17,0.98) 0%, rgba(14,15,17,0.55) 45%, rgba(14,15,17,0.15) 100%)' }} />
       </div>
 
-      {isAttraction && (
-        <div className="absolute top-3 left-3 z-10" style={{ background: 'rgba(14,15,17,0.72)', backdropFilter: 'blur(12px)', border: '1px solid rgba(255,255,255,0.09)', borderRadius: '8px', padding: '4px 10px' }}>
-          <span style={{ fontFamily: 'monospace', fontSize: '8px', fontWeight: 800, letterSpacing: '0.12em', color: 'rgba(255,255,255,0.75)', textTransform: 'uppercase' }}>
-            {getAttractionType(data)}
-          </span>
-        </div>
-      )}
+      {cardStatus === 'permanent' && <PermanentClosedOverlay data={data} />}
+      {cardStatus === 'coming-soon' && <ComingSoonOverlay data={data} />}
+      {cardStatus === 'refurbishment' && <RefurbishmentBand data={data} />}
 
-      <div className="absolute top-3 right-3 z-10 flex items-center gap-1.5"
-        style={{ background: 'rgba(14,15,17,0.72)', backdropFilter: 'blur(12px)', border: `1px solid ${accessBadge ? accessBadge.color + '35' : 'rgba(255,255,255,0.08)'}`, borderRadius: '100px', padding: '4px 10px' }}>
-        <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: accessBadge ? accessBadge.color : (data.status === 'open' ? '#22c55e' : '#ef4444'), boxShadow: `0 0 6px ${accessBadge ? accessBadge.color : (data.status === 'open' ? '#22c55e' : '#ef4444')}` }} />
-        <span style={{ fontFamily: 'monospace', fontSize: '8px', fontWeight: 800, letterSpacing: '0.1em', color: accessBadge ? accessBadge.color : 'rgba(255,255,255,0.55)', textTransform: 'uppercase' }}>
-          {accessBadge ? accessBadge.label : (data.waitTime || 'Disponible')}
-        </span>
-      </div>
-
-      <div className="absolute bottom-0 left-0 right-0 z-10 p-4">
-        {/* Land */}
-        <div className="flex items-center gap-1 mb-1">
-          <span style={{ color: config.accent, flexShrink: 0, display: "inline-flex" }}><Icon icon="solar:map-point-bold" width={9} /></span>
-          <span style={{ fontFamily: 'monospace', fontSize: '9px', fontWeight: 700, letterSpacing: '0.14em', color: 'rgba(255,255,255,0.45)', textTransform: 'uppercase' }}>{data.land}</span>
-        </div>
-
-        {/* Nombre */}
-        <h3 style={{ fontWeight: 900, lineHeight: 1.2, marginBottom: '10px', transition: 'color 0.3s' }} className={`text-2xl md:text-3xl line-clamp-2 ${hovered ? 'text-celeste' : 'text-white'}`}>
-          {data.name}
-        </h3>
-
-        {/* Línea divisoria */}
-        <div style={{ borderTop: '1px solid rgba(255,255,255,0.07)', paddingTop: '10px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          {/* Intensity Level debajo de la línea */}
-          {isAttraction ? <IntensityBar level={scareFactor} /> : <span />}
-
-          {/* DETALLES debajo de la línea con hover navbar */}
-          <div className="group/det flex items-center gap-1.5" style={{ cursor: 'pointer' }}>
-            <span style={{ fontFamily: 'monospace', fontSize: '9px', fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', transition: 'color 0.25s' }} className={hovered ? 'text-sunset' : 'text-white/50'}>
-              {isAttraction ? 'Detalles' : 'Girar'}
-            </span>
-            <span style={{ transition: 'color 0.25s, transform 0.25s', transform: hovered ? 'translateX(3px)' : 'translateX(0)', display: 'inline-flex' }} className={hovered ? 'text-sunset' : 'text-white/50'}>
-              <Icon icon={isAttraction ? "solar:arrow-right-linear" : "solar:refresh-bold"} width={12} />
+      {!isSpecial && (
+        <>
+          {isAttraction && (
+            <div className="absolute top-3 left-3 z-10" style={{ background: 'rgba(14,15,17,0.72)', backdropFilter: 'blur(12px)', border: '1px solid rgba(255,255,255,0.09)', borderRadius: '8px', padding: '4px 10px' }}>
+              <span style={{ fontFamily: 'monospace', fontSize: '8px', fontWeight: 800, letterSpacing: '0.12em', color: 'rgba(255,255,255,0.75)', textTransform: 'uppercase' }}>{getAttractionType(data)}</span>
+            </div>
+          )}
+          <div className="absolute top-3 right-3 z-10 flex items-center gap-1.5"
+            style={{ background: 'rgba(14,15,17,0.72)', backdropFilter: 'blur(12px)', border: `1px solid ${accessBadge ? accessBadge.color + '35' : 'rgba(255,255,255,0.08)'}`, borderRadius: '100px', padding: '4px 10px' }}>
+            <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: accessBadge ? accessBadge.color : (data.status === 'open' ? '#22c55e' : '#ef4444'), boxShadow: `0 0 6px ${accessBadge ? accessBadge.color : (data.status === 'open' ? '#22c55e' : '#ef4444')}` }} />
+            <span style={{ fontFamily: 'monospace', fontSize: '8px', fontWeight: 800, letterSpacing: '0.1em', color: accessBadge ? accessBadge.color : 'rgba(255,255,255,0.55)', textTransform: 'uppercase' }}>
+              {accessBadge ? accessBadge.label : (data.waitTime || 'Disponible')}
             </span>
           </div>
-        </div>
-      </div>
+          <div className="absolute bottom-0 left-0 right-0 z-10 p-4" style={{ paddingBottom: cardStatus === 'closing-soon' ? '44px' : '16px' }}>
+            <div className="flex items-center gap-1 mb-1">
+              <span style={{ color: config.accent, flexShrink: 0, display: "inline-flex" }}><Icon icon="solar:map-point-bold" width={9} /></span>
+              <span style={{ fontFamily: 'monospace', fontSize: '9px', fontWeight: 700, letterSpacing: '0.14em', color: 'rgba(255,255,255,0.45)', textTransform: 'uppercase' }}>{data.land}</span>
+            </div>
+            <h3 style={{ fontWeight: 900, lineHeight: 1.2, marginBottom: '10px', transition: 'color 0.3s' }} className={`text-2xl md:text-3xl line-clamp-2 ${hovered ? 'text-celeste' : 'text-white'}`}>{data.name}</h3>
+            <div style={{ borderTop: '1px solid rgba(255,255,255,0.07)', paddingTop: '10px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              {isAttraction ? <IntensityBar level={scareFactor} /> : <span />}
+              <div className="group/det flex items-center gap-1.5" style={{ cursor: 'pointer' }}>
+                <span style={{ fontFamily: 'monospace', fontSize: '9px', fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', transition: 'color 0.25s' }} className={hovered ? 'text-sunset' : 'text-white/50'}>{isAttraction ? 'Detalles' : 'Girar'}</span>
+                <span style={{ transition: 'color 0.25s, transform 0.25s', transform: hovered ? 'translateX(3px)' : 'translateX(0)', display: 'inline-flex' }} className={hovered ? 'text-sunset' : 'text-white/50'}>
+                  <Icon icon={isAttraction ? "solar:arrow-right-linear" : "solar:refresh-bold"} width={12} />
+                </span>
+              </div>
+            </div>
+          </div>
+          {cardStatus === 'closing-soon' && <ClosingSoonBand data={data} />}
+        </>
+      )}
     </div>
   );
 }
@@ -157,8 +232,7 @@ function CardBack({ data, config, onFlipBack }: { data: ParkItem; config: Return
         <div style={{ background: config.badge, borderRadius: '8px', padding: '4px 10px', border: `1px solid ${config.accent}25` }}>
           <span style={{ fontFamily: 'monospace', fontSize: '8px', fontWeight: 800, letterSpacing: '0.12em', color: config.text, textTransform: 'uppercase' }}>{data.type}</span>
         </div>
-        <button onClick={(e) => { e.stopPropagation(); onFlipBack(); }}
-          style={{ width: '30px', height: '30px', borderRadius: '50%', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.09)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
+        <button onClick={(e) => { e.stopPropagation(); onFlipBack(); }} style={{ width: '30px', height: '30px', borderRadius: '50%', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.09)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
           <Icon icon="solar:arrow-left-linear" width={13} className="text-white/55" />
         </button>
       </div>
@@ -167,9 +241,7 @@ function CardBack({ data, config, onFlipBack }: { data: ParkItem; config: Return
         <span style={{ color: config.accent, display: "inline-flex" }}><Icon icon="solar:map-point-bold" width={9} /></span>
         <span style={{ fontFamily: 'monospace', fontSize: '8px', fontWeight: 700, letterSpacing: '0.12em', color: 'rgba(255,255,255,0.35)', textTransform: 'uppercase' }}>{data.land}</span>
       </div>
-      {data.description && (
-        <p style={{ fontSize: '11.5px', color: 'rgba(255,255,255,0.6)', lineHeight: 1.65, marginBottom: '12px', flex: 1 }} className="line-clamp-4">{data.description}</p>
-      )}
+      {data.description && <p style={{ fontSize: '11.5px', color: 'rgba(255,255,255,0.6)', lineHeight: 1.65, marginBottom: '12px', flex: 1 }} className="line-clamp-4">{data.description}</p>}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginBottom: '12px' }}>
         {[{ label: 'Tipo', value: data.tier }, { label: 'Espera', value: data.waitTime || 'N/A' }].map(({ label, value }) => (
           <div key={label} style={{ background: 'rgba(255,255,255,0.04)', borderRadius: '10px', padding: '9px', border: '1px solid rgba(255,255,255,0.05)' }}>
@@ -193,6 +265,8 @@ export default function BentoCard({ data }: { data: ParkItem }) {
   const [added, setAdded] = useState(false);
   const config = getTypeConfig(data.type);
   const isAttraction = data.type === 'Attraction';
+  const cardStatus = getCardStatus(data);
+  const isSpecial = cardStatus === 'permanent' || cardStatus === 'coming-soon';
 
   function handleAdd(e: React.MouseEvent) {
     e.preventDefault();
@@ -201,13 +275,22 @@ export default function BentoCard({ data }: { data: ParkItem }) {
   }
 
   if (isAttraction) {
+    if (isSpecial) {
+      return (
+        <motion.div whileHover={{ y: -2 }} transition={{ duration: 0.3 }}
+          className="relative w-full rounded-2xl overflow-hidden shadow-lg"
+          style={{ height: '280px', background: '#0e0f11', cursor: 'default' }}>
+          <CardFront data={data} config={config} hovered={false} added={added} onAdd={handleAdd} isAttraction cardStatus={cardStatus} />
+        </motion.div>
+      );
+    }
     return (
       <Link href={buildHref(data)} className="block">
         <motion.div onHoverStart={() => setHovered(true)} onHoverEnd={() => setHovered(false)}
           whileHover={{ y: -4 }} transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
           className="relative w-full rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl"
           style={{ height: '280px', background: '#0e0f11', transition: 'box-shadow 0.3s' }}>
-          <CardFront data={data} config={config} hovered={hovered} added={added} onAdd={handleAdd} isAttraction />
+          <CardFront data={data} config={config} hovered={hovered} added={added} onAdd={handleAdd} isAttraction cardStatus={cardStatus} />
         </motion.div>
       </Link>
     );
@@ -219,7 +302,7 @@ export default function BentoCard({ data }: { data: ParkItem }) {
       onClick={() => setIsFlipped(f => !f)}>
       <motion.div animate={{ rotateY: isFlipped ? 180 : 0 }} transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
         className="relative w-full rounded-2xl shadow-lg" style={{ height: '280px', transformStyle: 'preserve-3d' }}>
-        <CardFront data={data} config={config} hovered={hovered} added={added} onAdd={handleAdd} isAttraction={false} />
+        <CardFront data={data} config={config} hovered={hovered} added={added} onAdd={handleAdd} isAttraction={false} cardStatus={cardStatus} />
         <CardBack data={data} config={config} onFlipBack={() => setIsFlipped(false)} />
       </motion.div>
     </div>

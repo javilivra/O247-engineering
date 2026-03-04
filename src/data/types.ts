@@ -37,6 +37,22 @@ export interface ParkItem {
     vibes: string[];
     image: string;
     description?: string;
+
+    // ── Override editorial de estado (tiene prioridad sobre la API) ──
+    /** Cierre permanente — desactiva todos los datos operativos en la card */
+    permanentlyClosed?: boolean;
+    /** Fecha de cierre permanente — formato "DD MMM YYYY" ej: "2 Feb 2026" */
+    permanentlyClosedDate?: string;
+    /** Fecha de cierre próximo confirmado (atracción aún operativa) */
+    closingDate?: string;
+    /** Nota editorial sobre el cierre próximo */
+    closingNote?: string;
+    /** Override de refurbishment con fecha de reapertura estimada */
+    refurbishmentUntil?: string;
+    /** Atracción futura — aún no abierta */
+    comingSoon?: boolean;
+    /** Fecha estimada de apertura */
+    openingDate?: string;
 }
 
 // ===================================================

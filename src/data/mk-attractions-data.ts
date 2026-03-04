@@ -254,6 +254,7 @@ export const MK_ATTRACTIONS: Attraction[] = withPov([
 },
     {
     id: 'btmr', slug: 'btmr', name: 'Big Thunder Mountain Railroad',
+    refurbishmentUntil: 'Verano 2026',
     park: 'mk', resort: 'disney-world', land: 'Frontierland', mapId: 26,
     tier: 'Tier 1', type: 'Attraction', status: 'closed', waitTime: 'CERRADO',
     reliabilityScore: 0, reliabilitySource: 'N/A - Cerrada por remodelacion',
@@ -794,6 +795,7 @@ export const MK_ATTRACTIONS: Attraction[] = withPov([
     },
     {
         id: 'buzz', slug: 'buzz', name: "Buzz Lightyear's Space Ranger Spin",
+    refurbishmentUntil: 'Por confirmar',
         park: 'mk', resort: 'disney-world', land: 'Tomorrowland', mapId: 74,
         tier: 'Tier 2', type: 'Attraction', status: 'open', waitTime: '35 min',
         reliabilityScore: 95, reliabilitySource: RS, heightReq: 0, hasAc: true, isIndoor: true,

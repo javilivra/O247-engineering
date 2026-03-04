@@ -59,6 +59,7 @@ export const AK_ATTRACTIONS: ParkItem[] = withPov([
   },
   {
     id: 'ak-dinosaur', name: 'DINOSAUR',
+    permanentlyClosed: true, permanentlyClosedDate: '2 Feb 2026',
     land: 'DinoLand U.S.A.', tier: 'Tier 2', type: 'Attraction',
     image: '/images/attractions/ak/ak_dinosaur.webp',
     heroImage: '/images/attractions/hero/hero_att_ak_dinosaur.webp', vibes: ['thrill', 'indoor', 'dark'],
@@ -67,6 +68,7 @@ export const AK_ATTRACTIONS: ParkItem[] = withPov([
   },
   {
     id: 'ak-tree', name: "It's Tough to Be a Bug!",
+    permanentlyClosed: true, permanentlyClosedDate: '17 Mar 2025',
     land: 'Discovery Island', tier: 'Tier 3', type: 'Attraction',
     image: '/images/attractions/ak/ak_swiss_tree.webp',
     heroImage: '/images/attractions/hero/hero_att_ak_swiss_tree.webp', vibes: ['family', 'indoor', 'show'],
@@ -98,6 +100,7 @@ export const AK_ATTRACTIONS: ParkItem[] = withPov([
   },
   {
     id: 'ak-wildlife-express', name: 'Wildlife Express Train',
+    refurbishmentUntil: 'Primavera 2026',
     land: 'Africa', tier: 'Tier 3', type: 'Attraction',
     image: '/images/attractions/ak/ak_wildlife_express.webp',
     heroImage: '/images/attractions/hero/hero_att_ak_wildlife_express.webp', vibes: ['family', 'outdoor', 'train'],
@@ -114,6 +117,7 @@ export const AK_ATTRACTIONS: ParkItem[] = withPov([
   },
   {
     id: 'ak-affection', name: 'Affection Section',
+    refurbishmentUntil: 'Primavera 2026',
     land: "Rafiki's Planet Watch", tier: 'Tier 3', type: 'Attraction',
     image: '/images/attractions/ak/ak_affection_section.webp',
     heroImage: '/images/attractions/hero/hero_att_ak_affection_section.webp', vibes: ['family', 'outdoor', 'petting-zoo'],
@@ -122,6 +126,7 @@ export const AK_ATTRACTIONS: ParkItem[] = withPov([
   },
   {
     id: 'ak-planet-watch', name: 'Conservation Station',
+    refurbishmentUntil: 'Primavera 2026',
     land: "Rafiki's Planet Watch", tier: 'Tier 3', type: 'Attraction',
     image: '/images/attractions/ak/ak_conservation_station.webp',
     heroImage: '/images/attractions/hero/hero_att_ak_conservation_station.webp', vibes: ['family', 'indoor', 'educational'],
