@@ -1,4 +1,5 @@
 "use client";
+import UIFloridaMap from '@/components/UIFloridaMap';
 
 import { useState } from 'react';
 import Image from 'next/image';
@@ -268,7 +269,7 @@ export default function OrlandoGuidePage() {
       {/* ── HERO FULL-WIDTH CON IMAGEN ── */}
       <div className="relative w-full overflow-hidden" style={{ minHeight: '100vh' }}>
 
-        {/* Imagen de fondo que cambia con el paso */}
+        {/* Fondo: mapa para paso 1, imagen para el resto */}
         <AnimatePresence mode="wait">
           <motion.div key={`img-${activeStep}`}
             initial={{ opacity: 0, scale: 1.04 }}
@@ -276,18 +277,24 @@ export default function OrlandoGuidePage() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
             className="absolute inset-0">
-            <Image src={currentStep.image} alt={currentStep.title} fill className="object-cover" unoptimized priority />
+            {activeStep === 1 ? (
+              <div className="absolute inset-0">
+                <UIFloridaMap />
+              </div>
+            ) : (
+              <Image src={currentStep.image} alt={currentStep.title} fill className="object-cover" unoptimized priority />
+            )}
             {/* Gradiente oscuro para legibilidad */}
             <div className="absolute inset-0" style={{
               background: `linear-gradient(
                 to bottom,
-                rgba(37,52,63,0.55) 0%,
-                rgba(37,52,63,0.3) 30%,
-                rgba(37,52,63,0.65) 60%,
-                rgba(37,52,63,0.95) 100%
+                rgba(37,52,63,0.75) 0%,
+                rgba(37,52,63,0.45) 30%,
+                rgba(37,52,63,0.75) 60%,
+                rgba(37,52,63,0.97) 100%
               )`
             }} />
-            {/* Gradiente de color del paso activo — sutil en los bordes */}
+            {/* Gradiente de color del paso activo */}
             <div className="absolute inset-0" style={{
               background: `radial-gradient(ellipse at 80% 20%, ${currentStep.accent}15 0%, transparent 60%)`
             }} />
