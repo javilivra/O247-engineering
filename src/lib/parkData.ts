@@ -13,6 +13,8 @@ export const PARK_ENTITY_IDS: Record<string, string> = {
   "animal-kingdom":    "1c84a229-8862-4648-9c71-378ddd2c7693",
   "universal-studios": "eb3f4560-2383-4a36-9152-6b3e5ed6bc57",
   "islands-of-adventure": "267615cc-8943-4c2a-ae2c-5da728ca591f",
+  "epic-universe":         "12dbb85b-265f-44e6-bccf-f1faa17211fc",
+  "volcano-bay":           "fe78a026-b91b-470c-b906-9d2266b692da",
 };
 
 // ─── IDs en Queue-Times.com ───────────────────────────────────────────────────
@@ -23,6 +25,8 @@ export const QUEUE_TIMES_IDS: Record<string, number> = {
   "animal-kingdom":       9,
   "universal-studios":    3,
   "islands-of-adventure": 5,
+  "epic-universe":        28,
+  "volcano-bay":          17,
 };
 
 // ─── Caché en memoria ─────────────────────────────────────────────────────────

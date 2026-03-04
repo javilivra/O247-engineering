@@ -27,6 +27,8 @@ const PARK_SLUG_MAP: Record<string, string> = {
   "ak":  "animal-kingdom",
   "uso": "universal-studios",
   "ioa": "islands-of-adventure",
+  "epic": "epic-universe",
+  "vb":   "volcano-bay",
 };
 
 export function useAttractionLive(
