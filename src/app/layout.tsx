@@ -1,3 +1,4 @@
+import 'mapbox-gl/dist/mapbox-gl.css';
 // @STATUS: GOLDEN MASTER V5 — Hide Navbar/Footer on attraction pages
 import { NavbarProvider } from '@/context/NavbarContext';
 import type { Metadata, Viewport } from "next";
