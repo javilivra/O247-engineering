@@ -87,16 +87,7 @@ export default function UIFloridaMap() {
 
       const map = new mapboxgl.Map({
         container: containerRef.current!,
-        style: {
-          version: 8,
-          sources: { "mapbox-streets": { type: "vector", url: "mapbox://mapbox.mapbox-streets-v8" } },
-          layers: [
-            { id: "bg", type: "background", paint: { "background-color": "#15202b" } },
-            { id: "land", type: "fill", source: "mapbox-streets", "source-layer": "landuse", paint: { "fill-color": "#1c2d3a" } },
-            { id: "water", type: "fill", source: "mapbox-streets", "source-layer": "water", paint: { "fill-color": "#0f1923" } },
-            { id: "admin", type: "line", source: "mapbox-streets", "source-layer": "admin", filter: ["==", ["get", "admin_level"], 1], paint: { "line-color": "rgba(255,255,255,0.05)", "line-width": 0.6 } },
-          ],
-        } as unknown as string,
+        style: "mapbox://styles/mapbox/dark-v11",
         center: [-81.2, 27.2] as [number, number],
         zoom: 5.6,
         pitch: 0,
