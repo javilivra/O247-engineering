@@ -25,6 +25,15 @@ export const US_ATTRACTIONS: ParkItem[] = withPov([
   { id: 'us-animal-actors', name: 'Animal Actors on Location!', land: 'Woody Woodpecker\'s KidZone', tier: 'Tier 3', type: 'Attraction', image: '/images/universal_images/universal_studios.jpg', vibes: ['family','indoor','show'], waitTime: '10 min', status: 'open', description: 'Show con animales entrenados de Hollywood y sus entrenadores.' },
   { id: 'us-fievel', name: "Fievel's Playland", land: "Woody Woodpecker's KidZone", tier: 'Tier 3', type: 'Attraction', image: '/images/universal_images/universal_studios.jpg', vibes: ['family','outdoor','kids'], waitTime: '5 min', status: 'open', description: 'Área de juegos temática de Fievel el ratón. Ideal para niños menores de 8.' },
   { id: 'us-woody-roller', name: "Woody Woodpecker's Nuthouse Coaster", land: "Woody Woodpecker's KidZone", tier: 'Tier 3', type: 'Attraction', image: '/images/universal_images/universal_studios.jpg', vibes: ['family','outdoor','coaster'], waitTime: '15 min', status: 'open', description: 'Montaña rusa junior sin restricción de altura. Primera coaster de los más chicos.' },
+  {
+    id: 'usf-fast-furious', name: 'Fast & Furious — Hollywood Drift',
+    land: 'Hollywood', tier: 'Tier 1', type: 'Attraction',
+    image: '/images/cinderellacastlehero.jpg',
+    vibes: ['coaster', 'indoor', 'thrill', 'fast'],
+    waitTime: '—', status: 'open',
+    comingSoon: true, openingDate: '2027',
+    description: 'Nueva montaña rusa de alta velocidad temática de Fast & Furious en Universal Studios Florida.',
+  },
 ]);
 
 export const US_DINING: ParkItem[] = [

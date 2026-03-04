@@ -76,6 +76,24 @@ export const AK_ATTRACTIONS: ParkItem[] = withPov([
     description: 'Show 3D/4D dentro del Árbol de la Vida.',
   },
   {
+    id: 'ak-zootopia', name: 'Zootopia: Better Zoogether!',
+    land: 'Discovery Island', tier: 'Tier 2', type: 'Attraction',
+    image: '/images/attractions/ak/ak_zootopia.webp',
+    heroImage: '/images/attractions/hero/hero_att_ak_zootopia.webp',
+    vibes: ['family', 'indoor', 'show', 'film', 'kids'],
+    waitTime: '25 min', status: 'open',
+    access: 'LL Multi Pass',
+    description: 'Show 4D familiar en el Teatro del Árbol de la Vida. Acompañá a Judy Hopps y Nick Wilde en el "Día Zoogether", una celebración con escenas de Tundratown, Marsh Market y Little Rodentia — con efectos de viento, agua y aroma. Culmina con una actuación de Gazelle.',
+    warnings: { scareFactor: 1 },
+    insiderFacts: [
+      "Reemplaza a It's Tough to Be a Bug!, que cerró en marzo de 2025.",
+      'Presenta a Heidi Howler, un nuevo personaje lobo creado exclusivamente para este show.',
+      'Los efectos 4D incluyen viento, agua, aroma y efectos de asiento.',
+      'Judy Hopps y Nick Wilde son interpretados por Ginnifer Goodwin y Jason Bateman.',
+      'Diseñado para ser considerablemente menos intenso que su predecesor.'
+    ],
+  },
+  {
     id: 'ak-gorilla', name: 'Gorilla Falls Exploration Trail',
     land: 'Africa', tier: 'Tier 3', type: 'Attraction',
     image: '/images/attractions/ak/ak_gorilla_falls.webp',
@@ -184,4 +202,17 @@ export const AK_CHARACTERS: ParkItem[] = [
     image: '/images/cinderellacastlehero.jpg', vibes: ['classic', 'outdoor'],
     waitTime: '15 min', status: 'open', description: 'Donald con traje de dinosaurio.',
   },
+
+  {
+    id: 'ak-bluey', name: 'Encuentro Interactivo con Bluey y Bingo',
+    land: "Rafiki's Planet Watch", tier: 'Tier 3', type: 'Character',
+    image: '/images/cinderellacastlehero.jpg',
+    vibes: ['character', 'indoor', 'family', 'kids'],
+    waitTime: '—', status: 'closed',
+    comingSoon: true, openingDate: '2026',
+    description: 'Encuentro interactivo con Bluey y Bingo en Conservation Station.',
+  },
+
+
+
 ];

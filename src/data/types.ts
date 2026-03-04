@@ -49,6 +49,10 @@ export interface ParkItem {
     closingNote?: string;
     /** Override de refurbishment con fecha de reapertura estimada */
     refurbishmentUntil?: string;
+    /** Renovación profunda (nueva experiencia, no solo reparación) */
+    renovationUntil?: string;
+    /** Descripción corta de qué cambia en la renovación */
+    renovationNote?: string;
     /** Atracción futura — aún no abierta */
     comingSoon?: boolean;
     /** Fecha estimada de apertura */

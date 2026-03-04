@@ -52,12 +52,13 @@ function getTypeConfig(type: string) {
   }
 }
 
-type CardStatus = 'permanent' | 'closing-soon' | 'refurbishment' | 'coming-soon' | 'normal';
+type CardStatus = 'permanent' | 'closing-soon' | 'refurbishment' | 'renovation' | 'coming-soon' | 'normal';
 
 function getCardStatus(data: ParkItem): CardStatus {
   const a = data as any;
   if (a.permanentlyClosed) return 'permanent';
   if (a.closingDate) return 'closing-soon';
+  if (a.renovationUntil) return 'renovation';
   if (a.refurbishmentUntil || data.status === 'refurbishment') return 'refurbishment';
   if (a.comingSoon) return 'coming-soon';
   return 'normal';
@@ -129,6 +130,22 @@ function RefurbishmentBand({ data }: { data: ParkItem }) {
   );
 }
 
+
+function RenovationBand({ data }: { data: ParkItem }) {
+  const a = data as any;
+  return (
+    <div className="absolute top-3 left-3 right-3 z-20 flex items-center gap-2 px-3 py-2 rounded-xl"
+      style={{ background: 'rgba(0,15,30,0.82)', backdropFilter: 'blur(10px)', boxShadow: '0 2px 16px rgba(0,0,0,0.5)', border: '1px solid rgba(0,180,216,0.4)' }}>
+      <span style={{ color: '#00B4D8', display:'inline-flex', flexShrink: 0 }}><Icon icon="solar:info-circle-bold" width={14} /></span>
+      <div className="flex flex-col">
+        <span style={{ fontFamily: 'monospace', fontSize: '8px', fontWeight: 900, letterSpacing: '0.15em', color: '#00B4D8', textTransform: 'uppercase', lineHeight: 1.3 }}>En Renovación</span>
+        <span style={{ fontFamily: 'monospace', fontSize: '8px', fontWeight: 600, color: 'rgba(255,255,255,0.6)', lineHeight: 1.3 }}>
+          {a.renovationNote ? a.renovationNote + ' · ' : ''}Reabre {a.renovationUntil || 'Por confirmar'}
+        </span>
+      </div>
+    </div>
+  );
+}
 function ClosingSoonBand({ data }: { data: ParkItem }) {
   const a = data as any;
   return (
@@ -145,22 +162,36 @@ function ClosingSoonBand({ data }: { data: ParkItem }) {
 
 function ComingSoonOverlay({ data }: { data: ParkItem }) {
   const a = data as any;
+  const config = getTypeConfig(data.type);
   return (
-    <div className="absolute inset-0 z-20 rounded-2xl overflow-hidden flex flex-col items-center justify-center"
-      style={{ background: 'linear-gradient(135deg, rgba(0,20,40,0.93) 0%, rgba(0,50,80,0.88) 100%)' }}>
-      <div className="absolute inset-0 overflow-hidden rounded-2xl pointer-events-none">
-        <div style={{ position: 'absolute', top: '18px', right: '-32px', width: '160px', padding: '5px 0', textAlign: 'center', background: '#00B4D8', transform: 'rotate(35deg)', fontFamily: 'monospace', fontSize: '7px', fontWeight: 900, letterSpacing: '0.2em', color: 'white', textTransform: 'uppercase', boxShadow: '0 2px 12px rgba(0,180,216,0.6)' }}>PRÓXIMO</div>
-      </div>
-      <div className="mb-3" style={{ width: 40, height: 40, borderRadius: '50%', background: 'rgba(0,180,216,0.15)', border: '1px solid rgba(0,180,216,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <Icon icon="solar:star-bold" width={18} className="text-celeste" />
-      </div>
-      <h3 style={{ fontWeight: 900, fontSize: '1.1rem', color: 'white', textAlign: 'center', lineHeight: 1.2, maxWidth: '80%', marginBottom: '8px' }}>{data.name}</h3>
-      {a.openingDate && (
-        <div style={{ background: 'rgba(0,180,216,0.15)', border: '1px solid rgba(0,180,216,0.3)', borderRadius: '100px', padding: '4px 12px' }}>
-          <span style={{ fontFamily: 'monospace', fontSize: '9px', fontWeight: 800, letterSpacing: '0.15em', color: '#7dd3fc', textTransform: 'uppercase' }}>Abre · {a.openingDate}</span>
+    <>
+      {/* Overlay verde oscuro sobre la imagen */}
+      <div className="absolute inset-0 z-10 rounded-2xl" style={{ background: 'linear-gradient(to top, rgba(0,50,20,0.92) 0%, rgba(0,60,25,0.75) 50%, rgba(0,40,15,0.55) 100%)' }} />
+      {/* Banda PRÓXIMAMENTE */}
+      <div className="absolute top-3 left-3 right-3 z-20 flex items-center gap-2 px-3 py-2 rounded-xl"
+        style={{ background: 'rgba(0,20,10,0.82)', backdropFilter: 'blur(10px)', boxShadow: '0 2px 16px rgba(0,0,0,0.5)', border: '1px solid rgba(34,197,94,0.4)' }}>
+        <span style={{ color: '#22c55e', display:'inline-flex', flexShrink: 0 }}><Icon icon="solar:star-bold" width={14} /></span>
+        <div className="flex flex-col">
+          <span style={{ fontFamily: 'monospace', fontSize: '8px', fontWeight: 900, letterSpacing: '0.15em', color: '#22c55e', textTransform: 'uppercase', lineHeight: 1.3 }}>Próximamente</span>
+          {a.openingDate && <span style={{ fontFamily: 'monospace', fontSize: '8px', fontWeight: 600, color: 'rgba(255,255,255,0.55)', lineHeight: 1.3 }}>Apertura · {a.openingDate}</span>}
         </div>
-      )}
-    </div>
+      </div>
+      {/* Land + Nombre + Fecha — igual que card normal */}
+      <div className="absolute bottom-0 left-0 right-0 z-20 p-4">
+        <div className="flex items-center gap-1 mb-1">
+          <span style={{ color: config.accent, flexShrink: 0, display: 'inline-flex' }}><Icon icon="solar:map-point-bold" width={9} /></span>
+          <span style={{ fontFamily: 'monospace', fontSize: '9px', fontWeight: 700, letterSpacing: '0.14em', color: 'rgba(255,255,255,0.45)', textTransform: 'uppercase' }}>{data.land}</span>
+        </div>
+        <h3 style={{ fontWeight: 900, lineHeight: 1.2, marginBottom: '10px', color: 'white' }} className="text-2xl md:text-3xl line-clamp-2">{data.name}</h3>
+        <div style={{ borderTop: '1px solid rgba(255,255,255,0.07)', paddingTop: '10px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+            <span style={{ fontFamily: 'monospace', fontSize: '7px', letterSpacing: '0.15em', color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase' }}>Apertura estimada</span>
+            <span style={{ fontFamily: 'monospace', fontSize: '11px', fontWeight: 800, color: '#86efac' }}>{a.openingDate || 'Por confirmar'}</span>
+          </div>
+          <span style={{ fontFamily: 'monospace', fontSize: '9px', fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.25)' }}>Próximo</span>
+        </div>
+      </div>
+    </>
   );
 }
 
@@ -178,7 +209,7 @@ function CardFront({ data, config, hovered, added, onAdd, isAttraction, cardStat
     <div className="absolute inset-0 rounded-2xl overflow-hidden" style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' }}>
       <div className="absolute inset-0">
         <Image src={safeImage} alt={data.name} fill className="object-cover"
-          style={{ transform: hovered && !isSpecial ? 'scale(1.06)' : 'scale(1)', transition: 'transform 0.7s cubic-bezier(0.16,1,0.3,1)', filter: isSpecial ? 'grayscale(60%) brightness(0.35)' : cardStatus === 'refurbishment' ? 'brightness(0.65)' : 'none' }}
+          style={{ transform: hovered && !isSpecial ? 'scale(1.06)' : 'scale(1)', transition: 'transform 0.7s cubic-bezier(0.16,1,0.3,1)', filter: isSpecial ? 'grayscale(60%) brightness(0.35)' : (cardStatus === 'refurbishment' || cardStatus === 'renovation') ? 'brightness(0.65)' : 'none' }}
           sizes="(max-width: 768px) 100vw, 50vw" unoptimized={safeImage.startsWith('http')} />
         <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(14,15,17,0.98) 0%, rgba(14,15,17,0.55) 45%, rgba(14,15,17,0.15) 100%)' }} />
       </div>
@@ -186,6 +217,7 @@ function CardFront({ data, config, hovered, added, onAdd, isAttraction, cardStat
       {cardStatus === 'permanent' && <PermanentClosedOverlay data={data} />}
       {cardStatus === 'coming-soon' && <ComingSoonOverlay data={data} />}
       {cardStatus === 'refurbishment' && <RefurbishmentBand data={data} />}
+      {cardStatus === 'renovation' && <RenovationBand data={data} />}
 
       {!isSpecial && (
         <>

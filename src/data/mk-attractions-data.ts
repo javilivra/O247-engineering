@@ -72,8 +72,9 @@ export const MK_ATTRACTIONS: Attraction[] = withPov([
 
     // --- MAIN STREET, U.S.A. ---
     {
-    id: 'rr_mainstreet', slug: 'rr-mainstreet', name: 'Walt Disney World Railroad - Main St.',
-    park: 'mk', resort: 'disney-world', land: 'Main Street, U.S.A.', mapId: 2,
+    id: 'rr_mainstreet', slug: 'rr-mainstreet', name: 'Walt Disney World Railroad',
+    land: 'Main Street U.S.A.',
+    park: 'mk', resort: 'disney-world', mapId: 2,
     tier: 'Tier 3', type: 'Attraction', status: 'open', waitTime: '20 min',
     reliabilityScore: 90, reliabilitySource: RS, heightReq: 0, hasAc: false, isIndoor: false,
     duration: 20, rideSystem: 'Tren a vapor real (4 locomotoras)', yearOpened: 1971, capacity: 360,
@@ -254,7 +255,7 @@ export const MK_ATTRACTIONS: Attraction[] = withPov([
 },
     {
     id: 'btmr', slug: 'btmr', name: 'Big Thunder Mountain Railroad',
-    refurbishmentUntil: 'Verano 2026',
+    renovationUntil: 'Verano 2026', renovationNote: 'Renovación con Rainbow Caverns',
     park: 'mk', resort: 'disney-world', land: 'Frontierland', mapId: 26,
     tier: 'Tier 1', type: 'Attraction', status: 'closed', waitTime: 'CERRADO',
     reliabilityScore: 0, reliabilitySource: 'N/A - Cerrada por remodelacion',
@@ -643,27 +644,7 @@ export const MK_ATTRACTIONS: Attraction[] = withPov([
         accessibility: { ...DA },
         lockers: NL, photoPolicy: { ...DP, camerasAllowed: true, goProAllowed: true },
     },
-    {
-        id: 'rr_fantasyland', slug: 'rr-fantasyland', name: 'Walt Disney World Railroad - Fantasyland',
-        park: 'mk', resort: 'disney-world', land: 'Fantasyland', mapId: 53,
-        tier: 'Tier 3', type: 'Attraction', status: 'open', waitTime: '20 min',
-        reliabilityScore: 90, reliabilitySource: RS, heightReq: 0, hasAc: false, isIndoor: false,
-        duration: 20, rideSystem: 'Tren a vapor real (4 locomotoras)', yearOpened: 1971, capacity: 360,
-        access: 'Standby', accessExplained: SBY,
-        image: '/images/attractions/mk/mk-walt_disney_railroad.webp',
-    heroImage: '/images/attractions/hero/hero_att_mk_disney_railroad.webp',
-        vibes: ['Relax', 'Transporte', 'Panoramico'],
-        bestTime: 'Cuando te duelan los pies',
-        secretTip: 'Ideal para volver a Main Street sin caminar entre la multitud.',
-        description: 'Estacion de Fantasyland del Walt Disney World Railroad. Mismo tren, diferente punto de embarque. Ideal para transportarse a Main Street o Frontierland descansando los pies.',
-        insiderFacts: ['Es la misma atraccion que la de Main Street — diferente estacion.', 'Ideal como transporte cuando estas agotado.'],
-        avgWaitByMonth: gm(20), forecastToday: gf(20, 'fl'),
-        relatedActivities: [],
-        warnings: { ...DW },
-        accessibility: { ...DA, serviceAnimals: true },
-        lockers: NL, photoPolicy: { ...DP, goProAllowed: true },
-    },
-
+    
     // --- TOMORROWLAND ---
     {
         id: 'tron', slug: 'tron', name: 'TRON Lightcycle / Run',
@@ -795,7 +776,7 @@ export const MK_ATTRACTIONS: Attraction[] = withPov([
     },
     {
         id: 'buzz', slug: 'buzz', name: "Buzz Lightyear's Space Ranger Spin",
-    refurbishmentUntil: 'Por confirmar',
+    renovationUntil: 'Por confirmar', renovationNote: 'Actualización interactiva completa',
         park: 'mk', resort: 'disney-world', land: 'Tomorrowland', mapId: 74,
         tier: 'Tier 2', type: 'Attraction', status: 'open', waitTime: '35 min',
         reliabilityScore: 95, reliabilitySource: RS, heightReq: 0, hasAc: true, isIndoor: true,

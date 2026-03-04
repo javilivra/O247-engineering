@@ -129,6 +129,25 @@ export const EPCOT_ATTRACTIONS: ParkItem[] = withPov([
     waitTime: '5 min', status: 'open',
     description: 'Documental sobre la ciudad de Xian y sus guerreros de terracota.',
   },
+  {
+    id: 'ep-soarin-america', name: "Soarin' Across America",
+    land: 'World Nature', tier: 'Tier 1', type: 'Attraction',
+    image: '/images/cinderellacastlehero.jpg',
+    vibes: ['simulator', 'indoor', 'family', 'immersive'],
+    waitTime: '—', status: 'open',
+    comingSoon: true, openingDate: '2026',
+    description: "Nueva versión de Soarin' con un recorrido aéreo sobre los paisajes más icónicos de Estados Unidos.",
+  },
+  {
+    id: 'ep-frozen-update', name: 'Frozen Ever After (Actualización)',
+    land: 'World Showcase', tier: 'Tier 1', type: 'Attraction',
+    image: '/images/cinderellacastlehero.jpg',
+    vibes: ['boat', 'indoor', 'family', 'gentle'],
+    waitTime: '—', status: 'open',
+    renovationUntil: '2026', renovationNote: 'Actualización de animatrónicos',
+    comingSoon: false, openingDate: '2026',
+    description: 'Frozen Ever After regresa con animatrónicos completamente renovados.',
+  },
 ]);
 
 export const EPCOT_DINING: ParkItem[] = [

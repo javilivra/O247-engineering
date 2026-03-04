@@ -109,6 +109,33 @@ export const HS_ATTRACTIONS: ParkItem[] = withPov([
     waitTime: '10 min', status: 'open',
     description: 'Show interactivo con personajes de Disney Junior para los más chicos.',
   },
+  {
+    id: 'hs-rnrc-muppets', name: "Rock 'n' Roller Coaster Starring The Muppets",
+    land: 'Sunset Boulevard', tier: 'Tier 1', type: 'Attraction',
+    image: '/images/cinderellacastlehero.jpg',
+    vibes: ['coaster', 'indoor', 'dark', 'fast', 'launch'],
+    waitTime: '—', status: 'open',
+    comingSoon: true, openingDate: 'Verano 2026',
+    description: "La icónica montaña rusa de lanzamiento regresa con The Electric Mayhem. Misma adrenalina, nueva historia: seguís a la banda en su viaje VIP. Kermit, Miss Piggy, Animal y Dr. Teeth te llevan a 96 km/h en segundos.",
+  },
+  {
+    id: 'hs-magic-animation', name: 'The Magic of Disney Animation',
+    land: 'The Walt Disney Studios', tier: 'Tier 2', type: 'Show',
+    image: '/images/cinderellacastlehero.jpg',
+    vibes: ['show', 'indoor', 'family', 'kids'],
+    waitTime: '—', status: 'open',
+    comingSoon: true, openingDate: '2026',
+    description: 'Nueva experiencia que celebra el arte y la magia de la animación Disney.',
+  },
+  {
+    id: 'hs-disney-jr', name: 'Disney Jr. Mickey Mouse Clubhouse Live!',
+    land: 'The Walt Disney Studios', tier: 'Tier 2', type: 'Show',
+    image: '/images/cinderellacastlehero.jpg',
+    vibes: ['show', 'indoor', 'family', 'kids', 'character'],
+    waitTime: '—', status: 'open',
+    comingSoon: true, openingDate: '2026',
+    description: 'Show en vivo interactivo con Mickey Mouse y amigos para los más pequeños.',
+  },
 ]);
 
 export const HS_DINING: ParkItem[] = [
