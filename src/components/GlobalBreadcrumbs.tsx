@@ -6,66 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect, useRef } from 'react';
 import { Icon } from '@/components/Icon';
 
-// ============================================================
-// DICCIONARIO DE MARCA
-// ============================================================
-const PATH_MAP: Record<string, string> = {
-  "disney": "Disney World",
-  "universal": "Universal Orlando",
-  "parks": "Parques",
-  "mk": "Magic Kingdom",
-  "epcot": "EPCOT",
-  "hs": "Hollywood Studios",
-  "ak": "Animal Kingdom",
-  "usf": "Universal Studios",
-  "ioa": "Islands of Adventure",
-  "vb": "Volcano Bay",
-  "eu": "Epic Universe",
-  "attractions": "Atracciones",
-  "dining": "Gastronomía",
-  "resorts": "Hoteles",
-  "guide": "Guía",
-  "tron-lightcycle-run": "TRON Lightcycle / Run",
-  "space-mountain": "Space Mountain",
-  "velocicoaster": "VelociCoaster",
-  "seven-dwarfs-mine-train": "Seven Dwarfs Mine Train",
-  "tianas-bayou-adventure": "Tiana's Bayou Adventure",
-};
-
-// ============================================================
-// ESTRUCTURA DE PARQUES
-// ============================================================
-const RESORT_DATA: Record<string, { name: string; parks: { id: string; name: string }[] }> = {
-  disney: {
-    name: "Disney World",
-    parks: [
-      { id: "mk", name: "Magic Kingdom" },
-      { id: "epcot", name: "EPCOT" },
-      { id: "hs", name: "Hollywood Studios" },
-      { id: "ak", name: "Animal Kingdom" },
-    ]
-  },
-  universal: {
-    name: "Universal Orlando",
-    parks: [
-      { id: "usf", name: "Universal Studios" },
-      { id: "ioa", name: "Islands of Adventure" },
-      { id: "vb", name: "Volcano Bay" },
-      { id: "eu", name: "Epic Universe" },
-    ]
-  }
-};
-
-// ============================================================
-// RUTAS CON HERO OSCURO — slugs reales
-// ============================================================
-const DARK_HERO_SLUGS = [
-  "tron-lightcycle-run",
-  "space-mountain",
-  "velocicoaster",
-  "seven-dwarfs-mine-train",
-  "tianas-bayou-adventure",
-];
+import { PATH_MAP, RESORT_DATA, DARK_HERO_SLUGS } from '@/data/breadcrumbMap';
 
 // ============================================================
 // ANIMATED UNDERLINE — componente interno
