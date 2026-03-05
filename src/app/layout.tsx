@@ -2,13 +2,13 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 // @STATUS: GOLDEN MASTER V5 — Hide Navbar/Footer on attraction pages
 import { NavbarProvider } from '@/context/NavbarContext';
 import type { Metadata, Viewport } from "next";
-import { JetBrains_Mono } from "next/font/google"; 
+import { JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
 // COMPONENTES GLOBALES
 import CookieConsent from "@/components/CookieConsent";
-import SmoothScroll from "@/components/SmoothScroll"; 
-import Navbar from "@/components/Navbar"; 
+import SmoothScroll from "@/components/SmoothScroll";
+import Navbar from "@/components/Navbar";
 import GlobalBreadcrumbs from "@/components/GlobalBreadcrumbs";
 import Footer from "@/components/Footer";
 import CustomCursor from "@/components/CustomCursor";
@@ -59,22 +59,23 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link 
-          href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,1..1000&display=swap" 
-          rel="stylesheet" 
+        <link
+          href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,1..1000&display=swap"
+          rel="stylesheet"
         />
         <link rel="preconnect" href="https://api.iconify.design" />
       </head>
-      
+
       <body className="antialiased min-h-screen bg-bone text-gunmetal font-sans selection:bg-sunset selection:text-white">
 
-          <CustomCursor />
-          <ScrollToTop />
-          {/* ShellWrapper decide qué mostrar según la ruta */}
+        <CustomCursor />
+        <ScrollToTop />
+        <NavbarProvider>
           <ShellWrapper>
-            <NavbarProvider>{children}</NavbarProvider>
+            {children}
           </ShellWrapper>
-          <CookieConsent />
+        </NavbarProvider>
+        <CookieConsent />
 
       </body>
     </html>
