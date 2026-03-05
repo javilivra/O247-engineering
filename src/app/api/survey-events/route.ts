@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { checkRateLimit } from "@/lib/rateLimit";
 import { promises as fs } from "fs";
 import path from "path";
 
@@ -36,6 +37,13 @@ async function ensureFile() {
 }
 
 export async function POST(request: NextRequest) {
+  // Rate limiting: máximo 30 eventos por IP por minuto
+  const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
+  const { allowed } = checkRateLimit(ip, 30, 60);
+  if (!allowed) {
+    return NextResponse.json({ error: 'Too many requests' }, { status: 429 });
+  }
+
   try {
     const body = await request.json();
 

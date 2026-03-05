@@ -1,8 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
+import { checkRateLimit } from '@/lib/rateLimit';
 import { randomUUID } from 'crypto';
 
 export async function POST(req: NextRequest) {
+  // Rate limiting: máximo 5 envíos por IP por minuto
+  const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
+  const { allowed } = checkRateLimit(ip, 5, 60);
+  if (!allowed) {
+    return NextResponse.json({ ok: false, error: 'Too many requests' }, { status: 429 });
+  }
+
   try {
     const body = await req.json();
     const { email, answers, skipped } = body;
