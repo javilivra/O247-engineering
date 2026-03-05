@@ -12,18 +12,18 @@
 //   5. Reseñas         — carousel en loop automático
 // ============================================================
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useId } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { Attraction } from "@/data/types";
 
 // ── COLORES BASE ──────────────────────────────────────────────
 const C = {
-  bg:      "#0f0f11",       // fondo de las cards
+  bg: "#0f0f11",       // fondo de las cards
   surface: "#1a1a1e",       // superficie interna
-  border:  "rgba(255,255,255,0.06)",
-  text:    "rgba(255,255,255,0.9)",
-  muted:   "rgba(255,255,255,0.38)",
-  sunset:  "#FF7043",
+  border: "rgba(255,255,255,0.06)",
+  text: "rgba(255,255,255,0.9)",
+  muted: "rgba(255,255,255,0.38)",
+  sunset: "#FF7043",
   celeste: "#00B4D8",
 };
 
@@ -96,6 +96,7 @@ function BentoCard({
 
 // ── CARD 1: CONFIABILIDAD ─────────────────────────────────────
 function CardConfiabilidad({ score }: { score: number }) {
+  const gaugeId = useId();
   const [animated, setAnimated] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -149,7 +150,7 @@ function CardConfiabilidad({ score }: { score: number }) {
             <circle
               cx="80" cy="80" r={R}
               fill="none"
-              stroke="url(#gaugeGrad)"
+              stroke={`url(#${gaugeId})`}
               strokeWidth="10"
               strokeLinecap="round"
               strokeDasharray={CIRCUMFERENCE}
@@ -157,7 +158,7 @@ function CardConfiabilidad({ score }: { score: number }) {
               style={{ transition: "stroke-dashoffset 1.4s cubic-bezier(0.22,1,0.36,1)" }}
             />
             <defs>
-              <linearGradient id="gaugeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <linearGradient id={gaugeId} x1="0%" y1="0%" x2="100%" y2="0%">
                 <stop offset="0%" stopColor={C.sunset} />
                 <stop offset="100%" stopColor={C.celeste} />
               </linearGradient>
@@ -311,6 +312,7 @@ function CardAcceso({ access, accessExplained }: { access: string; accessExplain
 
 // ── CARD 3: DURACIÓN ──────────────────────────────────────────
 function CardDuracion({ duration }: { duration: number }) {
+  const timerId = useId();
   const [tick, setTick] = useState(0);
 
   useEffect(() => {
@@ -367,14 +369,14 @@ function CardDuracion({ duration }: { duration: number }) {
                 stroke="rgba(255,255,255,0.05)" strokeWidth="7" />
               {/* Progress */}
               <circle cx="65" cy="65" r={R} fill="none"
-                stroke="url(#timerGrad)" strokeWidth="7"
+                stroke={`url(#${timerId})`} strokeWidth="7"
                 strokeLinecap="round"
                 strokeDasharray={CIRC}
                 strokeDashoffset={offset}
                 style={{ transition: "stroke-dashoffset 0.8s linear" }}
               />
               <defs>
-                <linearGradient id="timerGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <linearGradient id={timerId} x1="0%" y1="0%" x2="100%" y2="0%">
                   <stop offset="0%" stopColor={C.sunset} />
                   <stop offset="100%" stopColor={C.celeste} />
                 </linearGradient>
