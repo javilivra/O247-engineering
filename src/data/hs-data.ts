@@ -27,7 +27,7 @@ export const HS_ATTRACTIONS: ParkItem[] = withPov([
   {
     id: 'hs-smugglers', name: 'Millennium Falcon: Smugglers Run',
     land: "Star Wars: Galaxy's Edge", tier: 'Tier 1', type: 'Attraction',
-    image: '/images/attractions/hs/hs-milennium_falcon.webp', heroImage: '/images/attractions/hero/hero_att_hs-milennium_falcon.webp', vibes: ['thrill', 'indoor', 'simulator', 'interactive'],
+    image: '/images/attractions/hs/hs-millennium_falcon.webp', heroImage: '/images/attractions/hero/hero_att_hs-millennium_falcon.webp', vibes: ['thrill', 'indoor', 'simulator', 'interactive'],
     waitTime: '75 min', status: 'open',
     description: 'Piloteá el Millennium Falcon en una misión interactiva.',
   },
