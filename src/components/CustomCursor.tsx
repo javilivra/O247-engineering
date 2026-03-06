@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 // ============================================================
 // O247 CustomCursor v2.1 — Dot + Magical Sparkle Trail
@@ -14,9 +14,9 @@ const CFG = {
   SPARKLE_SIZE_MIN: 2,
   SPARKLE_SIZE_MAX: 6,
   SPARKLE_SPEED: 0.6,
-  COLOR_SUNSET:  "#FF7043",
+  COLOR_SUNSET: "#FF7043",
   COLOR_CELESTE: "#00B4D8",
-  COLOR_WHITE:   "#f7f7f5",
+  COLOR_WHITE: "#f7f7f5",
 };
 
 type CursorState = "default" | "hover-link" | "hover-card" | "hover-cta" | "press";
@@ -50,8 +50,8 @@ class SparkleEngine {
     const colors = state === "hover-cta"
       ? [CFG.COLOR_SUNSET, "#FF8A65", "#FFCCBC"]
       : state === "hover-card"
-      ? [CFG.COLOR_CELESTE, "#80DEEA", CFG.COLOR_WHITE]
-      : [CFG.COLOR_SUNSET, CFG.COLOR_CELESTE, CFG.COLOR_WHITE, "#FFD54F"];
+        ? [CFG.COLOR_CELESTE, "#80DEEA", CFG.COLOR_WHITE]
+        : [CFG.COLOR_SUNSET, CFG.COLOR_CELESTE, CFG.COLOR_WHITE, "#FFD54F"];
 
     for (let i = 0; i < count; i++) {
       const angle = Math.random() * Math.PI * 2;
@@ -113,6 +113,13 @@ class SparkleEngine {
 }
 
 export default function CustomCursor() {
+  // Detecta si el dispositivo tiene puntero (mouse) o es táctil
+  // Usa pointer: fine = mouse preciso. pointer: coarse = touch.
+  const [isPointerDevice, setIsPointerDevice] = useState(false);
+  useEffect(() => {
+    setIsPointerDevice(window.matchMedia('(pointer: fine)').matches);
+  }, []);
+
   const dotRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rafRef = useRef<number>(0);
@@ -124,9 +131,8 @@ export default function CustomCursor() {
   const styleRef = useRef<HTMLStyleElement | null>(null);
 
   useEffect(() => {
+    if (!isPointerDevice) return; // No correr en touch/tablet
     if (typeof window === "undefined") return;
-    const isTouchDevice = "ontouchstart" in window || navigator.maxTouchPoints > 0;
-    if (isTouchDevice) return;
 
     const dot = dotRef.current;
     const canvas = canvasRef.current;
@@ -149,7 +155,7 @@ export default function CustomCursor() {
       if (!isActive.current) return;
       isActive.current = false;
       if (styleRef.current) {
-        try { document.head.removeChild(styleRef.current); } catch {}
+        try { document.head.removeChild(styleRef.current); } catch { }
         styleRef.current = null;
       }
       dot.style.display = "none";
@@ -258,10 +264,13 @@ export default function CustomCursor() {
       window.removeEventListener("mouseup", onMouseUp);
       document.removeEventListener("mouseleave", onMouseLeave);
       if (styleRef.current) {
-        try { document.head.removeChild(styleRef.current); } catch {}
+        try { document.head.removeChild(styleRef.current); } catch { }
       }
     };
-  }, []);
+  }, [isPointerDevice]);
+
+  // No renderizar nada en dispositivos táctiles
+  if (!isPointerDevice) return null;
 
   return (
     <>
