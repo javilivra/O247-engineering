@@ -214,9 +214,14 @@ const SUMMARY_ICONS: Record<string, string> = {
 
 function trackSurveyEvent(event: string, data?: Record<string, unknown>) {
   const payload = { event: `o247_survey_${event}`, timestamp: new Date().toISOString(), ...data };
-  if (typeof window !== "undefined" && (window as any).dataLayer) {
-    (window as any).dataLayer.push(payload);
+
+  // GTM dataLayer — tipado explícito, sin cast any
+  const win = window as Window & { dataLayer?: unknown[] };
+  if (typeof window !== "undefined" && win.dataLayer) {
+    win.dataLayer.push(payload);
   }
+
+  // sendBeacon como primario, fetch como fallback (si el navegador no soporta sendBeacon)
   if (typeof navigator !== "undefined" && navigator.sendBeacon) {
     navigator.sendBeacon("/api/survey-events", JSON.stringify(payload));
   } else if (typeof fetch !== "undefined") {
@@ -225,8 +230,9 @@ function trackSurveyEvent(event: string, data?: Record<string, unknown>) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
       keepalive: true,
-    }).catch(() => {});
+    }).catch(() => { });
   }
+
   if (process.env.NODE_ENV === "development") {
     console.log(`[O247 Survey] ${event}`, data);
   }
@@ -343,11 +349,10 @@ function EmailStep({
           whileTap={{ scale: 0.97 }}
           onClick={handleSubmit}
           disabled={!isValid || isSending}
-          className={`px-6 py-3.5 rounded-2xl font-bold text-sm uppercase tracking-widest transition-all duration-300 flex items-center gap-2 whitespace-nowrap ${
-            isValid
+          className={`px-6 py-3.5 rounded-2xl font-bold text-sm uppercase tracking-widest transition-all duration-300 flex items-center gap-2 whitespace-nowrap ${isValid
               ? "bg-gunmetal text-white shadow-lg shadow-gunmetal/15 hover:shadow-xl hover:shadow-gunmetal/20 hover:-translate-y-0.5"
               : "bg-gunmetal/10 text-gunmetal/30 cursor-not-allowed"
-          }`}
+            }`}
         >
           {isSending ? (
             <motion.div
@@ -661,13 +666,12 @@ export default function MiniSurvey() {
               </h3>
 
               <div
-                className={`grid gap-3 ${
-                  currentQ.options.length <= 3
+                className={`grid gap-3 ${currentQ.options.length <= 3
                     ? "grid-cols-1 sm:grid-cols-3"
                     : currentQ.options.length <= 4
-                    ? "grid-cols-1 sm:grid-cols-2"
-                    : "grid-cols-2 sm:grid-cols-3 lg:grid-cols-4"
-                }`}
+                      ? "grid-cols-1 sm:grid-cols-2"
+                      : "grid-cols-2 sm:grid-cols-3 lg:grid-cols-4"
+                  }`}
               >
                 {currentQ.options.map((opt, i) => {
                   const isMulti = currentQ.multiSelect;
@@ -692,11 +696,10 @@ export default function MiniSurvey() {
                         ? handleMultiToggle(opt.id)
                         : handleAnswer(currentQ.id, opt.id, opt.feedbackKey)
                       }
-                      className={`group relative p-4 sm:p-5 text-left rounded-2xl border-2 transition-all duration-300 ${
-                        isSelected
+                      className={`group relative p-4 sm:p-5 text-left rounded-2xl border-2 transition-all duration-300 ${isSelected
                           ? "bg-white border-sunset shadow-lg shadow-sunset/10"
                           : "bg-white border-transparent shadow-sm hover:shadow-md"
-                      }`}
+                        }`}
                       style={{ overflowWrap: "break-word" }}
                     >
                       {isJustSelected && (
@@ -708,18 +711,16 @@ export default function MiniSurvey() {
                       )}
                       <div className="relative z-10 flex items-center gap-3">
                         <div
-                          className={`shrink-0 p-2.5 rounded-xl transition-all duration-300 ${
-                            isSelected
+                          className={`shrink-0 p-2.5 rounded-xl transition-all duration-300 ${isSelected
                               ? "bg-sunset text-white shadow-md shadow-sunset/20"
                               : "bg-bone text-gunmetal/50 group-hover:bg-sunset/10 group-hover:text-sunset"
-                          }`}
+                            }`}
                         >
                           <Icon icon={opt.icon} className="w-5 h-5" />
                         </div>
                         <span
-                          className={`text-sm font-bold leading-tight transition-colors duration-300 ${
-                            isSelected ? "text-gunmetal" : "text-gunmetal/70 group-hover:text-gunmetal"
-                          }`}
+                          className={`text-sm font-bold leading-tight transition-colors duration-300 ${isSelected ? "text-gunmetal" : "text-gunmetal/70 group-hover:text-gunmetal"
+                            }`}
                           style={{ overflowWrap: "break-word", hyphens: "auto" }}
                         >
                           {opt.label}
@@ -746,11 +747,10 @@ export default function MiniSurvey() {
                   <button
                     onClick={handleMultiConfirm}
                     disabled={multiSelected.length === 0}
-                    className={`px-10 py-3 rounded-full text-sm font-bold tracking-wide transition-all duration-300 ${
-                      multiSelected.length > 0
+                    className={`px-10 py-3 rounded-full text-sm font-bold tracking-wide transition-all duration-300 ${multiSelected.length > 0
                         ? 'bg-gunmetal text-white hover:bg-gunmetal/85 shadow-lg'
                         : 'bg-gunmetal/8 text-gunmetal/20 cursor-not-allowed'
-                    }`}
+                      }`}
                   >
                     Continuar
                   </button>

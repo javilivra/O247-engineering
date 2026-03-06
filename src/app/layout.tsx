@@ -3,6 +3,7 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import { NavbarProvider } from '@/context/NavbarContext';
 import type { Metadata, Viewport } from "next";
 import { JetBrains_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
 // COMPONENTES GLOBALES
@@ -20,6 +21,14 @@ const monoFont = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-mono",
   display: "swap",
+});
+
+// Fuente principal — archivo local (SIL Open Font License)
+const googleSansFlex = localFont({
+  src: "../../public/fonts/GoogleSansFlex.ttf",
+  variable: "--font-primary",
+  display: "swap",
+  weight: "1 1000",  // Variable font — soporta todo el rango de peso
 });
 
 export const metadata: Metadata = {
@@ -55,14 +64,8 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="es" className={`${monoFont.variable}`}>
+    <html lang="es" className={`${monoFont.variable} ${googleSansFlex.variable}`}>
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,1..1000&display=swap"
-          rel="stylesheet"
-        />
         <link rel="preconnect" href="https://api.iconify.design" />
       </head>
 

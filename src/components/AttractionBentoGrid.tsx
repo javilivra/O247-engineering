@@ -314,11 +314,25 @@ function CardAcceso({ access, accessExplained }: { access: string; accessExplain
 function CardDuracion({ duration }: { duration: number }) {
   const timerId = useId();
   const [tick, setTick] = useState(0);
+  const [isVisible, setIsVisible] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
 
+  // Observar visibilidad — mismo patrón que CardConfiabilidad
   useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => { setIsVisible(entry.isIntersecting); },
+      { threshold: 0.3 }
+    );
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
+
+  // Interval solo corre cuando la card es visible en pantalla
+  useEffect(() => {
+    if (!isVisible) return;
     const interval = setInterval(() => setTick(t => t + 1), 1000);
     return () => clearInterval(interval);
-  }, []);
+  }, [isVisible]);
 
   // Simular progreso del reloj basado en duración
   const secondsInCycle = duration * 60;
@@ -335,7 +349,7 @@ function CardDuracion({ duration }: { duration: number }) {
 
   return (
     <BentoCard>
-      <div style={{ padding: "28px", height: "100%", display: "flex", flexDirection: "column" }}>
+      <div ref={ref} style={{ padding: "28px", height: "100%", display: "flex", flexDirection: "column" }}>
         <p style={{ ...FONT_TECH, fontSize: "10px", color: C.muted, marginBottom: "20px" }}>
           Duración de la Experiencia
         </p>

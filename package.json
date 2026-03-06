@@ -43,7 +43,7 @@
     "autoprefixer": "^10.4.16",
     "baseline-browser-mapping": "^2.10.0",
     "eslint": "^9.39.2",
-    "eslint-config-next": "^16.1.6",
+    "eslint-config-next": "^16.0.8",
     "eslint-config-prettier": "^10.1.8",
     "postcss": "^8.4.31",
     "prettier": "^3.8.1",
