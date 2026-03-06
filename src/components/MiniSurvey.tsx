@@ -481,6 +481,7 @@ function EmailStep({
 // STORAGE KEY — persistencia en sessionStorage
 // ============================================================
 const STORAGE_KEY = 'o247_survey_progress';
+const COMPLETED_KEY = 'o247_survey_completed';
 
 // ============================================================
 // MAIN COMPONENT
@@ -525,9 +526,19 @@ export default function MiniSurvey() {
     return () => observer.disconnect();
   }, []);
 
-  // sessionStorage — restaurar progreso guardado al montar
+  // localStorage — restaurar survey completado al montar
   useEffect(() => {
     try {
+      const completed = localStorage.getItem(COMPLETED_KEY);
+      if (completed) {
+        const { answers: a } = JSON.parse(completed);
+        if (a) {
+          setAnswers(a);
+          setIsComplete(true);
+          return;
+        }
+      }
+      // Si no hay completado, buscar progreso en curso en sessionStorage
       const saved = sessionStorage.getItem(STORAGE_KEY);
       if (saved) {
         const { answers: a, currentStep: s, skipped: sk } = JSON.parse(saved);
@@ -624,6 +635,7 @@ export default function MiniSurvey() {
   const handleDismiss = () => {
     trackSurveyEvent("dismissed", { atStep: currentStep, answers, skipped: Array.from(skipped) });
     sessionStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem(COMPLETED_KEY);
     setIsActive(false);
     setIsComplete(false);
     setShowEmailStep(false);
@@ -643,6 +655,7 @@ export default function MiniSurvey() {
     trackSurveyEvent("lead_captured", { email, answers, skipped: Array.from(skipped) });
     await submitSurvey({ email, answers, skipped: Array.from(skipped) });
     sessionStorage.removeItem(STORAGE_KEY);
+    try { localStorage.setItem(COMPLETED_KEY, JSON.stringify({ answers })); } catch { }
     setShowEmailStep(false);
     setIsComplete(true);
   };
@@ -651,6 +664,7 @@ export default function MiniSurvey() {
     trackSurveyEvent("email_skipped", { answers });
     await submitSurvey({ answers, skipped: Array.from(skipped) });
     sessionStorage.removeItem(STORAGE_KEY);
+    try { localStorage.setItem(COMPLETED_KEY, JSON.stringify({ answers })); } catch { }
     setShowEmailStep(false);
     setIsComplete(true);
   };
@@ -701,8 +715,26 @@ export default function MiniSurvey() {
     );
   }
 
-  // ======== COMPLETADO ========
+  // ======== COMPLETADO — Perfil de viaje ========
   if (isComplete) {
+    // Construir las respuestas visibles
+    const profileItems = QUESTIONS
+      .map(q => {
+        const val = answers[q.id];
+        if (!val) return null;
+        // Multi-select
+        if (val.includes(',')) {
+          const ids = val.split(',');
+          const labels = ids.map(id => q.options.find(o => o.id === id)?.label ?? id);
+          const icons = ids.map(id => q.options.find(o => o.id === id)?.icon ?? 'solar:star-bold-duotone');
+          return { question: q.question, labels, icons, isMulti: true };
+        }
+        const opt = q.options.find(o => o.id === val);
+        if (!opt) return null;
+        return { question: q.question, labels: [opt.label], icons: [opt.icon], isMulti: false };
+      })
+      .filter(Boolean) as { question: string; labels: string[]; icons: string[]; isMulti: boolean }[];
+
     return (
       <section className="py-24 px-6 md:px-12 lg:px-24 bg-bone border-t border-gunmetal/5">
         <div className="max-w-5xl mx-auto">
@@ -711,32 +743,68 @@ export default function MiniSurvey() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <motion.div
-              initial={{ scale: 0, rotate: -180 }}
-              animate={{ scale: 1, rotate: 0 }}
-              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
-              className="w-20 h-20 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mb-8"
-            >
-              <Icon icon="solar:check-circle-bold" width={40} />
-            </motion.div>
-            <h2
-              className="type-display text-2xl sm:text-3xl md:text-4xl text-gunmetal mb-4"
-              style={{ overflowWrap: "break-word" }}
-            >
-              Listo. Ya sabemos por dónde empezar.
-            </h2>
-            <p
-              className="type-body text-base sm:text-lg text-gunmetal/60 max-w-lg mb-10 leading-relaxed"
-              style={{ overflowWrap: "break-word" }}
-            >
-              Con lo que nos contaste, el contenido de O247 ahora tiene más sentido para tu viaje. Explorá a tu ritmo.
-            </p>
-            <button
+            {/* Header */}
+            <div className="flex items-start justify-between mb-10">
+              <div>
+                <div className="flex items-center gap-2.5 mb-3">
+                  <motion.div
+                    initial={{ scale: 0, rotate: -90 }}
+                    animate={{ scale: 1, rotate: 0 }}
+                    transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                    className="w-9 h-9 rounded-full bg-gradient-to-br from-sunset to-celeste flex items-center justify-center shadow-lg shadow-sunset/20"
+                  >
+                    <Icon icon="solar:user-id-bold-duotone" width={18} className="text-white" />
+                  </motion.div>
+                  <span className="type-tech text-[10px] text-gunmetal/40 uppercase tracking-widest">
+                    Tu perfil de viaje
+                  </span>
+                </div>
+                <h2 className="type-display text-2xl sm:text-3xl md:text-4xl text-gunmetal leading-tight">
+                  Contenido ajustado{" "}
+                  <span className="bg-gradient-to-r from-sunset to-celeste bg-clip-text text-transparent">
+                    a tu viaje.
+                  </span>
+                </h2>
+              </div>
+            </div>
+
+            {/* Grid de respuestas */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-10">
+              {profileItems.map((item, i) => (
+                <motion.div
+                  key={item.question}
+                  initial={{ opacity: 0, y: 16, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{ delay: i * 0.06, duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                  className="bg-white rounded-2xl border border-gunmetal/6 p-4 shadow-sm hover:shadow-md transition-shadow duration-300"
+                >
+                  <p className="text-[9px] font-mono uppercase tracking-widest text-gunmetal/30 mb-2">
+                    {item.question}
+                  </p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {item.labels.map((label, j) => (
+                      <div key={j} className="flex items-center gap-1.5">
+                        <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-sunset/10 to-celeste/10 flex items-center justify-center shrink-0">
+                          <Icon icon={item.icons[j] ?? 'solar:star-bold-duotone'} width={13} className="text-sunset" />
+                        </div>
+                        <span className="text-sm font-bold text-gunmetal leading-snug">{label}</span>
+                      </div>
+                    ))}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* Footer */}
+            <motion.button
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.6 }}
               onClick={handleDismiss}
-              className="text-xs text-gunmetal/40 hover:text-gunmetal font-bold uppercase tracking-widest transition-colors"
+              className="text-[10px] font-mono uppercase tracking-widest text-gunmetal/30 hover:text-gunmetal/60 transition-colors"
             >
-              Continuar
-            </button>
+              Actualizar mis respuestas
+            </motion.button>
           </motion.div>
         </div>
       </section>
