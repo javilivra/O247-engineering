@@ -242,7 +242,7 @@ function trackSurveyEvent(event: string, data?: Record<string, unknown>) {
 // SUB-COMPONENTS
 // ============================================================
 
-// Resumen visual de respuestas
+// Resumen visual — muestra todas las respuestas incluyendo multi-select
 function SummaryCard({ answers }: { answers: Record<string, string> }) {
   const items = Object.entries(SUMMARY_LABELS)
     .map(([key, labels]) => {
@@ -273,6 +273,98 @@ function SummaryCard({ answers }: { answers: Record<string, string> }) {
           <span className="text-[11px] font-semibold text-gunmetal/70">{item.label}</span>
         </motion.div>
       ))}
+    </motion.div>
+  );
+}
+
+// ── REVIEW STEP — pantalla de revisión con edición por pregunta ──
+function ReviewStep({
+  answers,
+  skipped,
+  onConfirm,
+  onEditQuestion,
+}: {
+  answers: Record<string, string>;
+  skipped: Set<string>;
+  onConfirm: () => void;
+  onEditQuestion: (stepIndex: number) => void;
+}) {
+  return (
+    <motion.div
+      key="review-step"
+      initial={{ opacity: 0, x: 30 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -30 }}
+      transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
+    >
+      <h3 className="type-display text-xl sm:text-2xl md:text-3xl text-gunmetal mb-3 leading-tight">
+        Revisá tus respuestas.
+      </h3>
+      <p className="type-body text-sm text-gunmetal/50 mb-8 max-w-md leading-relaxed">
+        Podés editar cualquier respuesta antes de continuar.
+      </p>
+
+      <div className="flex flex-col gap-2.5 mb-10">
+        {QUESTIONS.map((q, index) => {
+          const answer = answers[q.id];
+          const wasSkipped = skipped.has(q.id);
+
+          // Formatear la respuesta para mostrar
+          let displayAnswer = '—';
+          if (wasSkipped) {
+            displayAnswer = 'Omitida';
+          } else if (answer) {
+            if (answer.includes(',')) {
+              // Multi-select: resolver cada ID a label
+              const ids = answer.split(',');
+              displayAnswer = ids
+                .map(id => q.options.find(o => o.id === id)?.label ?? id)
+                .join(' · ');
+            } else {
+              displayAnswer = q.options.find(o => o.id === answer)?.label ?? answer;
+            }
+          }
+
+          return (
+            <motion.div
+              key={q.id}
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.035, duration: 0.3 }}
+              className="flex items-center justify-between gap-4 px-4 py-3.5 bg-white rounded-2xl border border-gunmetal/6 shadow-sm"
+            >
+              <div className="flex-1 min-w-0">
+                <p className="text-[9px] font-mono uppercase tracking-widest text-gunmetal/35 mb-0.5 leading-none">
+                  {q.question}
+                </p>
+                <p className={`text-sm font-bold leading-snug truncate ${wasSkipped ? 'text-gunmetal/25 italic' : 'text-gunmetal'
+                  }`}>
+                  {displayAnswer}
+                </p>
+              </div>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => onEditQuestion(index)}
+                className="shrink-0 flex items-center gap-1 text-[9px] font-mono uppercase tracking-widest text-sunset hover:text-sunset/70 transition-colors px-2.5 py-1.5 rounded-lg hover:bg-sunset/6"
+              >
+                <Icon icon="solar:pen-new-square-bold-duotone" width={11} />
+                Editar
+              </motion.button>
+            </motion.div>
+          );
+        })}
+      </div>
+
+      <motion.button
+        whileHover={{ scale: 1.02, boxShadow: "0 10px 30px rgba(37,52,63,0.15)" }}
+        whileTap={{ scale: 0.97 }}
+        onClick={onConfirm}
+        className="flex items-center gap-2 px-8 py-4 bg-gunmetal text-white rounded-full font-bold text-sm uppercase tracking-widest transition-all"
+      >
+        <Icon icon="solar:arrow-right-bold" width={16} />
+        Confirmar y continuar
+      </motion.button>
     </motion.div>
   );
 }
@@ -350,8 +442,8 @@ function EmailStep({
           onClick={handleSubmit}
           disabled={!isValid || isSending}
           className={`px-6 py-3.5 rounded-2xl font-bold text-sm uppercase tracking-widest transition-all duration-300 flex items-center gap-2 whitespace-nowrap ${isValid
-              ? "bg-gunmetal text-white shadow-lg shadow-gunmetal/15 hover:shadow-xl hover:shadow-gunmetal/20 hover:-translate-y-0.5"
-              : "bg-gunmetal/10 text-gunmetal/30 cursor-not-allowed"
+            ? "bg-gunmetal text-white shadow-lg shadow-gunmetal/15 hover:shadow-xl hover:shadow-gunmetal/20 hover:-translate-y-0.5"
+            : "bg-gunmetal/10 text-gunmetal/30 cursor-not-allowed"
             }`}
         >
           {isSending ? (
@@ -386,6 +478,11 @@ function EmailStep({
 
 
 // ============================================================
+// STORAGE KEY — persistencia en sessionStorage
+// ============================================================
+const STORAGE_KEY = 'o247_survey_progress';
+
+// ============================================================
 // MAIN COMPONENT
 // ============================================================
 
@@ -397,14 +494,17 @@ export default function MiniSurvey() {
   const [showFeedback, setShowFeedback] = useState<string | null>(null);
   const [isComplete, setIsComplete] = useState(false);
   const [showEmailStep, setShowEmailStep] = useState(false);
+  const [showReview, setShowReview] = useState(false);
   const [selectedAnim, setSelectedAnim] = useState<string | null>(null);
   const [multiSelected, setMultiSelected] = useState<string[]>([]);
   const sectionRef = useRef<HTMLElement>(null);
   const hasTrackedView = useRef(false);
 
   const totalSteps = QUESTIONS.length;
-  // +1 para el email step en la barra de progreso
-  const progress = isComplete ? 100 : showEmailStep ? 95 : ((currentStep + 1) / (totalSteps + 1)) * 100;
+  const progress = isComplete ? 100
+    : showEmailStep ? 98
+      : showReview ? 93
+        : ((currentStep + 1) / (totalSteps + 1)) * 100;
   const currentQ = QUESTIONS[currentStep] ?? QUESTIONS[0];
 
   // Track section view
@@ -425,13 +525,41 @@ export default function MiniSurvey() {
     return () => observer.disconnect();
   }, []);
 
+  // sessionStorage — restaurar progreso guardado al montar
+  useEffect(() => {
+    try {
+      const saved = sessionStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        const { answers: a, currentStep: s, skipped: sk } = JSON.parse(saved);
+        if (a && typeof s === 'number') {
+          setAnswers(a);
+          setCurrentStep(s);
+          setSkipped(new Set(Array.isArray(sk) ? sk : []));
+          setIsActive(true);
+        }
+      }
+    } catch { }
+  }, []);
+
+  // sessionStorage — guardar progreso en cada cambio
+  useEffect(() => {
+    if (!isActive || isComplete) return;
+    try {
+      sessionStorage.setItem(STORAGE_KEY, JSON.stringify({
+        answers,
+        currentStep,
+        skipped: Array.from(skipped),
+      }));
+    } catch { }
+  }, [answers, currentStep, skipped, isActive, isComplete]);
+
   const advanceStep = useCallback(() => {
     setMultiSelected([]);
     if (currentStep < totalSteps - 1) {
       setCurrentStep((prev) => Math.min(prev + 1, totalSteps - 1));
     } else {
-      setIsComplete(false);
-      setShowEmailStep(true);
+      // Al terminar todas las preguntas → pantalla de revisión
+      setShowReview(true);
     }
   }, [currentStep, totalSteps]);
 
@@ -480,6 +608,11 @@ export default function MiniSurvey() {
   const handleGoBack = () => {
     if (showEmailStep) {
       setShowEmailStep(false);
+      setShowReview(true); // volver a la revisión
+      return;
+    }
+    if (showReview) {
+      setShowReview(false); // volver a la última pregunta
       return;
     }
     if (currentStep > 0) {
@@ -490,9 +623,11 @@ export default function MiniSurvey() {
 
   const handleDismiss = () => {
     trackSurveyEvent("dismissed", { atStep: currentStep, answers, skipped: Array.from(skipped) });
+    sessionStorage.removeItem(STORAGE_KEY);
     setIsActive(false);
     setIsComplete(false);
     setShowEmailStep(false);
+    setShowReview(false);
     setCurrentStep(0);
     setAnswers({});
     setSkipped(new Set());
@@ -500,12 +635,14 @@ export default function MiniSurvey() {
 
   const handleStart = () => {
     trackSurveyEvent("started");
+    sessionStorage.removeItem(STORAGE_KEY); // limpiar cualquier progreso previo
     setIsActive(true);
   };
 
   const handleEmailSubmit = async (email: string) => {
     trackSurveyEvent("lead_captured", { email, answers, skipped: Array.from(skipped) });
     await submitSurvey({ email, answers, skipped: Array.from(skipped) });
+    sessionStorage.removeItem(STORAGE_KEY);
     setShowEmailStep(false);
     setIsComplete(true);
   };
@@ -513,6 +650,7 @@ export default function MiniSurvey() {
   const handleEmailSkip = async () => {
     trackSurveyEvent("email_skipped", { answers });
     await submitSurvey({ answers, skipped: Array.from(skipped) });
+    sessionStorage.removeItem(STORAGE_KEY);
     setShowEmailStep(false);
     setIsComplete(true);
   };
@@ -618,7 +756,9 @@ export default function MiniSurvey() {
           <span className="type-tech text-[10px] text-gunmetal/40 uppercase tracking-widest">
             {showEmailStep
               ? "Tu punto de partida"
-              : `Pregunta ${currentStep + 1} de ${totalSteps}`}
+              : showReview
+                ? "Revisá tus respuestas"
+                : `Pregunta ${currentStep + 1} de ${totalSteps}`}
           </span>
           <button
             onClick={handleDismiss}
@@ -648,6 +788,24 @@ export default function MiniSurvey() {
               onSubmit={handleEmailSubmit}
               onSkip={handleEmailSkip}
             />
+
+          ) : showReview ? (
+
+            /* REVIEW STEP */
+            <ReviewStep
+              key="review"
+              answers={answers}
+              skipped={skipped}
+              onConfirm={() => {
+                setShowReview(false);
+                setShowEmailStep(true);
+              }}
+              onEditQuestion={(stepIndex) => {
+                setShowReview(false);
+                setCurrentStep(stepIndex);
+              }}
+            />
+
           ) : !showFeedback ? (
 
             /* PREGUNTA */
@@ -667,10 +825,10 @@ export default function MiniSurvey() {
 
               <div
                 className={`grid gap-3 ${currentQ.options.length <= 3
-                    ? "grid-cols-1 sm:grid-cols-3"
-                    : currentQ.options.length <= 4
-                      ? "grid-cols-1 sm:grid-cols-2"
-                      : "grid-cols-2 sm:grid-cols-3 lg:grid-cols-4"
+                  ? "grid-cols-1 sm:grid-cols-3"
+                  : currentQ.options.length <= 4
+                    ? "grid-cols-1 sm:grid-cols-2"
+                    : "grid-cols-2 sm:grid-cols-3 lg:grid-cols-4"
                   }`}
               >
                 {currentQ.options.map((opt, i) => {
@@ -697,8 +855,8 @@ export default function MiniSurvey() {
                         : handleAnswer(currentQ.id, opt.id, opt.feedbackKey)
                       }
                       className={`group relative p-4 sm:p-5 text-left rounded-2xl border-2 transition-all duration-300 ${isSelected
-                          ? "bg-white border-sunset shadow-lg shadow-sunset/10"
-                          : "bg-white border-transparent shadow-sm hover:shadow-md"
+                        ? "bg-white border-sunset shadow-lg shadow-sunset/10"
+                        : "bg-white border-transparent shadow-sm hover:shadow-md"
                         }`}
                       style={{ overflowWrap: "break-word" }}
                     >
@@ -712,8 +870,8 @@ export default function MiniSurvey() {
                       <div className="relative z-10 flex items-center gap-3">
                         <div
                           className={`shrink-0 p-2.5 rounded-xl transition-all duration-300 ${isSelected
-                              ? "bg-sunset text-white shadow-md shadow-sunset/20"
-                              : "bg-bone text-gunmetal/50 group-hover:bg-sunset/10 group-hover:text-sunset"
+                            ? "bg-sunset text-white shadow-md shadow-sunset/20"
+                            : "bg-bone text-gunmetal/50 group-hover:bg-sunset/10 group-hover:text-sunset"
                             }`}
                         >
                           <Icon icon={opt.icon} className="w-5 h-5" />
@@ -748,8 +906,8 @@ export default function MiniSurvey() {
                     onClick={handleMultiConfirm}
                     disabled={multiSelected.length === 0}
                     className={`px-10 py-3 rounded-full text-sm font-bold tracking-wide transition-all duration-300 ${multiSelected.length > 0
-                        ? 'bg-gunmetal text-white hover:bg-gunmetal/85 shadow-lg'
-                        : 'bg-gunmetal/8 text-gunmetal/20 cursor-not-allowed'
+                      ? 'bg-gunmetal text-white hover:bg-gunmetal/85 shadow-lg'
+                      : 'bg-gunmetal/8 text-gunmetal/20 cursor-not-allowed'
                       }`}
                   >
                     Continuar

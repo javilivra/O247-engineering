@@ -149,102 +149,126 @@ export default function GlobalBreadcrumbs() {
     };
   });
 
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: -6 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1], delay: 0.15 }}
-      className={`${positionClass} px-6 md:px-12 w-full pointer-events-none hidden md:block`}
-    >
-      <div className="max-w-7xl mx-auto">
-        <nav
-          ref={containerRef}
-          className="flex items-center gap-2 text-[10px] font-mono uppercase tracking-widest pointer-events-auto w-fit flex-wrap leading-none"
-        >
+  const parentSegment = segmentsData.length > 1
+    ? segmentsData[segmentsData.length - 2]
+    : null;
+  const mobileHref = parentSegment ? parentSegment.href : '/';
+  const mobileName = parentSegment ? parentSegment.name : 'O247';
 
-          {/* HOME — icono con micro-animación */}
-          <Link href="/" className="group flex items-center transition-all duration-200">
-            <motion.span
-              whileHover={{ scale: 1.15 }}
-              whileTap={{ scale: 0.9 }}
-              transition={{ duration: 0.15, ease: "easeOut" }}
-              className={`
+  return (
+    <>
+      {/* ── Mobile breadcrumb — solo ← segmento anterior ── */}
+      <div className={`${positionClass} px-6 w-full md:hidden pointer-events-none`}>
+        <Link
+          href={mobileHref}
+          className={`
+            pointer-events-auto inline-flex items-center gap-1.5
+            text-[10px] font-mono uppercase tracking-widest
+            transition-colors duration-200
+            ${isDark ? 'text-white/60 hover:text-white' : 'text-gunmetal/50 hover:text-celeste'}
+          `}
+        >
+          <Icon icon="solar:arrow-left-bold-duotone" width={12} />
+          {mobileName}
+        </Link>
+      </div>
+
+      {/* ── Desktop breadcrumb — todos los segmentos ── */}
+      <motion.div
+        initial={{ opacity: 0, y: -6 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1], delay: 0.15 }}
+        className={`${positionClass} px-6 md:px-12 w-full pointer-events-none hidden md:block`}
+      >
+        <div className="max-w-7xl mx-auto">
+          <nav
+            ref={containerRef}
+            className="flex items-center gap-2 text-[10px] font-mono uppercase tracking-widest pointer-events-auto w-fit flex-wrap leading-none"
+          >
+
+            {/* HOME — icono con micro-animación */}
+            <Link href="/" className="group flex items-center transition-all duration-200">
+              <motion.span
+                whileHover={{ scale: 1.15 }}
+                whileTap={{ scale: 0.9 }}
+                transition={{ duration: 0.15, ease: "easeOut" }}
+                className={`
                 flex items-center justify-center
                 transition-colors duration-200
                 ${isDark ? 'text-white/40 hover:text-white/90' : 'text-gunmetal/35 hover:text-celeste'}
               `}
-            >
-              <Icon icon="solar:home-bold-duotone" width={14} />
-            </motion.span>
-          </Link>
-
-          <Separator isDark={isDark} />
-
-          {segmentsData.map((segment, index) => {
-            const isLast = index === segmentsData.length - 1;
-
-            return (
-              <motion.div
-                key={`${segment.seg}-${index}`}
-                initial={{ opacity: 0, x: -4 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.3, delay: 0.1 + index * 0.06, ease: [0.25, 0.1, 0.25, 1] }}
-                className="flex items-center gap-2"
               >
+                <Icon icon="solar:home-bold-duotone" width={14} />
+              </motion.span>
+            </Link>
 
-                {segment.isInteractive ? (
-                  /* SEGMENTO CON DROPDOWN */
-                  <div className="relative flex items-center gap-0.5">
-                    {isLast ? (
-                      <span className={`
+            <Separator isDark={isDark} />
+
+            {segmentsData.map((segment, index) => {
+              const isLast = index === segmentsData.length - 1;
+
+              return (
+                <motion.div
+                  key={`${segment.seg}-${index}`}
+                  initial={{ opacity: 0, x: -4 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.3, delay: 0.1 + index * 0.06, ease: [0.25, 0.1, 0.25, 1] }}
+                  className="flex items-center gap-2"
+                >
+
+                  {segment.isInteractive ? (
+                    /* SEGMENTO CON DROPDOWN */
+                    <div className="relative flex items-center gap-0.5">
+                      {isLast ? (
+                        <span className={`
                         font-bold tracking-widest
                         ${isDark ? 'text-white' : 'text-celeste'}
                         flex items-center gap-0.5
                       `}>
-                        {/* Dot activo pulsante */}
-                        <motion.span
-                          animate={{ scale: [1, 1.4, 1], opacity: [0.6, 1, 0.6] }}
-                          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                          className="inline-block w-1 h-1 rounded-full bg-celeste mr-1"
-                        />
-                        {segment.name}
-                      </span>
-                    ) : (
-                      <AnimatedLink href={segment.href} isDark={isDark}>
-                        {segment.name}
-                      </AnimatedLink>
-                    )}
+                          {/* Dot activo pulsante */}
+                          <motion.span
+                            animate={{ scale: [1, 1.4, 1], opacity: [0.6, 1, 0.6] }}
+                            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                            className="inline-block w-1 h-1 rounded-full bg-celeste mr-1"
+                          />
+                          {segment.name}
+                        </span>
+                      ) : (
+                        <AnimatedLink href={segment.href} isDark={isDark}>
+                          {segment.name}
+                        </AnimatedLink>
+                      )}
 
-                    {/* Chevron dropdown */}
-                    <motion.button
-                      onClick={() => setOpenDropdown(openDropdown === segment.seg ? null : segment.seg)}
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.9 }}
-                      className={`
+                      {/* Chevron dropdown */}
+                      <motion.button
+                        onClick={() => setOpenDropdown(openDropdown === segment.seg ? null : segment.seg)}
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        className={`
                         ml-0.5 p-0.5 rounded transition-colors duration-150
                         ${isDark
-                          ? 'text-white/30 hover:text-white/70 hover:bg-white/8'
-                          : 'text-gunmetal/25 hover:text-gunmetal/60 hover:bg-gunmetal/6'}
+                            ? 'text-white/30 hover:text-white/70 hover:bg-white/8'
+                            : 'text-gunmetal/25 hover:text-gunmetal/60 hover:bg-gunmetal/6'}
                       `}
-                    >
-                      <motion.span
-                        animate={{ rotate: openDropdown === segment.seg ? 180 : 0 }}
-                        transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
-                        className="flex items-center"
                       >
-                        <Icon icon="solar:alt-arrow-down-linear" width={9} />
-                      </motion.span>
-                    </motion.button>
+                        <motion.span
+                          animate={{ rotate: openDropdown === segment.seg ? 180 : 0 }}
+                          transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
+                          className="flex items-center"
+                        >
+                          <Icon icon="solar:alt-arrow-down-linear" width={9} />
+                        </motion.span>
+                      </motion.button>
 
-                    {/* Dropdown */}
-                    <AnimatePresence>
-                      {openDropdown === segment.seg && (
-                        <motion.div
-                          initial={{ opacity: 0, y: -8, scale: 0.96 }}
-                          animate={{ opacity: 1, y: 0, scale: 1 }}
-                          exit={{ opacity: 0, y: -6, scale: 0.97 }}
-                          transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
-                          className="
+                      {/* Dropdown */}
+                      <AnimatePresence>
+                        {openDropdown === segment.seg && (
+                          <motion.div
+                            initial={{ opacity: 0, y: -8, scale: 0.96 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            exit={{ opacity: 0, y: -6, scale: 0.97 }}
+                            transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
+                            className="
                             absolute top-full left-1/2 -translate-x-1/2 mt-3
                             w-max min-w-[180px]
                             bg-white/95 backdrop-blur-xl
@@ -255,56 +279,57 @@ export default function GlobalBreadcrumbs() {
                             z-50
                             overflow-hidden
                           "
-                        >
-                          {/* Línea de acento superior */}
-                          <div className="absolute top-0 left-4 right-4 h-px bg-gradient-to-r from-transparent via-celeste/40 to-transparent" />
+                          >
+                            {/* Línea de acento superior */}
+                            <div className="absolute top-0 left-4 right-4 h-px bg-gradient-to-r from-transparent via-celeste/40 to-transparent" />
 
-                          {segment.siblings.map((sibling, si) => (
-                            <motion.div
-                              key={sibling.id}
-                              initial={{ opacity: 0, x: -4 }}
-                              animate={{ opacity: 1, x: 0 }}
-                              transition={{ delay: si * 0.04, duration: 0.15 }}
-                            >
-                              <DropdownItem
-                                href={`/${pathSegments[0]}/${sibling.id}`}
-                                name={sibling.name}
-                                isActive={sibling.id === segment.seg}
-                              />
-                            </motion.div>
-                          ))}
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
+                            {segment.siblings.map((sibling, si) => (
+                              <motion.div
+                                key={sibling.id}
+                                initial={{ opacity: 0, x: -4 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ delay: si * 0.04, duration: 0.15 }}
+                              >
+                                <DropdownItem
+                                  href={`/${pathSegments[0]}/${sibling.id}`}
+                                  name={sibling.name}
+                                  isActive={sibling.id === segment.seg}
+                                />
+                              </motion.div>
+                            ))}
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
 
-                ) : isLast ? (
-                  /* ÚLTIMO SEGMENTO — activo, no linkeable */
-                  <span className={`
+                  ) : isLast ? (
+                    /* ÚLTIMO SEGMENTO — activo, no linkeable */
+                    <span className={`
                     font-bold tracking-widest flex items-center gap-1.5
                     ${isDark ? 'text-white' : 'text-celeste'}
                   `}>
-                    <motion.span
-                      animate={{ scale: [1, 1.4, 1], opacity: [0.6, 1, 0.6] }}
-                      transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                      className="inline-block w-1 h-1 rounded-full bg-celeste"
-                    />
-                    {segment.name}
-                  </span>
+                      <motion.span
+                        animate={{ scale: [1, 1.4, 1], opacity: [0.6, 1, 0.6] }}
+                        transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                        className="inline-block w-1 h-1 rounded-full bg-celeste"
+                      />
+                      {segment.name}
+                    </span>
 
-                ) : (
-                  /* SEGMENTO INTERMEDIO — linkeable */
-                  <AnimatedLink href={segment.href} isDark={isDark}>
-                    {segment.name}
-                  </AnimatedLink>
-                )}
+                  ) : (
+                    /* SEGMENTO INTERMEDIO — linkeable */
+                    <AnimatedLink href={segment.href} isDark={isDark}>
+                      {segment.name}
+                    </AnimatedLink>
+                  )}
 
-                {!isLast && <Separator isDark={isDark} />}
-              </motion.div>
-            );
-          })}
-        </nav>
-      </div>
-    </motion.div>
+                  {!isLast && <Separator isDark={isDark} />}
+                </motion.div>
+              );
+            })}
+          </nav>
+        </div>
+      </motion.div>
+    </>
   );
 }
