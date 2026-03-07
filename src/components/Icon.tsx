@@ -126,6 +126,8 @@ const ICON_MAP: Record<string, LucideIcon> = {
   // ---- Weather ----
   "solar:sun-bold-duotone": Sun,
   "solar:sun-2-bold-duotone": Sun,
+  "solar:sun-fog-bold-duotone": Sun,
+  "solar:wind-bold-duotone": Wind,
   "solar:moon-bold": Moon,
   "solar:moon-bold-duotone": Moon,
   "solar:cloud-rain-bold-duotone": CloudRain,

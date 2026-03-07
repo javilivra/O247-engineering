@@ -66,3 +66,38 @@ export async function getOrlandoClimate(): Promise<MonthlyClimate[]> {
     return Array.from({ length: 12 }, (_, i) => ({ month: i, avgTempMax: 28, avgTempMin: 18, rainDays: 5 }));
   }
 }
+// ============================================================
+// CURRENT WEATHER POR PARQUE
+// ============================================================
+
+export type WeatherType = 'sun' | 'rain' | 'cloud' | 'snow' | 'storm';
+
+export interface ParkWeather {
+  temp: number;
+  weatherType: WeatherType;
+}
+
+function interpretWeather(code: number, temp: number): WeatherType {
+  if (code === 0 || code === 1) return temp < 15 ? 'cloud' : 'sun';
+  if (code <= 3) return 'cloud';
+  if (code <= 67) return 'rain';
+  if (code <= 77) return 'snow';
+  if (code <= 82) return 'rain';
+  return 'storm';
+}
+
+export async function getParkWeather(lat: number, lon: number): Promise<ParkWeather> {
+  const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code&temperature_unit=celsius&timezone=America%2FNew_York`;
+
+  try {
+    const res = await fetch(url, { next: { revalidate: 1800 } });
+    if (!res.ok) throw new Error('Error fetching park weather');
+    const data = await res.json();
+    const temp = Math.round(data.current.temperature_2m);
+    const code = data.current.weather_code;
+    return { temp, weatherType: interpretWeather(code, temp) };
+  } catch (error) {
+    console.error('Fallo al obtener clima del parque:', error);
+    return { temp: 28, weatherType: 'sun' };
+  }
+}

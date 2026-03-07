@@ -1,0 +1,263 @@
+'use client';
+
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Icon } from '@/components/Icon';
+import Link from 'next/link';
+import ParkCard, { ParkData } from '@/components/parks/ParkCard';
+import ParkDetailHero from "@/components/parks/ParkDetailHero";
+import DistrictsGrid from "@/components/parks/DistrictsGrid";
+import LogisticsPanel from "@/components/parks/LogisticsPanel";
+import ActivityList from "@/components/parks/ActivityList";
+import ContextualIntro from '@/components/parks/ContextualIntro';
+import { ParkWeather } from '@/services/weather';
+
+// ============================================================
+// TIPOS
+// ============================================================
+
+interface WeatherMap {
+  mk:    ParkWeather;
+  epcot: ParkWeather;
+  hs:    ParkWeather;
+  ak:    ParkWeather;
+  tl:    ParkWeather;
+  bb:    ParkWeather;
+}
+
+interface DisneyParksClientProps {
+  weatherMap: WeatherMap;
+}
+
+// ============================================================
+// RUTAS
+// ============================================================
+
+const PARK_ROUTES: Record<string, string> = {
+  mk:    '/disney/mk',
+  epcot: '/disney/epcot',
+  hs:    '/disney/hs',
+  ak:    '/disney/ak',
+};
+
+// ============================================================
+// COMPONENT
+// ============================================================
+
+export default function DisneyParksClient({ weatherMap }: DisneyParksClientProps) {
+  const [expandedPark, setExpandedPark]   = useState<string | null>('mk');
+  const [expandedWater, setExpandedWater] = useState<string | null>(null);
+
+  const handleParkClick  = (id: string) => setExpandedPark((prev)  => prev === id ? null : id);
+  const handleWaterClick = (id: string) => setExpandedWater((prev) => prev === id ? null : id);
+
+  // ── DATA con clima real ──────────────────────────────────
+  const parksData: ParkData[] = [
+    {
+      id: 'mk',
+      name: 'Magic Kingdom',
+      slogan: 'El epicentro de la fantasía. El parque más emblemático de Disney, con atracciones clásicas y shows nocturnos icónicos.',
+      image: '/images/mk.jpg',
+      temp:        weatherMap.mk.temp,
+      weatherType: weatherMap.mk.weatherType,
+      stats:    { attractions: 35, shows: 6 },
+      schedule: { early: '08:30 AM', regular: '09:00 - 22:00', show: '21:00 (HEA)' },
+    },
+    {
+      id: 'epcot',
+      name: 'Epcot',
+      slogan: 'Innovación humana y cultura. Tecnología, gastronomía mundial y experiencias únicas en un solo lugar.',
+      image: '/images/epcot.jpg',
+      temp:        weatherMap.epcot.temp,
+      weatherType: weatherMap.epcot.weatherType,
+      stats:    { attractions: 18, shows: 5 },
+      schedule: { early: '08:30 AM', regular: '09:00 - 21:00', show: '21:00 (Luminous)' },
+    },
+    {
+      id: 'hs',
+      name: 'Hollywood Studios',
+      slogan: 'Magia del cine y aventura. Desde Star Wars hasta Toy Story, las franquicias cobran vida.',
+      image: '/images/hs.jpg',
+      temp:        weatherMap.hs.temp,
+      weatherType: weatherMap.hs.weatherType,
+      stats:    { attractions: 14, shows: 7 },
+      schedule: { early: '08:30 AM', regular: '09:00 - 21:00', show: '20:30 (Fantasmic!)' },
+    },
+    {
+      id: 'ak',
+      name: 'Animal Kingdom',
+      slogan: 'Naturaleza indómita. Safaris, Pandora y un enfoque único en la vida salvaje.',
+      image: '/images/ak.jpg',
+      temp:        weatherMap.ak.temp,
+      weatherType: weatherMap.ak.weatherType,
+      stats:    { attractions: 12, shows: 3 },
+      schedule: { early: '07:30 AM', regular: '08:00 - 18:00' },
+    },
+  ];
+
+  const waterParksData: ParkData[] = [
+    {
+      id: 'tl',
+      name: 'Typhoon Lagoon',
+      slogan: 'Paraíso tropical con olas gigantes y toboganes para toda la familia.',
+      image: '/images/typhoon_lagoon.webp',
+      temp:        weatherMap.tl.temp,
+      weatherType: weatherMap.tl.weatherType,
+      stats:    { attractions: 11, shows: 0 },
+      schedule: { early: 'N/A', regular: '10:00 - 17:00' },
+    },
+    {
+      id: 'bb',
+      name: 'Blizzard Beach',
+      slogan: 'Diversión helada bajo el sol de Florida. Temática de estación de ski.',
+      image: '/images/blizzard_beach.webp',
+      temp:        weatherMap.bb.temp,
+      weatherType: weatherMap.bb.weatherType,
+      stats:    { attractions: 12, shows: 0 },
+      schedule: { early: 'N/A', regular: 'CERRADO' },
+    },
+  ];
+
+  // ── INTRO TEXT ───────────────────────────────────────────
+  const panelIntroShort = (
+    <p>Walt Disney World está compuesto por <strong>4 parques temáticos</strong> y <strong>2 parques acuáticos</strong>, pero no funcionan como un solo destino dividido en partes. <strong>Cada parque tiene lógica propia</strong>, tiempos distintos y una energía diferente.</p>
+  );
+
+  const panelIntroExpanded = (
+    <>
+      <p>Elegir qué parques visitar y en qué orden no es un detalle menor: define el ritmo completo del viaje. Algunos requieren un día entero para aprovecharlos con calma; otros permiten recorridos más concentrados si se planifican bien.</p>
+      <p>Los horarios de apertura anticipada (Early Entry), los espectáculos nocturnos y la distancia entre zonas influyen más de lo que parece. Entender esas diferencias antes de reservar cambia la experiencia por completo.</p>
+      <div className="pl-4 border-l-2 border-sunset">
+        <p className="italic text-gunmetal">Antes de elegir atracciones, elegí qué tipo de parque querés vivir. Acá podés explorar cada uno en detalle y decidir con criterio.</p>
+      </div>
+    </>
+  );
+
+  const springsIntroShort = (
+    <p>Un distrito al aire libre donde el paseo es parte del viaje — desde el bellísimo<strong className="text-gunmetal"> Coca-Cola Store</strong>, degustando los sabores del mundo, hasta volar a 120mts de altura con <strong className="text-gunmetal">Aerophile Balloon Flight</strong>.</p>
+  );
+
+  const springsIntroExpanded = (
+    <>
+      <p>Disney Springs no es un parque. Es un espacio pensado para recorrer sin reloj, donde la experiencia no depende de una atracción sino del entorno.</p>
+      <p>Aquí conviven <strong className="text-gunmetal">restaurantes de autor, marcas globales y tiendas exclusivas de Disney</strong> en un circuito que se siente más cercano a un barrio creativo que a un complejo temático.</p>
+      <div className="pl-4 border-l-2 border-sunset">
+        <p className="italic text-gunmetal">Disney Springs no se recorre para marcar pendientes. Se explora cuando querés que el viaje respire.</p>
+      </div>
+    </>
+  );
+
+  // ── RENDER ───────────────────────────────────────────────
+  return (
+    <main className="min-h-screen bg-bone pt-10 pb-20">
+      <div className="w-full max-w-[1440px] mx-auto px-6 lg:px-12">
+
+        {/* HEADER */}
+        <div className="mb-12">
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="font-sans text-4xl md:text-5xl font-bold text-gunmetal mb-6"
+            style={{ overflowWrap: 'break-word' }}
+          >
+            Panel de Parques
+          </motion.h1>
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}>
+            <ContextualIntro short={panelIntroShort} expanded={panelIntroExpanded} />
+          </motion.div>
+        </div>
+
+        {/* LABEL */}
+        <div className="flex items-center gap-3 mb-4">
+          <span className="type-tech text-[10px] text-gunmetal/40 uppercase tracking-widest font-bold">Parques Temáticos</span>
+          <div className="flex-1 h-px bg-gunmetal/5" />
+        </div>
+
+        {/* MAIN PARKS */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="flex flex-col lg:flex-row gap-4 w-full lg:h-[520px] mb-8"
+        >
+          {parksData.map((park) => (
+            <motion.div
+              key={park.id}
+              layout
+              className={`relative min-w-0 h-auto lg:h-full ${expandedPark === park.id ? 'lg:flex-[4]' : 'lg:flex-[1]'}`}
+              transition={{ duration: 0.7, ease: [0.25, 1, 0.5, 1] }}
+            >
+              <ParkCard
+                data={park}
+                isExpanded={expandedPark === park.id}
+                onClick={() => handleParkClick(park.id)}
+                route={PARK_ROUTES[park.id]}
+              />
+            </motion.div>
+          ))}
+        </motion.div>
+
+        {/* WATER PARKS LABEL */}
+        <div className="flex items-center gap-3 mb-4 mt-12">
+          <span className="type-tech text-[10px] text-gunmetal/40 uppercase tracking-widest font-bold">Parques Acuáticos</span>
+          <div className="flex-1 h-px bg-gunmetal/5" />
+        </div>
+
+        {/* WATER PARKS */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="flex flex-col lg:flex-row gap-4 w-full lg:h-[420px] mb-12"
+        >
+          {waterParksData.map((park) => (
+            <motion.div
+              key={park.id}
+              layout
+              className={`relative min-w-0 h-auto lg:h-full ${expandedWater === park.id ? 'lg:flex-[4]' : 'lg:flex-[1]'}`}
+              transition={{ duration: 0.7, ease: [0.25, 1, 0.5, 1] }}
+            >
+              <ParkCard
+                data={park}
+                isExpanded={expandedWater === park.id}
+                onClick={() => handleWaterClick(park.id)}
+              />
+            </motion.div>
+          ))}
+        </motion.div>
+
+        {/* DISNEY SPRINGS */}
+        <div id="active-view">
+          <ParkDetailHero />
+          <div className="py-12">
+            <ContextualIntro short={springsIntroShort} expanded={springsIntroExpanded} />
+          </div>
+          <DistrictsGrid />
+          <LogisticsPanel />
+          <ActivityList />
+        </div>
+
+        {/* GLOSARIO */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5 }}
+          className="w-full mt-4 flex flex-col items-center"
+        >
+          <div className="flex flex-wrap justify-center gap-x-8 gap-y-2 px-8 py-3 rounded-full border border-gunmetal/5 bg-white shadow-sm">
+            {[
+              { key: 'EARLY', label: 'Acceso Anticipado (huéspedes Disney)' },
+              { key: 'REG',   label: 'Horario Regular' },
+              { key: 'SHOW',  label: 'Espectáculo nocturno principal' },
+            ].map((term) => (
+              <span key={term.key} className="text-[10px] text-gunmetal/60 font-mono uppercase tracking-wide">
+                <span className="font-bold text-sunset">{term.key}:</span> {term.label}
+              </span>
+            ))}
+          </div>
+        </motion.div>
+
+      </div>
+    </main>
+  );
+}

@@ -37,6 +37,7 @@ export interface ParkItem {
     vibes: string[];
     image: string;
     description?: string;
+    heroImage?: string;
 
     // ── Override editorial de estado (tiene prioridad sobre la API) ──
     /** Cierre permanente — desactiva todos los datos operativos en la card */

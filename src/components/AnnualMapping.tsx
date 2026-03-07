@@ -2,7 +2,8 @@
 "use client";
 
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, useSpring, useTransform, animate, useInView } from 'framer-motion';
+import { useEffect, useRef } from 'react';
 // DESPUÉS (O247 Icon System — LOCAL, FUNCIONA SIEMPRE)
 import { Icon } from "@/components/Icon";
 import { MonthData } from '@/data/annual-mapping'; 
@@ -92,6 +93,53 @@ const MappingOnboarding = () => {
 };
 
 // ------------------------------------------------------------------
+// CLIMA: MAPA DE ÍCONOS Y GRADIENTES DINÁMICOS
+// ------------------------------------------------------------------
+const CLIMATE_ICON: Record<string, string> = {
+  'Soleado':   'solar:sun-2-bold-duotone',
+  'Despejado': 'solar:sun-2-bold-duotone',
+  'Caluroso':  'solar:sun-fog-bold-duotone',
+  'Fresco':    'solar:wind-bold-duotone',
+  'Lluvioso':  'solar:cloud-rain-bold-duotone',
+  'Tormentas': 'solar:cloud-storm-bold-duotone',
+};
+
+const CLIMATE_GRADIENT: Record<string, string> = {
+  'Soleado':   'from-amber-500/30 to-orange-500/10',
+  'Despejado': 'from-sky-400/30 to-blue-500/10',
+  'Caluroso':  'from-orange-500/30 to-red-500/10',
+  'Fresco':    'from-cyan-400/30 to-sky-500/10',
+  'Lluvioso':  'from-blue-500/30 to-indigo-500/10',
+  'Tormentas': 'from-slate-500/30 to-gray-600/10',
+};
+
+const CLIMATE_ANIM: Record<string, string> = {
+  'Soleado':   'animate-spin',
+  'Despejado': 'animate-spin',
+  'Caluroso':  'animate-pulse',
+  'Fresco':    'animate-bounce',
+  'Lluvioso':  'animate-bounce',
+  'Tormentas': 'animate-pulse',
+};
+
+// Contador animado (igual que ParkCard)
+function AnimatedTemp({ value, delay = 0 }: { value: string; delay?: number }) {
+  const num = parseInt(value.replace('°', ''));
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true });
+  const count = useSpring(0, { duration: 1500, bounce: 0 });
+  const rounded = useTransform(count, (v) => `${Math.round(v)}°`);
+
+  useEffect(() => {
+    if (!isInView) return;
+    const t = setTimeout(() => animate(count, num, { duration: 1.2, ease: 'circOut' }), delay);
+    return () => clearTimeout(t);
+  }, [isInView, count, num, delay]);
+
+  return <motion.span ref={ref}>{rounded}</motion.span>;
+}
+
+// ------------------------------------------------------------------
 // 2. COMPONENTE MONTHCARD (Sin cambios estructurales, solo props)
 // ------------------------------------------------------------------
 const MonthCard = ({ data }: { data: MonthData }) => {
@@ -149,19 +197,21 @@ const MonthCard = ({ data }: { data: MonthData }) => {
       {/* METEOROLOGÍA & GEAR */}
       <div className="relative z-10 px-8 grid grid-cols-2 gap-4 mt-4">
          {/* TARJETA 1: CLIMA */}
-         <div className="aspect-square bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl p-4 flex flex-col items-center justify-center text-center shadow-lg group-hover:bg-white/15 transition-colors relative overflow-hidden">
-            <div className="absolute top-0 inset-x-0 h-1/2 bg-gradient-to-b from-white/10 to-transparent opacity-50 pointer-events-none"></div>
-            <Icon icon="solar:sun-fog-bold-duotone" className={`w-10 h-10 mb-2 drop-shadow-[0_0_15px_rgba(255,255,255,0.3)] ${theme.accent}`} />
+         <div className={`aspect-square backdrop-blur-md border border-white/20 rounded-3xl p-4 flex flex-col items-center justify-center text-center shadow-lg transition-colors relative overflow-hidden bg-gradient-to-b ${CLIMATE_GRADIENT[data.skyLabel] ?? 'from-white/10 to-transparent'} bg-white/10`}>
+            <div className="absolute top-0 inset-x-0 h-1/2 bg-gradient-to-b from-white/10 to-transparent opacity-50 pointer-events-none" />
+            <div className={`mb-2 drop-shadow-[0_0_15px_rgba(255,255,255,0.4)] ${theme.accent} ${CLIMATE_ANIM[data.skyLabel] ?? ''}`} style={{ animationDuration: '3s' }}>
+              <Icon icon={CLIMATE_ICON[data.skyLabel] ?? 'solar:sun-2-bold-duotone'} className="w-10 h-10" />
+            </div>
             <div className="flex flex-col items-center">
                 <span className="text-[8px] font-bold text-white/50 uppercase tracking-widest bg-black/20 px-2 py-0.5 rounded-full backdrop-blur-sm mb-1">
                     Promedio
                 </span>
                 <div className="flex items-baseline gap-1">
                     <span className="text-4xl font-black text-white leading-none tracking-tight">
-                        {data.tempMax}
+                        <AnimatedTemp value={data.tempMax} />
                     </span>
                     <span className="text-lg font-bold text-white/60">
-                        / {data.tempMin}
+                        / <AnimatedTemp value={data.tempMin} delay={200} />
                     </span>
                 </div>
                 <span className="text-[9px] font-bold text-white/90 uppercase tracking-widest mt-1">
