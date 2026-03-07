@@ -275,11 +275,11 @@ export function StrategyCalendar({ strategy, scheduleMap }: Props) {
   const crowdLevelSelected = selectedDay ? getCrowdLevel(selectedDay) : null;
 
   return (
-    <section className="px-4 sm:px-6 lg:px-12 py-12 border-t border-white/5">
+    <section className="px-4 sm:px-6 lg:px-12 py-12">
 
       {/* Título de sección */}
       <div className="mb-8">
-        <h2 className="text-white text-xl font-bold mb-1">Mapa de multitudes</h2>
+        <h2 className="type-display text-white mb-1">Mapa de multitudes</h2>
         <p className="text-white/35 text-sm">
           Seleccioná un día para ver el análisis detallado por parque.
         </p>
@@ -295,8 +295,8 @@ export function StrategyCalendar({ strategy, scheduleMap }: Props) {
 
           {/* Header col */}
           <div className="mb-4">
-            <p className="text-white font-bold text-sm mb-0.5">Sugerencias de Parques</p>
-            <p className="text-white/25 text-[10px] uppercase tracking-widest font-semibold">
+            <p className="type-tech text-[11px] text-white uppercase tracking-[0.12em] mb-0.5">Sugerencias de Parques</p>
+            <p className="type-tech text-[10px] text-white/25 uppercase tracking-[0.2em]">
               Horarios y Tips
             </p>
           </div>
@@ -567,7 +567,7 @@ export function StrategyCalendar({ strategy, scheduleMap }: Props) {
             {/* Header */}
             <div className="flex items-center gap-2 mb-5">
               <Icon icon="solar:hand-stars-bold-duotone" width={16} className="text-[#00B4D8]" />
-              <h3 className="text-white font-bold text-sm">Recomendaciones</h3>
+              <h3 className="type-tech text-[11px] text-white uppercase tracking-[0.12em]">Recomendaciones</h3>
             </div>
 
             {/* Tips generales — bullet list */}
