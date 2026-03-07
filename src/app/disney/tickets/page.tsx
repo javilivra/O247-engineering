@@ -1,18 +1,19 @@
-"use client";
+'use client';
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Image from 'next/image';
 import { Icon } from "@/components/Icon";
 
 // --- DATA: MATRIZ DE TICKETS ---
 const TICKET_TYPES = [
   {
     id: "base",
-    title: "Ticket Base",
+    title: "Ticket Base (1 Parque por Día)",
     label: "FUNDAMENTAL",
-    desc: "1 Parque Principal por día. Bloqueado al primer parque que eliges. Ideal para logística simple.",
-    features: ["4 Parques Principales", "Reingreso al mismo parque"],
-    missing: ["No Park Hopping", "No Parques de Agua"],
+    desc: "Acceso a un solo parque por día (Magic Kingdom, EPCOT, Hollywood Studios o Animal Kingdom). Ideal para una planificación sencilla y sin apuros.",
+    features: ["Acceso a 1 Parque Principal por día", "Reingreso ilimitado al mismo parque"],
+    missing: ["No permite cambiar de parque (Park Hopping)", "No incluye Parques de Agua"],
     color: "text-gunmetal",
     bg: "bg-white",
     border: "border-gunmetal/10"
@@ -21,20 +22,20 @@ const TICKET_TYPES = [
     id: "hopper",
     title: "Park Hopper",
     label: "AGILIDAD",
-    desc: "Visita múltiples parques el mismo día. Desayuna en MK, cena en Epcot. Vital para viajes cortos.",
-    features: ["Todo lo del Base", "Cambio de parque ilimitado"],
-    missing: ["No Parques de Agua"],
+    desc: "Permite cambiar de parque en cualquier momento del día. Desayuna en Magic Kingdom, cena en EPCOT. Esencial para viajes cortos y maximizar el tiempo.",
+    features: ["Todo lo del Ticket Base", "Cambio de parque ilimitado durante el día"],
+    missing: ["No incluye Parques de Agua"],
     color: "text-sunset",
     bg: "bg-bone",
     border: "border-sunset/30"
   },
   {
     id: "water",
-    title: "Water & Sports",
+    title: "Water Park and Sports",
     label: "ACCIÓN",
-    desc: "Ticket Base + Visitas a Parques de Agua y Golf. Cantidad de visitas extra = Días de ticket.",
-    features: ["Ticket Base", "Typhoon/Blizzard Beach", "Golf / Minigolf"],
-    missing: ["No Park Hopping"],
+    desc: "Un Ticket Base más un número determinado de visitas a los parques acuáticos (Typhoon Lagoon/Blizzard Beach) y campos de minigolf.",
+    features: ["Acceso a 1 Parque Principal por día", "Visitas a Parques Acuáticos", "Acceso a Golf / Minigolf"],
+    missing: ["No permite cambiar de parque (Park Hopping)"],
     color: "text-celeste",
     bg: "bg-bone",
     border: "border-celeste/30"
@@ -43,14 +44,86 @@ const TICKET_TYPES = [
     id: "plus",
     title: "Park Hopper Plus",
     label: "ULTIMATE",
-    desc: "El 'All-Access'. Combina la libertad del Hopper con las visitas extra y extiende tu vigencia +1 día.",
-    features: ["Park Hopping Ilimitado", "Parques de Agua & Deportes", "+1 Día de Vigencia Extra"],
+    desc: "El 'todo incluido'. Combina la libertad del Park Hopper con el acceso a parques acuáticos y deportes, dándote la máxima flexibilidad.",
+    features: ["Park Hopping Ilimitado", "Acceso a Parques de Agua & Deportes", "La mejor opción para viajes largos"],
     missing: [],
     color: "text-emerald-600",
     bg: "bg-emerald-50/50",
     border: "border-emerald-200"
   }
 ];
+
+// --- DATA: LIGHTNING LANE ---
+const LL_SYSTEMS = [
+  {
+    id: "multi",
+    title: "Multi Pass (LLMP)",
+    label: "EL ESTÁNDAR",
+    titleLogo: "/images/icons/MP-logo-solid-dark-1024x240.png",
+    desc: "El sucesor de Genie+. Pre-reserva 3 filas rápidas y sigue reservando una por una durante el día. Es un 'combo': 1 atracción 'fuerte' (Tier 1) y 2 'secundarias' (Tier 2).",
+    price: "$15 - $45 USD / día",
+    features: [
+      "Sistema de Tiers (1 Principal, 2 Secundarias)",
+      "Reservas desde la app My Disney Experience",
+      "Ideal para la mayoría de los visitantes"
+    ],
+    color: "text-blue-500",
+    bg: "bg-blue-50",
+    icon: "/images/icons/LLMP-info-graphic-pass-type.png"
+  },
+  {
+    id: "single",
+    title: "Single Pass (LLSP)",
+    label: "A LA CARTA",
+    titleLogo: "/images/icons/disney-lightning-lane_single_pas.png",
+    desc: "Compra acceso individual para las 1-2 atracciones más demandadas que no están en el Multi Pass (ej. TRON, Rise of the Resistance).",
+    price: "$13 - $25 USD / atracción",
+    features: [
+      "Esencial para atracciones 'headliner'",
+      "Límite de 2 compras por persona al día",
+      "Se agotan rápido, comprar a las 7 AM"
+    ],
+    color: "text-purple-500",
+    bg: "bg-purple-50",
+    icon: "/images/icons/LLSP-info-graphic-pass-type.png"
+  },
+  {
+    id: "premier",
+    title: "Premier Pass (LLPP)",
+    label: "ACCESO TOTAL",
+    desc: "La opción de lujo. Acceso de un solo uso a casi todas las Lightning Lanes, sin horarios fijos ni sistema de Tiers. Caminar y entrar.",
+    price: "$129 - $449 USD / día",
+    features: [
+      "Máxima flexibilidad y eficiencia",
+      "Sin necesidad de reservar horarios",
+      "Recomendado solo en días de multitudes extremas"
+    ],
+    color: "text-amber-500",
+    bg: "bg-amber-50",
+    icon: "/images/icons/LLPP-info-graphic-pass-type.png"
+  }
+];
+
+// --- DATA: EXPERT STRATEGIES ---
+const EXPERT_STRATEGIES = [
+    {
+        title: "El Hack del 'Burner LL' (Sacrificio Estratégico)",
+        content: "Agenda una atracción de baja prioridad (Tier 2) a primera hora (ej. Mad Tea Party a las 9:00 AM). En cuanto escaneas tu pase, el sistema elimina las restricciones de Tiers para tus siguientes reservas. Esto te permite 'desbloquear' el sistema y empezar a reservar atracciones de alta demanda (Tier 1) mucho antes que el resto."
+    },
+    {
+        title: "Stacking de Tardes (Apilamiento)",
+        content: "No uses tus reservas de LL en la mañana. Aprovecha las filas cortas del 'Rope Drop' (apertura del parque) para las atracciones populares. Comienza a 'apilar' tus reservas de LL a partir del mediodía, para usarlas en cadena cuando el parque esté en su máxima capacidad y las filas normales sean muy largas."
+    },
+    {
+        title: "El Método 'Tap, Grab, Modify'",
+        content: "Es un ciclo constante de 3 pasos. 1) **Tap:** Escanea tu pase en la entrada de tu LL. 2) **Grab:** Inmediatamente después, abre la app y reserva tu siguiente atracción. 3) **Modify:** No te conformes con el horario. Actualiza la app constantemente para 'modificar' tu reserva y encontrar un horario más cercano, aprovechando las cancelaciones de otros."
+    },
+    {
+        title: "Reserva 'Hacia Atrás'",
+        content: "Si tu viaje es de varios días, planifica tus reservas de LL en orden inverso. Comienza por asegurar las atracciones más difíciles de conseguir para los últimos días de tu viaje. Tendrás menos competencia ya que la mayoría de la gente reserva día por día, y las disponibilidades para días futuros son mayores."
+    }
+];
+
 
 // --- LÓGICA DE CALENDARIO Y VIGENCIA ---
 const MONTHS = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
@@ -81,6 +154,9 @@ export default function DisneyTicketsPage() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [viewMonth, setViewMonth] = useState(0); // Enero = 0
   const [viewYear, setViewYear] = useState(2026);
+
+  const [openStrategy, setOpenStrategy] = useState<number | null>(0);
+
 
   // Cálculos derivados
   const validityLength = calculateValidity(ticketDays, isPlusMode);
@@ -170,17 +246,17 @@ export default function DisneyTicketsPage() {
                 <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gunmetal/5 border border-gunmetal/10 mb-8 backdrop-blur-sm">
                     <span className="w-1.5 h-1.5 rounded-full bg-sunset animate-pulse shadow-[0_0_8px_#FF7043]"></span>
                     <span className="type-tech text-[10px] text-gunmetal uppercase tracking-widest font-bold">
-                    Ingeniería de Acceso v3.2
+                    Ingeniería de Acceso v4.0
                     </span>
                 </div>
                 <h1 className="type-display text-5xl md:text-7xl text-gunmetal mb-6 leading-tight">
-                    No compres acceso.<br />
+                    No hagas filas,<br />
                     <span className="text-transparent bg-clip-text bg-gradient-to-r from-sunset to-celeste animate-gradient-x">
-                        Compra estrategia.
+                        no pagues de más.
                     </span>
                 </h1>
                 <p className="type-body text-lg md:text-[19px] text-gunmetal/70 max-w-xl leading-relaxed">
-                    <strong className="text-gunmetal">El error #1</strong> es ignorar la ventana de vigencia. Usa nuestras herramientas para sincronizar tus tickets con tu itinerario real.
+                    Te explicamos los tickets de Orlando en 5 minutos. <strong className="text-gunmetal">El error #1</strong> es ignorar cómo funcionan las filas rápidas y la ventana de vigencia de tus pases.
                 </p>
             </motion.div>
 
@@ -193,28 +269,25 @@ export default function DisneyTicketsPage() {
             >
                 <video
                     width={1200}
-                   
                     autoPlay
                     loop
                     muted
                     playsInline
                     className="w-full h-auto"
                 >
-                  <source src="/videos/magicbandcard_video1.mov" type='video/quicktime; codecs="hvc1"' />
+                  <source src="/videos/magicbandcard_video1.hevc" type='video/quicktime; codecs="hvc1"' />
                   <source src="/videos/magicbandcard_video1.webm" type="video/webm" />
                 </video>
             </motion.div>
         </div>
       </section>
 
-      {/* --- NIVEL 1: MATRIZ DE DECISIÓN (GRID 2x2) --- */}
+      {/* --- NIVEL 1: ARQUITECTURA DE ADMISIÓN (GRID 2x2) --- */}
       <section className="py-24 px-6">
         <div className="max-w-7xl mx-auto">
-            <div className="flex items-end justify-between mb-12">
-                <div>
-                    <h2 className="type-display text-3xl text-gunmetal mb-2">Arquitectura de Tickets</h2>
-                    <p className="type-body text-sm text-gunmetal/60">Selecciona el nivel de flexibilidad que requiere tu grupo.</p>
-                </div>
+            <div className="text-center mb-12">
+                <h2 className="type-display text-4xl text-gunmetal mb-2">Paso 1: Elige tu Nivel de Acceso</h2>
+                <p className="type-body text-lg text-gunmetal/60 max-w-2xl mx-auto">Primero, decide cómo quieres moverte entre los parques. Esta es la base sobre la cual construirás tu estrategia.</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -237,10 +310,8 @@ export default function DisneyTicketsPage() {
                             </div>
                         </div>
 
-                        <h3 className="type-display text-3xl text-gunmetal mb-3">{ticket.title}</h3>
-                        <p className="type-body text-sm text-gunmetal/70 mb-10 min-h-[40px]">
-                            {ticket.desc}
-                        </p>
+                        <h3 className="type-display text-2xl text-gunmetal mb-3">{ticket.title}</h3>
+                        <p className="type-body text-sm text-gunmetal/70 mb-8 min-h-[56px]">{ticket.desc}</p>
 
                         <div className="space-y-4">
                             {ticket.features.map((feat, i) => (
@@ -250,19 +321,123 @@ export default function DisneyTicketsPage() {
                                 </div>
                             ))}
                         </div>
+                        {ticket.missing.length > 0 && <div className="mt-6 pt-4 border-t border-gunmetal/10 space-y-3">
+                            {ticket.missing.map((miss, i) => (
+                                <div key={i} className="flex items-center gap-3 text-xs font-medium text-gunmetal/50 group-hover:translate-x-1 transition-transform" style={{transitionDelay: `${(ticket.features.length + i) * 50}ms`}}>
+                                    <Icon icon="solar:close-circle-bold" className="w-4 h-4 shrink-0" />
+                                    {miss}
+                                </div>
+                            ))}
+                        </div>}
                     </motion.div>
                 ))}
             </div>
         </div>
       </section>
 
-      {/* --- NIVEL 2: SIMULADOR DE TIEMPO (CALENDARIO TÁCTICO) --- */}
-      <section className="py-24 px-6 bg-white border-t border-gunmetal/5">
+      {/* --- NIVEL 2: ECOSISTEMA LIGHTNING LANE --- */}
+      <section className="py-24 px-6 bg-gunmetal text-white rounded-[40px] m-4">
+        <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-12">
+                <h2 className="type-display text-4xl text-white mb-2">Paso 2: Domina las Filas Rápidas</h2>
+                <p className="type-body text-lg text-white/60 max-w-3xl mx-auto">El sistema <span className="font-bold text-white">Lightning Lane (LL)</span> es la clave para no pasar el día esperando. Se divide en tres productos:</p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {LL_SYSTEMS.map((ll, idx) => (
+                    <motion.div
+                        key={ll.id}
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: idx * 0.15 }}
+                        viewport={{ once: true }}
+                        className={`p-8 rounded-[32px] border transition-all duration-300 relative overflow-hidden ${ll.bg} border-white/10 flex flex-col`}
+                    >
+                         <div className="flex justify-between items-center mb-4">
+                            <div className="h-16 flex-1 flex items-center">
+                              {ll.titleLogo ? (
+                                <Image src={ll.titleLogo} alt={`${ll.title} logo`} width={200} height={40} className="object-contain object-left" />
+                              ) : (
+                                <h3 className={`type-display text-2xl ${ll.color}`}>{ll.title}</h3>
+                              )}
+                            </div>
+                            <div className={`p-2 rounded-2xl bg-white/10 shadow-sm flex items-center justify-center`}>
+                               <Image src={ll.icon} alt={`${ll.title} icon`} width={64} height={64} />
+                            </div>
+                        </div>
+
+                        <div className="mb-4">
+                            <span className={`text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full border border-current ${ll.color} bg-white/10 backdrop-blur-sm`}>
+                                {ll.label}
+                            </span>
+                        </div>
+                        
+                        <p className={`font-mono text-sm font-bold ${ll.color} mb-4`}>{ll.price}</p>
+                        
+                        <p className="type-body text-sm text-gunmetal/70 mb-6 min-h-[100px]">{ll.desc}</p>
+                        
+                        <div className="space-y-3 mt-auto">
+                            {ll.features.map((feat, i) => (
+                                <div key={i} className="flex items-start gap-3 text-sm font-medium text-gunmetal">
+                                    <Icon icon="solar:check-circle-line-duotone" className={`w-5 h-5 shrink-0 mt-0.5 ${ll.color}`} />
+                                    <span>{feat}</span>
+                                </div>
+                            ))}
+                        </div>
+                    </motion.div>
+                ))}
+            </div>
+             <div className="mt-8 text-center text-xs text-white/40 font-mono">
+                <Icon icon="solar:danger-triangle-bold-duotone" className="inline-block w-4 h-4 mr-2" />
+                Alerta: El 95% de los visitantes no necesita el Premier Pass. Enfócate en dominar el Multi Pass.
+            </div>
+        </div>
+      </section>
+      
+      {/* --- NIVEL 3: ESTRATEGIAS DE EXPERTO --- */}
+      <section className="py-24 px-6">
+        <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-12">
+                 <h2 className="type-display text-4xl text-gunmetal mb-2">Paso 3: Ejecuta como un Experto</h2>
+                <p className="type-body text-lg text-gunmetal/60 max-w-2xl mx-auto">Estas son las 4 estrategias clave que los profesionales usan para maximizar el Multi Pass y evitar las filas más largas.</p>
+            </div>
+            <div className="space-y-4">
+                {EXPERT_STRATEGIES.map((strategy, idx) => (
+                    <div key={idx} className="bg-white rounded-2xl border border-gunmetal/10 overflow-hidden">
+                        <button 
+                            onClick={() => setOpenStrategy(openStrategy === idx ? null : idx)}
+                            className="w-full text-left p-6 flex justify-between items-center"
+                        >
+                            <h3 className="text-lg font-bold text-gunmetal">{strategy.title}</h3>
+                            <motion.div animate={{ rotate: openStrategy === idx ? 90 : 0 }}>
+                                <Icon icon="solar:alt-arrow-right-linear" className="w-5 h-5 text-gunmetal/50"/>
+                            </motion.div>
+                        </button>
+                        <AnimatePresence>
+                        {openStrategy === idx && (
+                            <motion.div
+                                initial={{ height: 0, opacity: 0 }}
+                                animate={{ height: 'auto', opacity: 1 }}
+                                exit={{ height: 0, opacity: 0 }}
+                                transition={{ duration: 0.3, ease: 'easeInOut' }}
+                            >
+                                <div className="px-6 pb-6 text-gunmetal/70 text-sm leading-relaxed border-t border-gunmetal/5 pt-4">
+                                    {strategy.content}
+                                </div>
+                            </motion.div>
+                        )}
+                        </AnimatePresence>
+                    </div>
+                ))}
+            </div>
+        </div>
+      </section>
+
+      {/* --- NIVEL 4: SIMULADOR DE TIEMPO (CALENDARIO TÁCTICO) --- */}
+      <section className="py-24 px-6 bg-white border-y border-gunmetal/5">
         <div className="max-w-6xl mx-auto">
             
             <div className="text-center mb-16">
-                <span className="type-tech text-[10px] text-celeste uppercase tracking-widest block mb-2">Simulación Temporal</span>
-                <h2 className="type-display text-4xl text-gunmetal">Calculadora de Ventana de Uso</h2>
+                <h2 className="type-display text-4xl text-gunmetal">Paso 4: Valida tu Ventana de Uso</h2>
                 <p className="type-body text-base text-gunmetal/60 mt-4 max-w-xl mx-auto">
                     Los tickets tienen fecha de caducidad. Simula tu viaje real para ver exactamente hasta cuándo puedes usar tus entradas.
                 </p>
@@ -383,13 +558,11 @@ export default function DisneyTicketsPage() {
                     </div>
 
                 </div>
-
             </div>
-
         </div>
       </section>
 
-      {/* --- NIVEL 3: GRÁFICO DE VALOR (SWEET SPOT) --- */}
+      {/* --- NIVEL 5: GRÁFICO DE VALOR (SWEET SPOT) --- */}
       <section className="py-24 px-6 relative bg-gunmetal text-white overflow-hidden rounded-[40px] m-4 shadow-2xl">
          <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-sunset/10 rounded-full blur-[100px] pointer-events-none -translate-y-1/2 translate-x-1/2" />
          
@@ -409,7 +582,7 @@ export default function DisneyTicketsPage() {
                     </h3>
                     <p className="text-white/70 text-lg leading-relaxed mb-10 font-light">
                         La ingeniería de precios de Disney castiga las visitas cortas. 
-                        A partir del día 5, agregar un día más cuesta casi lo mismo que una hamburguesa.
+                        A partir del día 5, agregar un día más cuesta casi lo mismo que una hamburguesa, maximizando el valor de tu inversión.
                     </p>
                     <motion.button 
                         whileHover={{ scale: 1.05 }}
@@ -434,6 +607,7 @@ export default function DisneyTicketsPage() {
                     >
                         {/* Barra */}
                         <div 
+                            style={{height: '100%'}}
                             className={`w-full rounded-t-sm transition-all duration-500 ${i === 4 ? 'bg-sunset shadow-[0_0_30px_rgba(255,112,67,0.6)]' : 'bg-white/10 group-hover:bg-white/30'}`}
                         />
                         {/* Etiqueta Eje X */}
