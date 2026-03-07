@@ -6,6 +6,7 @@ import { motion, useSpring, useTransform, animate, useInView } from 'framer-moti
 import { useEffect, useRef } from 'react';
 // DESPUÉS (O247 Icon System — LOCAL, FUNCIONA SIEMPRE)
 import { Icon } from "@/components/Icon";
+import Link from 'next/link';
 import { MonthData } from '@/data/annual-mapping'; 
 
 // ------------------------------------------------------------------
@@ -142,6 +143,13 @@ function AnimatedTemp({ value, delay = 0 }: { value: string; delay?: number }) {
 // ------------------------------------------------------------------
 // 2. COMPONENTE MONTHCARD (Sin cambios estructurales, solo props)
 // ------------------------------------------------------------------
+
+const MONTH_SLUG: Record<string, string> = {
+  jan: 'enero', feb: 'febrero', mar: 'marzo', apr: 'abril',
+  may: 'mayo', jun: 'junio', jul: 'julio', aug: 'agosto',
+  sep: 'septiembre', oct: 'octubre', nov: 'noviembre', dec: 'diciembre',
+};
+
 const MonthCard = ({ data }: { data: MonthData }) => {
   
   const themeColors = {
@@ -253,10 +261,10 @@ const MonthCard = ({ data }: { data: MonthData }) => {
                {data.insight}
             </p>
          </div>
-         <button className="w-full py-3.5 bg-primary text-white font-bold tracking-tight rounded-xl shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 border border-white/10 group/btn">
+         <Link href={`/mapping/${MONTH_SLUG[data.id] || data.id}`} className="w-full py-3.5 bg-primary text-white font-bold tracking-tight rounded-xl shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 border border-white/10 group/btn">
             <span>Ver Estrategia</span>
             <Icon icon="solar:arrow-right-bold" className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
-         </button>
+         </Link>
       </div>
     </motion.div>
   );
