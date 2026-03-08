@@ -2,152 +2,264 @@
 @tailwind components;
 @tailwind utilities;
 
-/* --- CONFIGURACIÓN DE VARIABLES --- */
+/* ============================================================
+   CONFIGURACIÓN DE VARIABLES
+   ============================================================ */
 :root {
   --font-primary: "Google Sans Flex", sans-serif;
   --font-tech: 'JetBrains Mono', monospace;
 }
 
-/* --- CONFIGURACIÓN BASE DEL SITIO --- */
+/* ============================================================
+   BASE
+   ============================================================ */
 @layer base {
   body {
     @apply bg-bone text-gunmetal;
     font-family: var(--font-primary);
     font-optical-sizing: auto;
     font-style: normal;
-    font-variation-settings:
-      "slnt" 0,
-      "wdth" 100,
-      "GRAD" 0,
-      "ROND" 0;
+    font-variation-settings: "slnt" 0, "wdth" 100, "GRAD" 0, "ROND" 0;
     -webkit-font-smoothing: antialiased;
   }
-
   h1, h2, h3, h4, h5, h6 {
     @apply font-display text-gunmetal;
   }
 }
 
-
-/* --- UTILIDADES DE INGENIERÍA & MARCA --- */
-.font-display {
-  font-family: var(--font-primary);
-  font-weight: 600;
-  letter-spacing: -0.03em;
-  font-variation-settings: "opsz" 32, "wdth" 100, "GRAD" 50; 
-}
-
-.font-tech {
-  font-family: var(--font-tech);
-  letter-spacing: -0.02em;
-}
-
-.o247-glass {
-  @apply bg-bone/80 border-b border-gunmetal/5;
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-}
-
-.text-sunset-glow {
-  @apply text-sunset;
-  text-shadow: 0 0 25px rgba(255, 112, 67, 0.4);
-}
-
-.mask-gradient {
-  mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-  -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-}
-
-.bg-grid-pattern {
-  background-size: 40px 40px;
-  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
-  mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
-  -webkit-mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
-}
-
-.bg-dot-pattern {
-  background-image: radial-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 1px);
-  background-size: 24px 24px;
-  mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
-  -webkit-mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
-}
-
-.shadow-averi {
-  box-shadow: 
-    0 1px 2px -1px rgba(0, 0, 0, 0.05),
-    0 4px 12px -2px rgba(0, 0, 0, 0.05);
-}
-
-.shadow-averi-hover {
-  box-shadow: 
-    0 4px 6px -1px rgba(0, 0, 0, 0.05),
-    0 12px 32px -4px rgba(0, 0, 0, 0.1);
-}
-
+/* ============================================================
+   O247 DESIGN SYSTEM — COMPONENTES
+   Fuente de verdad para todos los estilos reutilizables.
+   Orden: Tipografía → Glass → Cards → Botones → Utilidades
+   ============================================================ */
 @layer components {
+
+  /* ----------------------------------------------------------
+     TIPOGRAFÍA
+     .type-display  → H1/H2/H3, títulos de sección
+     .type-body     → párrafos, descripciones
+     .type-tech     → labels, eyebrows, tags, datos técnicos
+     ---------------------------------------------------------- */
   .type-display {
     @apply font-display font-medium tracking-tighter leading-[1.1] text-gunmetal;
-    font-variation-settings: "opsz" 32, "wdth" 100, "GRAD" 50; 
+    font-variation-settings: "opsz" 32, "wdth" 100, "GRAD" 50;
   }
-
   .type-body {
     @apply font-sans text-base font-normal tracking-normal leading-relaxed text-gunmetal/80;
   }
-
   .type-tech {
     @apply font-mono font-medium tracking-wider leading-tight text-gunmetal;
   }
 
+  /* ----------------------------------------------------------
+     GLASS SYSTEM — DARK
+     Para usar sobre fondos oscuros (#25343F, negro, fotos).
+     Jerarquía: card > surface > pill > chip
+     ---------------------------------------------------------- */
+
+  /* Contenedor grande: calendarios, paneles, modales */
+  .glass-dark-card {
+    background: rgba(255, 255, 255, 0.07);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 20px;
+    box-shadow:
+      0 24px 48px rgba(0, 0, 0, 0.35),
+      0 8px 16px rgba(0, 0, 0, 0.20),
+      inset 0 1px 0 rgba(255, 255, 255, 0.10),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.12);
+  }
+
+  /* Sección interna: tabs, paneles secundarios dentro de una card */
+  .glass-dark-surface {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(16px) saturate(160%);
+    -webkit-backdrop-filter: blur(16px) saturate(160%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07);
+  }
+
+  /* Pill/badge: etiquetas, indicadores de estado, tags */
+  .glass-dark-pill {
+    background: rgba(255, 255, 255, 0.10);
+    backdrop-filter: blur(10px) saturate(140%);
+    -webkit-backdrop-filter: blur(10px) saturate(140%);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 999px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  }
+
+  /* Chip: elemento ultra compacto, inline, sin blur para performance */
+  .glass-dark-chip {
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+  }
+
+  /* Card sólida oscura: máximo contraste, sin foto detrás */
+  .glass-solid {
+    background: rgba(20, 28, 35, 0.88);
+    backdrop-filter: blur(16px) saturate(160%);
+    -webkit-backdrop-filter: blur(16px) saturate(160%);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 20px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.40);
+  }
+
+  /* ----------------------------------------------------------
+     GLASS SYSTEM — BONE
+     Para usar sobre fondos claros (#F7F7F5).
+     Sutil, casi invisible — acompaña sin competir.
+     ---------------------------------------------------------- */
+
+  /* Contenedor sobre bone: cards en parques, modales informativos */
+  .glass-bone-card {
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid rgba(37, 52, 63, 0.08);
+    border-radius: 20px;
+    box-shadow:
+      0 8px 24px rgba(37, 52, 63, 0.06),
+      0 2px 8px rgba(37, 52, 63, 0.04),
+      inset 0 1px 0 rgba(255, 255, 255, 0.90);
+  }
+
+  /* Sección interna sobre bone */
+  .glass-bone-surface {
+    background: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(16px) saturate(160%);
+    -webkit-backdrop-filter: blur(16px) saturate(160%);
+    border: 1px solid rgba(37, 52, 63, 0.06);
+    border-radius: 14px;
+  }
+
+  /* Pill sobre bone: etiquetas en StrategyHero, tags sobre fondo claro */
+  .glass-bone-pill {
+    background: rgba(255, 255, 255, 0.60);
+    backdrop-filter: blur(10px) saturate(140%);
+    -webkit-backdrop-filter: blur(10px) saturate(140%);
+    border: 1px solid rgba(37, 52, 63, 0.12);
+    border-radius: 999px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.80);
+  }
+
+  /* Chip sobre bone */
+  .glass-bone-chip {
+    background: rgba(255, 255, 255, 0.50);
+    border: 1px solid rgba(37, 52, 63, 0.10);
+    border-radius: 8px;
+  }
+
+  /* ----------------------------------------------------------
+     CARDS DE CONTENIDO
+     Para secciones sobre bone (parques, explorar, FAQ).
+     ---------------------------------------------------------- */
+
+  /* Card estándar — la más usada en el site */
   .card-oasis {
     @apply bg-white rounded-2xl border border-gunmetal/5 shadow-sm;
   }
 
-  .glass-panel {
-    @apply backdrop-blur-md bg-white/80 border border-white/40 shadow-lg;
+  /* Card con hover — para items clicables */
+  .card-oasis-interactive {
+    @apply bg-white rounded-2xl border border-gunmetal/5 shadow-sm
+           hover:shadow-averi hover:-translate-y-0.5 transition-all duration-200 cursor-pointer;
   }
-  
+
+  /* ----------------------------------------------------------
+     BOTONES
+     ---------------------------------------------------------- */
   .btn-primary {
-    @apply bg-sunset text-gunmetal font-medium rounded-full px-6 py-3 
-           hover:shadow-[0_0_20px_rgba(255,112,67,0.3)] hover:-translate-y-0.5 
+    @apply bg-sunset text-white font-medium rounded-full px-6 py-3
+           hover:shadow-[0_0_20px_rgba(255,112,67,0.3)] hover:-translate-y-0.5
            transition-all duration-300 ease-out;
   }
+
+  .btn-ghost {
+    @apply text-gunmetal/50 font-mono text-xs uppercase tracking-[0.2em] font-bold
+           hover:text-gunmetal transition-colors;
+  }
+
+  /* ----------------------------------------------------------
+     NAVBAR
+     ---------------------------------------------------------- */
+  .o247-glass {
+    @apply bg-bone/80 border-b border-gunmetal/5;
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+  }
+
+  /* ----------------------------------------------------------
+     UTILIDADES DE MARCA
+     ---------------------------------------------------------- */
+  .font-display {
+    font-family: var(--font-primary);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    font-variation-settings: "opsz" 32, "wdth" 100, "GRAD" 50;
+  }
+  .font-tech {
+    font-family: var(--font-tech);
+    letter-spacing: -0.02em;
+  }
+  .text-sunset-glow {
+    @apply text-sunset;
+    text-shadow: 0 0 25px rgba(255, 112, 67, 0.4);
+  }
+  .shadow-averi {
+    box-shadow: 0 1px 2px -1px rgba(0, 0, 0, 0.05), 0 4px 12px -2px rgba(0, 0, 0, 0.05);
+  }
+  .shadow-averi-hover {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 12px 32px -4px rgba(0, 0, 0, 0.1);
+  }
+  .mask-gradient {
+    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  }
+  .bg-grid-pattern {
+    background-size: 40px 40px;
+    background-image:
+      linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+    mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+    -webkit-mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+  }
+  .bg-dot-pattern {
+    background-image: radial-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 1px);
+    background-size: 24px 24px;
+    mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+    -webkit-mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+  }
+  .btn-glow:active {
+    box-shadow: 0 0 15px rgba(167, 226, 110, 0.6);
+    border-color: #a7e26e;
+  }
 }
 
-html {
-  scroll-behavior: smooth;
-}
+/* ============================================================
+   LENIS SCROLL
+   ============================================================ */
+html { scroll-behavior: smooth; }
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+.lenis.lenis-scrolling iframe { pointer-events: none; }
 
-html.lenis, html.lenis body {
-  height: auto;
-}
-
-.lenis.lenis-smooth {
-  scroll-behavior: auto !important;
-}
-
-.lenis.lenis-smooth [data-lenis-prevent] {
-  overscroll-behavior: contain;
-}
-
-.lenis.lenis-stopped {
-  overflow: hidden;
-}
-
-.lenis.lenis-scrolling iframe {
-  pointer-events: none;
-}
-
+/* ============================================================
+   ACCESIBILIDAD
+   ============================================================ */
 :focus-visible {
   outline: 2px solid #FF7043;
   outline-offset: 2px;
 }
-
 ::selection {
   background-color: #FF7043;
   color: #1a1a1a;
 }
-
 .sr-only {
   position: absolute;
   width: 1px;
@@ -158,49 +270,4 @@ html.lenis, html.lenis body {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border-width: 0;
-}
-
-/* STYLES FROM STITCH EXAMPLE */
-.step-card {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.step-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.01);
-}
-.glass-pill {
-    background: rgba(247, 247, 245, 0.9); /* Adapted to use bone color */
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(247, 247, 245, 0.5);
-}
-.glass-tag {
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(8px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-}
-.journey-connector::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: #e2e8f0;
-    z-index: 0;
-    transform: translateY(-50%);
-}
-.step-collapsed {
-    opacity: 0.5;
-    max-height: 180px;overflow: hidden;
-    pointer-events: none;
-}
-.step-expanded {
-    opacity: 1;
-    max-height: 1000px;
-    pointer-events: auto;
-}
-.btn-glow:active {
-    box-shadow: 0 0 15px rgba(167, 226, 110, 0.6);
-    border-color: #a7e26e;
 }
